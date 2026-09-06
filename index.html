@@ -6,11 +6,7 @@
     <title>ProTour3D — 3D-туры для недвижимости</title>
     <style>
         /* Общие стили */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: Arial, sans-serif;
             background: #f9f9f9;
@@ -65,6 +61,42 @@
             color: #e67e22;
         }
 
+        /* Секция преимуществ (ваша) */
+        .benefits {
+            padding: 40px 0;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .benefits .card {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            padding: 30px 20px;
+            flex: 1 1 250px;
+            text-align: center;
+            border: 1px solid #eee;
+            transition: 0.3s;
+        }
+        .benefits .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+        .benefits .card .icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+        .benefits .card h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #1a2a4a;
+        }
+        .benefits .card p {
+            color: #666;
+            font-size: 15px;
+        }
+
         /* Секция туров */
         .tour-block {
             padding: 40px 0;
@@ -109,6 +141,14 @@
             .contacts {
                 gap: 10px;
             }
+            .benefits {
+                flex-direction: column;
+                align-items: center;
+            }
+            .benefits .card {
+                width: 100%;
+                max-width: 400px;
+            }
             .tour-frame {
                 height: 350px;
             }
@@ -128,40 +168,59 @@
 </head>
 <body>
 
-    <div class="container">
-        <!-- ШАПКА -->
-        <header>
-            <div class="logo">
-                <a href="/">
-                    <!-- Если у вас есть файл logo.png, он отобразится, иначе будет виден только текст -->
-                    <img src="logo.jpg" alt="ProTour3D">
-                    <span>ProTour3D</span>
-                </a>
-            </div>
-            <div class="contacts">
-                <a href="tel:+79063437268">📞 +7-906-343-72-68</a>
-                <a href="mailto:ProTyr63@yandex.ru">✉️ ProTyr63@yandex.ru</a>
-                <a href="https://t.me/ProTour3D" target="_blank">💬 Telegram / MAX</a>
-            </div>
-        </header>
+<div class="container">
+    <!-- ======= ШАПКА ======= -->
+    <header>
+        <div class="logo">
+            <a href="/">
+                <!-- Если у вас логотип в формате JPEG, укажите logo.jpg (или другое имя) -->
+                <img src="logo.jpeg" alt="ProTour3D">
+                <span>ProTour3D</span>
+            </a>
+        </div>
+        <div class="contacts">
+            <a href="tel:+79063437268">📞 +7-906-343-72-68</a>
+            <a href="mailto:ProTyr63@yandex.ru">✉️ ProTyr63@yandex.ru</a>
+            <a href="https://t.me/ProTour3D" target="_blank">💬 Telegram / MAX</a>
+        </div>
+    </header>
 
-        <!-- ТУРЫ -->
-        <section class="tour-block">
-            <h2>Наши работы</h2>
-            <p class="subtitle">Осмотрите объект онлайн — кликните и перетаскивайте мышку</p>
+    <!-- ======= СЕКЦИЯ ПРЕИМУЩЕСТВ (ваши карточки) ======= -->
+    <section class="benefits">
+        <div class="card">
+            <div class="icon">🚀</div>
+            <h3>Выше продажи</h3>
+            <p>Объекты с 3D-туром продаются на 30% быстрее.</p>
+        </div>
+        <div class="card">
+            <div class="icon">🏠</div>
+            <h3>Полная прозрачность</h3>
+            <p>Клиент видит квартиру как есть, без скрытых дефектов.</p>
+        </div>
+        <div class="card">
+            <div class="icon">⏱️</div>
+            <h3>Экономия времени</h3>
+            <p>Откажитесь от десятков личных показов — покажите всё онлайн.</p>
+        </div>
+    </section>
 
-            <!-- Тур 1: Stroitelei -->
-            <iframe class="tour-frame" src="https://protour3d.github.io/tours/Stroitelei/index.html" allowfullscreen></iframe>
+    <!-- ======= СЕКЦИЯ ТУРОВ ======= -->
+    <section class="tour-block">
+        <h2>Наши работы</h2>
+        <p class="subtitle">Осмотрите объект онлайн — кликните и перетаскивайте мышку</p>
 
-            <!-- Тур 2: DK -->
-            <iframe class="tour-frame" src="https://protour3d.github.io/tours/DK/index.html" allowfullscreen></iframe>
-        </section>
+        <!-- Первый тур (Строителей) -->
+        <iframe class="tour-frame" src="https://protour3d.github.io/tours/Stroitelei/index.html" allowfullscreen></iframe>
 
-        <!-- ПОДВАЛ -->
-        <footer>
-            <p>© 2026 ProTour3D. Все права защищены.</p>
-        </footer>
-    </div>
+        <!-- Второй тур (ДК) -->
+        <iframe class="tour-frame" src="https://protour3d.github.io/tours/DK/index.html" allowfullscreen></iframe>
+    </section>
+
+    <!-- ======= ПОДВАЛ ======= -->
+    <footer>
+        <p>© 2026 ProTour3D. Все права защищены.</p>
+    </footer>
+</div>
 
 </body>
 </html>
