@@ -25,11 +25,11 @@
             padding: 0 20px;
         }
 
-        /* ===== ШАПКА ===== */
+        /* ===== ШАПКА (увеличенные отступы) ===== */
         header {
             background: #1a2a4a;
             color: white;
-            padding: 20px 0;
+            padding: 35px 0;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
         header .container {
@@ -37,6 +37,7 @@
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
+            gap: 20px;
         }
         .logo a {
             display: flex;
@@ -44,8 +45,8 @@
             text-decoration: none;
         }
         .logo img {
-            height: 60px;
-            width: 60px;
+            height: 85px;
+            width: 85px;
             object-fit: contain;
             vertical-align: middle;
         }
@@ -53,7 +54,7 @@
             display: flex;
             align-items: center;
             flex-wrap: wrap;
-            gap: 10px 20px;
+            gap: 18px 25px;
         }
         .nav a {
             color: white;
@@ -222,11 +223,11 @@
         @media (max-width: 700px) {
             header .container {
                 flex-direction: column;
-                gap: 12px;
+                gap: 15px;
             }
             .nav {
                 justify-content: center;
-                gap: 8px 15px;
+                gap: 10px 15px;
             }
             .hero h1 {
                 font-size: 30px;
@@ -244,8 +245,8 @@
         }
         @media (max-width: 480px) {
             .logo img {
-                height: 50px;
-                width: 50px;
+                height: 65px;
+                width: 65px;
             }
             .nav a {
                 font-size: 14px;
@@ -261,7 +262,7 @@
     <!-- ===== ШАПКА ===== -->
     <header>
         <div class="container">
-            <!-- ЛОГОТИП (изображение 1:1) -->
+            <!-- ЛОГОТИП (формат JPEG) -->
             <div class="logo">
                 <a href="/">
                     <img src="logo.jpeg" alt="ProTour3D">
@@ -273,7 +274,7 @@
                 <a href="#tour">Наш тур</a>
                 <a href="#contacts">Контакты</a>
                 <a href="tel:+79063437268" class="contact-link">📞 +7-906-343-72-68</a>
-                <a href="mailto:ProTyr63@yandex.ru" class="contact-link">✉️ ProTyr63@yandex.ru</a>
+                <a href="mailto:protour3d@yandex.ru" class="contact-link">✉️ protour3d@yandex.ru</a>
             </div>
         </div>
     </header>
@@ -335,8 +336,8 @@
         <div class="container">
             <h2>Свяжитесь с нами</h2>
             <p class="info">📞 <a href="tel:+79063437268">+7-906-343-72-68</a></p>
-            <p class="info">💬 Telegram / MAX — <a href="https://t.me/ProTour3D" target="_blank">@ProTour3D</a></p>
-            <p class="info">✉️ <a href="mailto:ProTyr63@yandex.ru">ProTyr63@yandex.ru</a></p>
+            <p class="info">💬 Telegram / MAX</p>   <!-- убрали @ProTour3D -->
+            <p class="info">✉️ <a href="mailto:protour3d@yandex.ru">protour3d@yandex.ru</a></p>
         </div>
     </section>
 
