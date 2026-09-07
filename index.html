@@ -25,11 +25,11 @@
             padding: 0 20px;
         }
 
-        /* ===== ШАПКА (увеличенные отступы) ===== */
+        /* ===== ШАПКА С ОГРОМНЫМ ЛОГОТИПОМ ===== */
         header {
             background: #1a2a4a;
             color: white;
-            padding: 35px 0;
+            padding: 25px 0;   /* увеличил отступы сверху/снизу */
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
         header .container {
@@ -37,7 +37,7 @@
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 20px;
+            gap: 30px;        /* больше воздуха между логотипом и меню */
         }
         .logo a {
             display: flex;
@@ -45,8 +45,8 @@
             text-decoration: none;
         }
         .logo img {
-            height: 85px;
-            width: 85px;
+            height: 140px;    /* теперь 140 пикселей */
+            width: 140px;     /* сохраняем квадрат 1:1 */
             object-fit: contain;
             vertical-align: middle;
         }
@@ -54,12 +54,12 @@
             display: flex;
             align-items: center;
             flex-wrap: wrap;
-            gap: 18px 25px;
+            gap: 20px 30px;   /* увеличил расстояние между ссылками */
+            font-size: 18px;  /* чуть крупнее текст */
         }
         .nav a {
             color: white;
             text-decoration: none;
-            font-size: 16px;
             transition: 0.3s;
         }
         .nav a:hover {
@@ -194,21 +194,6 @@
         .contacts .info a:hover {
             color: #007AFF;
         }
-        .socials {
-            margin-top: 20px;
-        }
-        .socials a {
-            display: inline-block;
-            margin: 0 12px;
-            font-size: 28px;
-            text-decoration: none;
-            color: #1a2a4a;
-            transition: 0.3s;
-        }
-        .socials a:hover {
-            color: #007AFF;
-            transform: scale(1.1);
-        }
 
         /* ===== ПОДВАЛ ===== */
         footer {
@@ -223,11 +208,17 @@
         @media (max-width: 700px) {
             header .container {
                 flex-direction: column;
-                gap: 15px;
+                align-items: center;
+                gap: 20px;
+            }
+            .logo img {
+                height: 90px;   /* на телефонах тоже увеличил */
+                width: 90px;
             }
             .nav {
                 justify-content: center;
-                gap: 10px 15px;
+                gap: 12px 20px;
+                font-size: 16px;
             }
             .hero h1 {
                 font-size: 30px;
@@ -245,8 +236,8 @@
         }
         @media (max-width: 480px) {
             .logo img {
-                height: 65px;
-                width: 65px;
+                height: 70px;
+                width: 70px;
             }
             .nav a {
                 font-size: 14px;
@@ -262,13 +253,13 @@
     <!-- ===== ШАПКА ===== -->
     <header>
         <div class="container">
-            <!-- ЛОГОТИП (формат JPEG) -->
+            <!-- ЛОГОТИП (огромный, 140x140) -->
             <div class="logo">
                 <a href="/">
                     <img src="logo.jpeg" alt="ProTour3D">
                 </a>
             </div>
-            <!-- НАВИГАЦИЯ + КОНТАКТЫ В ШАПКЕ -->
+            <!-- НАВИГАЦИЯ + КОНТАКТЫ -->
             <div class="nav">
                 <a href="#benefits">Преимущества</a>
                 <a href="#tour">Наш тур</a>
@@ -336,7 +327,7 @@
         <div class="container">
             <h2>Свяжитесь с нами</h2>
             <p class="info">📞 <a href="tel:+79063437268">+7-906-343-72-68</a></p>
-            <p class="info">💬 Telegram / MAX</p>   <!-- убрали @ProTour3D -->
+            <p class="info">💬 Telegram / MAX</p>
             <p class="info">✉️ <a href="mailto:protour3d@yandex.ru">protour3d@yandex.ru</a></p>
         </div>
     </section>
