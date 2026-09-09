@@ -25,11 +25,11 @@
             padding: 0 20px;
         }
 
-        /* ===== ШАПКА С ОГРОМНЫМ ЛОГОТИПОМ ===== */
+        /* ===== ШАПКА С БОЛЬШИМ ЛОГОТИПОМ ===== */
         header {
             background: #1a2a4a;
             color: white;
-            padding: 25px 0;   /* увеличил отступы сверху/снизу */
+            padding: 25px 0;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
         header .container {
@@ -37,7 +37,7 @@
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 30px;        /* больше воздуха между логотипом и меню */
+            gap: 30px;
         }
         .logo a {
             display: flex;
@@ -45,8 +45,8 @@
             text-decoration: none;
         }
         .logo img {
-            height: 140px;    /* теперь 140 пикселей */
-            width: 140px;     /* сохраняем квадрат 1:1 */
+            height: 140px;
+            width: 140px;
             object-fit: contain;
             vertical-align: middle;
         }
@@ -54,8 +54,8 @@
             display: flex;
             align-items: center;
             flex-wrap: wrap;
-            gap: 20px 30px;   /* увеличил расстояние между ссылками */
-            font-size: 18px;  /* чуть крупнее текст */
+            gap: 20px 30px;
+            font-size: 18px;
         }
         .nav a {
             color: white;
@@ -148,7 +148,7 @@
             color: #555;
         }
 
-        /* ===== БЛОК С ТУРОМ ===== */
+        /* ===== БЛОК С ТУРАМИ ===== */
         .tour-block {
             padding: 60px 0;
             background: #f0f4f8;
@@ -162,6 +162,15 @@
             text-align: center;
             color: #555;
             margin-bottom: 40px;
+        }
+        /* Стиль для заголовков туров (подписи) */
+        .tour-title {
+            margin: 40px 0 10px 0;
+            font-size: 22px;
+            font-weight: 600;
+            color: #1a2a4a;
+            border-bottom: 2px solid #64b5f6;
+            padding-bottom: 5px;
         }
         .tour-frame {
             width: 100%;
@@ -212,7 +221,7 @@
                 gap: 20px;
             }
             .logo img {
-                height: 90px;   /* на телефонах тоже увеличил */
+                height: 90px;
                 width: 90px;
             }
             .nav {
@@ -253,13 +262,13 @@
     <!-- ===== ШАПКА ===== -->
     <header>
         <div class="container">
-            <!-- ЛОГОТИП (огромный, 140x140) -->
+            <!-- Логотип (файл logo.JPG) -->
             <div class="logo">
                 <a href="/">
                     <img src="logo.JPG" alt="ProTour3D">
                 </a>
             </div>
-            <!-- НАВИГАЦИЯ + КОНТАКТЫ -->
+            <!-- Навигация и контакты -->
             <div class="nav">
                 <a href="#benefits">Преимущества</a>
                 <a href="#tour">Наш тур</a>
@@ -308,23 +317,28 @@
         </div>
     </section>
 
-    <!-- ===== БЛОК С ТУРОМ ===== -->
+    <!-- ===== БЛОК С ТУРАМИ (с подписями) ===== -->
     <section class="tour-block" id="tour">
         <div class="container">
             <h2>Наши работы</h2>
             <p class="subtitle">Осмотрите объект онлайн — кликните и перетаскивайте мышку</p>
-            
-            <!-- Первый тур (Строителей) -->
+
+            <!-- Тур 1: Строителей -->
+            <h3 class="tour-title">🏢 ул. «Строителей»</h3>
             <iframe class="tour-frame" src="https://protour3d.github.io/tours/stroiteli2/index.html" allowfullscreen></iframe>
-            
-            <!-- Второй тур (ДК) -->
+
+            <!-- Тур 2: Дом культуры -->
+            <h3 class="tour-title">🎭 Дом культуры "Нефтяник"</h3>
             <iframe class="tour-frame" src="https://protour3d.github.io/tours/DK/index.html" allowfullscreen></iframe>
-            
-            <!-- Третий тур (Кафе Сковородка) -->
+
+            <!-- Тур 3: Кафе Сковородка -->
+            <h3 class="tour-title">🍳 Кафе «Сковородка»</h3>
             <iframe class="tour-frame" src="https://protour3d.github.io/tours/skovorodka/index.html" allowfullscreen></iframe>
-            
-            <!-- Четвертый тур (ФЦ Уютный) -->
+
+            <!-- Тур 4: ФЦ Уютный -->
+            <h3 class="tour-title">🧘 Фитнес-центр «Уютный»</h3>
             <iframe class="tour-frame" src="https://protour3d.github.io/tours/uyut/index.html" allowfullscreen></iframe>
+
         </div>
     </section>
 
