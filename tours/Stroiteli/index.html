@@ -7,6 +7,64 @@
 <style> @-ms-viewport { width: device-width; } </style>
 <link rel="stylesheet" href="vendor/reset.min.css">
 <link rel="stylesheet" href="style.css">
+
+<!-- Стили для карты -->
+<style>
+    #floorplan-container {
+        position: absolute;
+        bottom: 80px; /* поднимаем над кнопками управления */
+        right: 20px;
+        width: 25vmin;
+        height: 25vmin;
+        min-width: 150px;
+        min-height: 150px;
+        max-width: 300px;
+        max-height: 300px;
+        border: 2px solid #fff;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        z-index: 1000;
+        background: #fff;
+        cursor: pointer;
+    }
+    #floorplan-image {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        display: block;
+    }
+    #markers-layer {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none; /* чтобы клики проходили только по маркерам */
+    }
+    .map-marker {
+        position: absolute;
+        width: 16px;
+        height: 16px;
+        background-color: #ff4757;
+        border: 2px solid #fff;
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        cursor: pointer;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        transition: transform 0.2s, background-color 0.2s;
+        pointer-events: auto; /* маркеры кликабельны */
+    }
+    .map-marker:hover {
+        transform: translate(-50%, -50%) scale(1.3);
+        background-color: #ff6b81;
+        z-index: 10;
+    }
+    .map-marker.active {
+        background-color: #2ed573;
+        box-shadow: 0 0 10px #2ed573;
+    }
+</style>
 </head>
 <body class="multiple-scenes ">
 
@@ -88,12 +146,63 @@
   <img class="icon" src="img/minus.png">
 </a>
 
+<!-- Карта квартиры -->
+<div id="floorplan-container">
+    <img src="plan.png" alt="План квартиры" id="floorplan-image">
+    <div id="markers-layer"></div>
+</div>
+
 <script src="vendor/screenfull.min.js" ></script>
 <script src="vendor/bowser.min.js" ></script>
 <script src="vendor/marzipano.js" ></script>
 
 <script src="data.js"></script>
 <script src="index.js"></script>
+
+<!-- Скрипт для карты -->
+<script>
+    // Координаты маркеров в процентах от размера картинки (0-100)
+    // Отредактируйте эти значения, чтобы маркеры точно попадали в комнаты
+    const mapMarkers = [
+        { id: '0-',      x: 30, y: 70 }, // Кухня (нижняя левая большая комната)
+        { id: '1-',      x: 80, y: 45 }, // Коридор (правая часть, у входа)
+        { id: '2-----',  x: 50, y: 50 }, // Вид на гостиную и кухню (центр)
+        { id: '3--',     x: 30, y: 30 }, // Гостиная центр (верхняя левая большая комната)
+        { id: '4---',    x: 40, y: 20 }, // Гостиная общий вид (там же, чуть выше)
+        { id: '5-',      x: 85, y: 65 }, // Гардеробная (небольшая комната справа внизу)
+        { id: '6-',      x: 70, y: 25 }, // Санузел (верхняя правая маленькая комната)
+        { id: '7-',      x: 90, y: 10 }  // Подъезд (за входной дверью, снаружи)
+    ];
+
+    function initMap() {
+        const markersLayer = document.getElementById('markers-layer');
+        if (!markersLayer) return;
+
+        mapMarkers.forEach(marker => {
+            const el = document.createElement('div');
+            el.className = 'map-marker';
+            el.style.left = marker.x + '%';
+            el.style.top = marker.y + '%';
+            el.title = marker.id; // подсказка при наведении
+
+            el.addEventListener('click', (e) => {
+                e.stopPropagation(); // чтобы не срабатывал клик по контейнеру
+                // Находим ссылку сцены с таким data-id и кликаем по ней
+                const sceneLink = document.querySelector(`.scene[data-id="${marker.id}"]`);
+                if (sceneLink) {
+                    sceneLink.click();
+                } else {
+                    console.warn('Сцена не найдена:', marker.id);
+                }
+            });
+
+            markersLayer.appendChild(el);
+        });
+    }
+
+    // Запускаем после загрузки страницы
+    window.addEventListener('load', initMap);
+</script>
 
 </body>
 </html>
