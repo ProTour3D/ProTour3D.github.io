@@ -39,14 +39,15 @@
             flex-wrap: wrap;
             gap: 30px;
         }
-        .logo a {
-            text-decoration: none;
-            font-size: 36px;
-            font-weight: 700;
+        .logo {
+            font-size: 34px;
+            font-weight: 800;
             color: white;
+            letter-spacing: 0.5px;
+            text-shadow: 0 2px 6px rgba(0,0,0,0.25);
         }
-        .logo a span.highlight {
-            color: #64b5f6; /* голубой акцент */
+        .logo span {
+            color: #64b5f6; /* голубой акцент на слове Tour */
         }
         .nav {
             display: flex;
@@ -161,7 +162,6 @@
             color: #555;
             margin-bottom: 40px;
         }
-        /* Стиль для заголовков туров (подписи) */
         .tour-title {
             margin: 40px 0 10px 0;
             font-size: 22px;
@@ -218,9 +218,8 @@
                 align-items: center;
                 gap: 20px;
             }
-            .logo img {
-                height: 90px;
-                width: 90px;
+            .logo {
+                font-size: 28px;
             }
             .nav {
                 justify-content: center;
@@ -242,9 +241,8 @@
             }
         }
         @media (max-width: 480px) {
-            .logo img {
-                height: 70px;
-                width: 70px;
+            .logo {
+                font-size: 24px;
             }
             .nav a {
                 font-size: 14px;
@@ -259,8 +257,8 @@
 
     <!-- ===== ШАПКА ===== -->
     <header>
-       <div class="logo">Pro<span>Tour</span>3D</div>
-            <!-- Навигация и контакты -->
+        <div class="container">
+            <div class="logo">Pro<span>Tour</span>3D</div>
             <div class="nav">
                 <a href="#benefits">Преимущества</a>
                 <a href="#tour">Наш тур</a>
@@ -330,7 +328,7 @@
             <!-- Тур 4: Строителей -->
             <h3 class="tour-title">🏢 ул. «Строителей»</h3>
             <iframe class="tour-frame" src="https://protour3d.github.io/tours/Stroiteli/index.html" allowfullscreen></iframe>
-            
+
         </div>
     </section>
 
