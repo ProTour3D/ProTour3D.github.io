@@ -47,7 +47,7 @@
             text-shadow: 0 2px 6px rgba(0,0,0,0.25);
         }
         .logo span {
-            color: #64b5f6; /* голубой акцент на слове Tour */
+            color: #64b5f6;
         }
         .nav {
             display: flex;
@@ -176,7 +176,44 @@
             border: none;
             border-radius: 16px;
             box-shadow: 0 8px 30px rgba(0,0,0,0.1);
-            margin-bottom: 30px;
+            margin-bottom: 15px;
+        }
+
+        /* ===== КНОПКА ЯНДЕКС КАРТ ===== */
+        .yandex-link {
+            text-align: center;
+            margin: 0 0 30px 0;
+        }
+        .yandex-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: #ffdb4d;
+            color: #1a1a1a;
+            padding: 12px 28px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 16px;
+            text-decoration: none;
+            transition: 0.3s;
+            box-shadow: 0 4px 12px rgba(255,219,77,0.35);
+        }
+        .yandex-btn:hover {
+            background: #ffcc00;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(255,204,0,0.45);
+        }
+        .yandex-btn .ya-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 26px;
+            height: 26px;
+            background: #fc3f1d;
+            color: white;
+            border-radius: 50%;
+            font-weight: 900;
+            font-size: 16px;
         }
 
         /* ===== КОНТАКТЫ (внизу) ===== */
@@ -250,6 +287,10 @@
             .tour-frame {
                 height: 300px;
             }
+            .yandex-btn {
+                font-size: 14px;
+                padding: 10px 20px;
+            }
         }
     </style>
 </head>
@@ -307,15 +348,21 @@
         </div>
     </section>
 
-    <!-- ===== БЛОК С ТУРАМИ (с подписями) ===== -->
+    <!-- ===== БЛОК С ТУРАМИ ===== -->
     <section class="tour-block" id="tour">
         <div class="container">
             <h2>Наши работы</h2>
             <p class="subtitle">Осмотрите объект онлайн — кликните и перетаскивайте мышку</p>
 
-            <!-- Тур 1: Кафе Сковородка -->
+            <!-- Тур 1: Кафе Сковородка (со ссылкой на Яндекс Карты) -->
             <h3 class="tour-title">🍳 Кафе «Сковородка»</h3>
             <iframe class="tour-frame" src="https://protour3d.github.io/tours/skovorodka/index.html" allowfullscreen></iframe>
+            <div class="yandex-link">
+                <a href="https://yandex.ru/maps/-/CThsRPLH" target="_blank" class="yandex-btn">
+                    <span class="ya-icon">Я</span>
+                    Смотреть на Яндекс Картах
+                </a>
+            </div>
 
             <!-- Тур 2: ФЦ Уютный -->
             <h3 class="tour-title">🧘 Фитнес-центр «Уютный»</h3>
