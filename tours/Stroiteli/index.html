@@ -166,7 +166,7 @@
     const mapMarkers = [
         { id: '0-',      x: 30, y: 30 }, // Кухня (верхняя левая комната, у двух окон)
         { id: '1-',      x: 80, y: 45 }, // Коридор
-        { id: '2-----',  x: 70, y: 55 }, // Вид на гостиную и кухню (центр)
+        { id: '2-----',  x: 50, y: 50 }, // Вид на гостиную и кухню (центр)
         { id: '3--',     x: 30, y: 70 }, // Гостиная центр (нижняя левая комната)
         { id: '4---',    x: 40, y: 75 }, // Гостиная общий вид (там же, чуть правее)
         { id: '5-',      x: 85, y: 65 }, // Гардеробная
@@ -175,6 +175,17 @@
     ];
 
     function initMap() {
+        // === ЛАЙФХАК: Код для получения точных координат ===
+        // Кликните по карте в браузере, и в консоли (F12 -> Console) появятся координаты.
+        // После настройки этот блок можно удалить.
+        document.getElementById('floorplan-image').addEventListener('click', function(e) {
+            const rect = this.getBoundingClientRect();
+            const x = ((e.clientX - rect.left) / rect.width) * 100;
+            const y = ((e.clientY - rect.top) / rect.height) * 100;
+            console.log('Координаты для маркера:', 'x: ' + x.toFixed(1) + ', y: ' + y.toFixed(1));
+        });
+
+        // === ОСНОВНОЙ КОД ДЛЯ СОЗДАНИЯ МАРКЕРОВ ===
         const markersLayer = document.getElementById('markers-layer');
         if (!markersLayer) return;
 
