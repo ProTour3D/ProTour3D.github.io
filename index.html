@@ -179,7 +179,7 @@
             margin-bottom: 15px;
         }
 
-        /* ===== КНОПКА ЯНДЕКС КАРТ ===== */
+        /* ===== КНОПКА ЯНДЕКС КАРТ (с фирменным логотипом) ===== */
         .yandex-link {
             text-align: center;
             margin: 0 0 30px 0;
@@ -187,33 +187,55 @@
         .yandex-btn {
             display: inline-flex;
             align-items: center;
-            gap: 10px;
-            background: #ffdb4d;
+            gap: 12px;
+            background: #ffffff;
             color: #1a1a1a;
-            padding: 12px 28px;
-            border-radius: 30px;
+            padding: 10px 24px 10px 12px;
+            border-radius: 14px;
             font-weight: 600;
             font-size: 16px;
             text-decoration: none;
             transition: 0.3s;
-            box-shadow: 0 4px 12px rgba(255,219,77,0.35);
+            box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+            border: 1px solid #e8e8e8;
         }
         .yandex-btn:hover {
-            background: #ffcc00;
             transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(255,204,0,0.45);
+            box-shadow: 0 8px 22px rgba(0,0,0,0.18);
+            background: #fafafa;
         }
-        .yandex-btn .ya-icon {
+        /* Квадратная плитка с красным маркером */
+        .yandex-btn .ya-tile {
             display: inline-flex;
             align-items: center;
             justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: #ffffff;
+            border-radius: 10px;
+            border: 1px solid #f0f0f0;
+            flex-shrink: 0;
+        }
+        .yandex-btn .ya-tile svg {
             width: 26px;
             height: 26px;
-            background: #fc3f1d;
-            color: white;
-            border-radius: 50%;
-            font-weight: 900;
-            font-size: 16px;
+            display: block;
+        }
+        .yandex-btn .ya-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.15;
+            text-align: left;
+        }
+        .yandex-btn .ya-text .ya-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+        .yandex-btn .ya-text .ya-sub {
+            font-size: 12px;
+            color: #888;
+            font-weight: 500;
         }
 
         /* ===== КОНТАКТЫ (внизу) ===== */
@@ -289,7 +311,16 @@
             }
             .yandex-btn {
                 font-size: 14px;
-                padding: 10px 20px;
+                padding: 8px 16px 8px 10px;
+                gap: 10px;
+            }
+            .yandex-btn .ya-tile {
+                width: 34px;
+                height: 34px;
+            }
+            .yandex-btn .ya-tile svg {
+                width: 22px;
+                height: 22px;
             }
         }
     </style>
@@ -358,9 +389,17 @@
             <h3 class="tour-title">🍳 Кафе «Сковородка»</h3>
             <iframe class="tour-frame" src="https://protour3d.github.io/tours/skovorodka/index.html" allowfullscreen></iframe>
             <div class="yandex-link">
-                <a href="https://yandex.ru/maps/-/CThsRPLH" target="_blank" class="yandex-btn">
-                    <span class="ya-icon">Я</span>
-                    Смотреть на Яндекс Картах
+                <a href="https://yandex.ru/maps/-/CThsRPLH" target="_blank" class="yandex-btn" rel="noopener">
+                    <span class="ya-tile">
+                        <!-- Красный маркер Яндекс Карт -->
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <path fill="#FC3F1D" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/>
+                        </svg>
+                    </span>
+                    <span class="ya-text">
+                        <span class="ya-title">Яндекс Карты</span>
+                        <span class="ya-sub">Смотреть панораму</span>
+                    </span>
                 </a>
             </div>
 
