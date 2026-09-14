@@ -94,11 +94,14 @@
     var limiter = Marzipano.RectilinearView.limit.traditional(data.faceSize, 100*Math.PI/180, 120*Math.PI/180);
     var view = new Marzipano.RectilinearView(data.initialViewParameters, limiter);
 
+    // ⚠️ Убрано pinFirstLevel: true.
+    // Это убирает эффект растянутых грубых тайлов 256px на весь экран,
+    // из-за которого в полноэкранном режиме были заметны «квадраты».
+    // Пока грузятся тайлы, показывается preview.jpg (размытая панорама).
     var scene = viewer.createScene({
       source: source,
       geometry: geometry,
-      view: view,
-      pinFirstLevel: true
+      view: view
     });
 
     // Create link hotspots.
