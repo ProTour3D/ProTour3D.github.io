@@ -7,6 +7,13 @@
     <meta name="description" content="Профессиональные 3D-туры для недвижимости. Съёмка и создание интерактивных туров для риелторов, застройщиков и собственников. Быстро, качественно, недорого.">
     <meta name="keywords" content="3D-тур, виртуальный тур, съемка недвижимости, 3D-туры для риелторов, панорама 360, продажа квартир">
 
+    <!-- Отключаем восстановление позиции скролла браузером -->
+    <script>
+        if ('scrollRestoration' in history) {
+            history.scrollRestoration = 'manual';
+        }
+    </script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@500;700;800&display=swap" rel="stylesheet">
@@ -17,6 +24,9 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+        }
+        html, body {
+            overflow-anchor: none; /* Запрещает браузеру "дёргать" скролл */
         }
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
@@ -705,6 +715,29 @@
                 window.open(url, '_blank');
             }
         }
+    </script>
+
+    <!-- ===== СКРИПТ: возврат наверх при загрузке и очистка хеша ===== -->
+    <script>
+        // Если в URL есть якорь (#tour, #contacts и т.п.) — очищаем его,
+        // чтобы браузер не прыгал в середину страницы.
+        (function () {
+            if (window.location.hash) {
+                // Сохраняем путь без хеша и заменяем адрес в истории
+                var cleanUrl = window.location.pathname + window.location.search;
+                history.replaceState(null, '', cleanUrl);
+            }
+        })();
+
+        // Принудительно скроллим в самое начало при загрузке
+        window.addEventListener('load', function () {
+            window.scrollTo(0, 0);
+        });
+
+        // Дополнительно — сразу после отрисовки DOM
+        document.addEventListener('DOMContentLoaded', function () {
+            window.scrollTo(0, 0);
+        });
     </script>
 
 </body>
