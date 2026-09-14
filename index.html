@@ -7,7 +7,6 @@
     <meta name="description" content="Профессиональные 3D-туры для недвижимости. Съёмка и создание интерактивных туров для риелторов, застройщиков и собственников. Быстро, качественно, недорого.">
     <meta name="keywords" content="3D-тур, виртуальный тур, съемка недвижимости, 3D-туры для риелторов, панорама 360, продажа квартир">
 
-    <!-- Шрифты: Manrope для заголовков, Inter для текста -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@500;700;800&display=swap" rel="stylesheet">
@@ -184,7 +183,6 @@
             box-shadow: 0 18px 40px rgba(13,27,62,0.10);
             border-color: #c9d9f2;
         }
-        /* Иконки в стильных кружках */
         .card .icon {
             display: inline-flex;
             align-items: center;
@@ -240,6 +238,9 @@
             margin-bottom: 55px;
             font-size: 17px;
         }
+        .tour-item {
+            margin-bottom: 30px;
+        }
         .tour-title {
             margin: 55px 0 14px 0;
             font-size: 22px;
@@ -254,15 +255,52 @@
             border: none;
             border-radius: 18px;
             box-shadow: 0 12px 36px rgba(13,27,62,0.10);
-            margin-bottom: 15px;
             background: #e6ecf7;
+            display: block;
+        }
+
+        /* ===== КНОПКИ ПОД ТУРОМ ===== */
+        .tour-actions {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 14px;
+            margin-top: 20px;
+        }
+        .tour-btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: #5ba3f5;
+            color: #ffffff;
+            padding: 14px 30px;
+            border-radius: 50px;
+            font-family: 'Manrope', 'Inter', sans-serif;
+            font-weight: 700;
+            font-size: 15px;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.25s, box-shadow 0.25s, background 0.25s;
+            box-shadow: 0 6px 18px rgba(91,163,245,0.35);
+        }
+        .tour-btn-primary:hover {
+            background: #3d8ae8;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 28px rgba(91,163,245,0.50);
+        }
+        .tour-btn-primary svg {
+            width: 18px;
+            height: 18px;
+            stroke: #ffffff;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            flex-shrink: 0;
         }
 
         /* ===== КНОПКА ЯНДЕКС КАРТ ===== */
-        .yandex-link {
-            text-align: center;
-            margin: 0 0 30px 0;
-        }
         .yandex-btn {
             display: inline-flex;
             align-items: center;
@@ -316,7 +354,7 @@
             font-weight: 500;
         }
 
-        /* ===== КОНТАКТЫ (внизу) ===== */
+        /* ===== КОНТАКТЫ ===== */
         .contacts {
             padding: 90px 0;
             background: #ffffff;
@@ -367,7 +405,7 @@
             font-size: 14px;
         }
 
-        /* ===== АДАПТАЦИЯ ДЛЯ ТЕЛЕФОНА ===== */
+        /* ===== АДАПТАЦИЯ ===== */
         @media (max-width: 800px) {
             header .container {
                 flex-direction: column;
@@ -419,6 +457,10 @@
             }
             .tour-frame {
                 height: 320px;
+            }
+            .tour-btn-primary {
+                font-size: 14px;
+                padding: 12px 22px;
             }
             .yandex-btn {
                 font-size: 13px;
@@ -522,38 +564,100 @@
             <p class="subtitle">Осмотрите объект онлайн — кликните и перетаскивайте мышку</p>
 
             <!-- Тур 1: Кафе Сковородка -->
-            <h3 class="tour-title">🍳 Кафе «Сковородка»</h3>
-            <iframe class="tour-frame" src="https://protour3d.github.io/tours/skovorodka/index.html" allowfullscreen></iframe>
-            <div class="yandex-link">
-                <a href="https://yandex.ru/maps/-/CThsRPLH" target="_blank" class="yandex-btn" rel="noopener">
-                    <span class="ya-tile">
-                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                            <path fill="#FC3F1D" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/>
+            <div class="tour-item">
+                <h3 class="tour-title">🍳 Кафе «Сковородка»</h3>
+                <iframe class="tour-frame" id="tour-skovorodka"
+                        src="https://protour3d.github.io/tours/skovorodka/index.html"
+                        allowfullscreen></iframe>
+                <div class="tour-actions">
+                    <button class="tour-btn-primary"
+                            onclick="openTourFullscreen('tour-skovorodka', 'https://protour3d.github.io/tours/skovorodka/index.html')">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M8 3H5a2 2 0 0 0-2 2v3"/>
+                            <path d="M21 8V5a2 2 0 0 0-2-2h-3"/>
+                            <path d="M3 16v3a2 2 0 0 0 2 2h3"/>
+                            <path d="M16 21h3a2 2 0 0 0 2-2v-3"/>
                         </svg>
-                    </span>
-                    <span class="ya-text">
-                        <span class="ya-title">Яндекс Карты</span>
-                        <span class="ya-sub">Смотреть панораму</span>
-                    </span>
-                </a>
+                        Посмотреть тур
+                    </button>
+                    <a href="https://yandex.ru/maps/-/CThsRPLH" target="_blank" class="yandex-btn" rel="noopener">
+                        <span class="ya-tile">
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <path fill="#FC3F1D" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/>
+                            </svg>
+                        </span>
+                        <span class="ya-text">
+                            <span class="ya-title">Яндекс Карты</span>
+                            <span class="ya-sub">Смотреть панораму</span>
+                        </span>
+                    </a>
+                </div>
             </div>
 
             <!-- Тур 2: ФЦ Уютный -->
-            <h3 class="tour-title">🧘 Фитнес-центр «Уютный»</h3>
-            <iframe class="tour-frame" src="https://protour3d.github.io/tours/uyut/index.html" allowfullscreen></iframe>
+            <div class="tour-item">
+                <h3 class="tour-title">🧘 Фитнес-центр «Уютный»</h3>
+                <iframe class="tour-frame" id="tour-uyut"
+                        src="https://protour3d.github.io/tours/uyut/index.html"
+                        allowfullscreen></iframe>
+                <div class="tour-actions">
+                    <button class="tour-btn-primary"
+                            onclick="openTourFullscreen('tour-uyut', 'https://protour3d.github.io/tours/uyut/index.html')">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M8 3H5a2 2 0 0 0-2 2v3"/>
+                            <path d="M21 8V5a2 2 0 0 0-2-2h-3"/>
+                            <path d="M3 16v3a2 2 0 0 0 2 2h3"/>
+                            <path d="M16 21h3a2 2 0 0 0 2-2v-3"/>
+                        </svg>
+                        Посмотреть тур
+                    </button>
+                </div>
+            </div>
 
             <!-- Тур 3: Дом культуры -->
-            <h3 class="tour-title">🎭 Дом культуры "Нефтяник"</h3>
-            <iframe class="tour-frame" src="https://protour3d.github.io/tours/DK/index.html" allowfullscreen></iframe>
+            <div class="tour-item">
+                <h3 class="tour-title">🎭 Дом культуры "Нефтяник"</h3>
+                <iframe class="tour-frame" id="tour-dk"
+                        src="https://protour3d.github.io/tours/DK/index.html"
+                        allowfullscreen></iframe>
+                <div class="tour-actions">
+                    <button class="tour-btn-primary"
+                            onclick="openTourFullscreen('tour-dk', 'https://protour3d.github.io/tours/DK/index.html')">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M8 3H5a2 2 0 0 0-2 2v3"/>
+                            <path d="M21 8V5a2 2 0 0 0-2-2h-3"/>
+                            <path d="M3 16v3a2 2 0 0 0 2 2h3"/>
+                            <path d="M16 21h3a2 2 0 0 0 2-2v-3"/>
+                        </svg>
+                        Посмотреть тур
+                    </button>
+                </div>
+            </div>
 
             <!-- Тур 4: Строителей -->
-            <h3 class="tour-title">🏢 ул. «Строителей»</h3>
-            <iframe class="tour-frame" src="https://protour3d.github.io/tours/Stroiteli/index.html" allowfullscreen></iframe>
+            <div class="tour-item">
+                <h3 class="tour-title">🏢 ул. «Строителей»</h3>
+                <iframe class="tour-frame" id="tour-stroiteli"
+                        src="https://protour3d.github.io/tours/Stroiteli/index.html"
+                        allowfullscreen></iframe>
+                <div class="tour-actions">
+                    <button class="tour-btn-primary"
+                            onclick="openTourFullscreen('tour-stroiteli', 'https://protour3d.github.io/tours/Stroiteli/index.html')">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M8 3H5a2 2 0 0 0-2 2v3"/>
+                            <path d="M21 8V5a2 2 0 0 0-2-2h-3"/>
+                            <path d="M3 16v3a2 2 0 0 0 2 2h3"/>
+                            <path d="M16 21h3a2 2 0 0 0 2-2v-3"/>
+                        </svg>
+                        Посмотреть тур
+                    </button>
+                </div>
+            </div>
 
         </div>
     </section>
 
-    <!-- ===== КОНТАКТЫ (внизу) ===== -->
+    <!-- ===== КОНТАКТЫ ===== -->
     <section class="contacts" id="contacts">
         <div class="container">
             <h2>Свяжитесь с нами</h2>
@@ -578,6 +682,30 @@
             &copy; 2026 ProTour3D. Все права защищены.
         </div>
     </footer>
+
+    <!-- ===== СКРИПТ ПОЛНОЭКРАННОГО ПРОСМОТРА ===== -->
+    <script>
+        function openTourFullscreen(iframeId, url) {
+            var el = document.getElementById(iframeId);
+            if (!el) return;
+
+            var requestMethod = el.requestFullscreen
+                || el.webkitRequestFullscreen
+                || el.mozRequestFullScreen
+                || el.msRequestFullscreen;
+
+            if (requestMethod) {
+                var result = requestMethod.call(el);
+                if (result && typeof result.catch === 'function') {
+                    result.catch(function () {
+                        window.open(url, '_blank');
+                    });
+                }
+            } else {
+                window.open(url, '_blank');
+            }
+        }
+    </script>
 
 </body>
 </html>
