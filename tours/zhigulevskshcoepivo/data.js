@@ -333,7 +333,7 @@ var APP_DATA = {
       "infoHotspots": []
     }
   ],
-  "name": "Zhigulevskshcoe_pivo",
+  "name": "Zhigulevskshcoepivo",
   "settings": {
     "mouseViewMode": "drag",
     "autorotateEnabled": true,
