@@ -70,13 +70,26 @@
   // Initialize viewer.
   var viewer = new Marzipano.Viewer(panoElement, viewerOpts);
 
+  // 📱 Определяем мобильное устройство (для оптимизации загрузки тайлов)
+  var isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)
+                 || window.innerWidth < 768;
+
   // Create scenes.
   var scenes = data.scenes.map(function(data) {
+
+    // 📱 Мобильная оптимизация: обрезаем уровни детализации до 1024px.
+    // На телефоне экран всё равно не покажет больше — экономим трафик и время.
+    // На компьютере оставляем все уровни (256, 512, 1024, 2048, 4096).
+    var levels = data.levels;
+    if (isMobile && levels && levels.length > 3) {
+      levels = levels.slice(0, 3);
+    }
+
     var urlPrefix = "tiles";
     var source = Marzipano.ImageUrlSource.fromString(
       urlPrefix + "/" + data.id + "/{z}/{f}/{y}/{x}.jpg",
       { cubeMapPreviewUrl: urlPrefix + "/" + data.id + "/preview.jpg" });
-    var geometry = new Marzipano.CubeGeometry(data.levels);
+    var geometry = new Marzipano.CubeGeometry(levels);
 
     var limiter = Marzipano.RectilinearView.limit.traditional(data.faceSize, 100*Math.PI/180, 120*Math.PI/180);
     var view = new Marzipano.RectilinearView(data.initialViewParameters, limiter);
