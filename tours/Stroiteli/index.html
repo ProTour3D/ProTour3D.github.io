@@ -1,217 +1,711 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
-<title>Project Title</title>
-<meta charset="utf-8">
-<meta name="viewport" content="target-densitydpi=device-dpi, width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, minimal-ui" />
-<style> @-ms-viewport { width: device-width; } </style>
-<link rel="stylesheet" href="vendor/reset.min.css">
-<link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProTour3D — 3D-туры для недвижимости</title>
+    <meta name="description" content="Профессиональные 3D-туры для недвижимости. Съёмка и создание интерактивных туров для риелторов, застройщиков и собственников. Быстро, качественно, недорого.">
+    <meta name="keywords" content="3D-тур, виртуальный тур, съемка недвижимости, 3D-туры для риелторов, панорама 360, продажа квартир">
 
-<!-- Стили для карты -->
-<style>
-    #floorplan-container {
-        position: absolute;
-        bottom: 80px; /* поднимаем над кнопками управления */
-        right: 20px;
-        width: 25vmin;
-        height: 25vmin;
-        min-width: 150px;
-        min-height: 150px;
-        max-width: 300px;
-        max-height: 300px;
-        border: 2px solid #fff;
-        border-radius: 10px;
-        overflow: hidden;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-        z-index: 1000;
-        background: #fff;
-        cursor: pointer;
-    }
-    #floorplan-image {
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-        display: block;
-    }
-    #markers-layer {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: none; /* чтобы клики проходили только по маркерам */
-    }
-    .map-marker {
-        position: absolute;
-        width: 16px;
-        height: 16px;
-        background-color: #ff4757;
-        border: 2px solid #fff;
-        border-radius: 50%;
-        transform: translate(-50%, -50%);
-        cursor: pointer;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-        transition: transform 0.2s, background-color 0.2s;
-        pointer-events: auto; /* маркеры кликабельны */
-    }
-    .map-marker:hover {
-        transform: translate(-50%, -50%) scale(1.3);
-        background-color: #ff6b81;
-        z-index: 10;
-    }
-    .map-marker.active {
-        background-color: #2ed573;
-        box-shadow: 0 0 10px #2ed573;
-    }
-</style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@500;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        /* ===== ОБЩИЕ СТИЛИ ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            background: #f6f8fc;
+            color: #0d1b3e;
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+        h1, h2, h3, .logo {
+            font-family: 'Manrope', 'Inter', sans-serif;
+            letter-spacing: -0.02em;
+        }
+        .container {
+            max-width: 1140px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* ===== ШАПКА ===== */
+        header {
+            background: linear-gradient(135deg, #0a1428 0%, #12224a 60%, #16305e 100%);
+            color: #eaf0fa;
+            padding: 22px 0;
+            box-shadow: 0 6px 24px rgba(10,20,40,0.20);
+            position: relative;
+            z-index: 10;
+        }
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+        .logo {
+            font-size: 30px;
+            font-weight: 800;
+            color: #eaf0fa;
+            letter-spacing: -0.5px;
+        }
+        .logo span {
+            color: #5ba3f5;
+        }
+        .nav {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 14px 28px;
+            font-size: 15px;
+            font-weight: 500;
+        }
+        .nav a {
+            color: #c9d4ea;
+            text-decoration: none;
+            transition: color 0.25s;
+        }
+        .nav a:hover {
+            color: #5ba3f5;
+        }
+        .nav .contact-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            color: #96a8cc;
+            font-weight: 500;
+        }
+        .nav .contact-link:hover {
+            color: #5ba3f5;
+        }
+        .nav .contact-link svg {
+            width: 15px;
+            height: 15px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            flex-shrink: 0;
+        }
+
+        /* ===== ГЛАВНЫЙ БАННЕР ===== */
+        .hero {
+            background: linear-gradient(135deg, #0c1a3a 0%, #142a56 55%, #1a3a72 100%);
+            color: #eaf0fa;
+            padding: 110px 0 120px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 900px;
+            height: 900px;
+            background: radial-gradient(circle, rgba(91,163,245,0.14) 0%, transparent 60%);
+            pointer-events: none;
+        }
+        .hero h1 {
+            font-size: 54px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            line-height: 1.15;
+            position: relative;
+        }
+        .hero p {
+            font-size: 19px;
+            color: #b5c4e0;
+            max-width: 640px;
+            margin: 0 auto 40px;
+            line-height: 1.7;
+            position: relative;
+        }
+        .btn {
+            display: inline-block;
+            background: #5ba3f5;
+            color: #ffffff;
+            padding: 18px 46px;
+            border-radius: 50px;
+            font-family: 'Manrope', sans-serif;
+            font-size: 17px;
+            font-weight: 700;
+            text-decoration: none;
+            letter-spacing: 0.2px;
+            transition: transform 0.25s, box-shadow 0.25s, background 0.25s;
+            position: relative;
+            box-shadow: 0 6px 20px rgba(91,163,245,0.35);
+        }
+        .btn:hover {
+            background: #3d8ae8;
+            transform: translateY(-3px);
+            box-shadow: 0 14px 36px rgba(91,163,245,0.55);
+        }
+
+        /* ===== ПРЕИМУЩЕСТВА ===== */
+        .benefits {
+            padding: 90px 0;
+            background: #ffffff;
+        }
+        .benefits h2 {
+            text-align: center;
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 55px;
+            color: #0d1b3e;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 26px;
+        }
+        .card {
+            text-align: center;
+            padding: 34px 24px;
+            border-radius: 20px;
+            background: #f6f8fc;
+            border: 1px solid #e6ecf7;
+            transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+        }
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 18px 40px rgba(13,27,62,0.10);
+            border-color: #c9d9f2;
+        }
+        .card .icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 64px;
+            height: 64px;
+            margin-bottom: 20px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #e8f1fc 0%, #dae8fb 100%);
+            border: 1px solid #cddff7;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .card:hover .icon {
+            transform: scale(1.08);
+            box-shadow: 0 8px 20px rgba(91,163,245,0.22);
+        }
+        .card .icon svg {
+            width: 30px;
+            height: 30px;
+            stroke: #2c6fc9;
+            fill: none;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        .card h3 {
+            font-size: 19px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #0d1b3e;
+        }
+        .card p {
+            font-size: 14.5px;
+            color: #4d5876;
+            line-height: 1.65;
+        }
+
+        /* ===== БЛОК С ТУРАМИ ===== */
+        .tour-block {
+            padding: 90px 0;
+            background: linear-gradient(180deg, #f6f8fc 0%, #eef3fb 100%);
+        }
+        .tour-block h2 {
+            text-align: center;
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 14px;
+            color: #0d1b3e;
+        }
+        .tour-block .subtitle {
+            text-align: center;
+            color: #4d5876;
+            margin-bottom: 55px;
+            font-size: 17px;
+        }
+        .tour-item {
+            margin-bottom: 30px;
+        }
+        .tour-title {
+            margin: 55px 0 14px 0;
+            font-size: 22px;
+            font-weight: 700;
+            color: #0d1b3e;
+            padding-left: 16px;
+            border-left: 4px solid #5ba3f5;
+        }
+        .tour-frame {
+            width: 100%;
+            height: 600px;
+            border: none;
+            border-radius: 18px;
+            box-shadow: 0 12px 36px rgba(13,27,62,0.10);
+            background: #e6ecf7;
+            display: block;
+        }
+
+        /* ===== КНОПКИ ПОД ТУРОМ ===== */
+        .tour-actions {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 14px;
+            margin-top: 20px;
+        }
+        .tour-btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: #5ba3f5;
+            color: #ffffff;
+            padding: 14px 30px;
+            border-radius: 50px;
+            font-family: 'Manrope', 'Inter', sans-serif;
+            font-weight: 700;
+            font-size: 15px;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.25s, box-shadow 0.25s, background 0.25s;
+            box-shadow: 0 6px 18px rgba(91,163,245,0.35);
+        }
+        .tour-btn-primary:hover {
+            background: #3d8ae8;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 28px rgba(91,163,245,0.50);
+        }
+        .tour-btn-primary svg {
+            width: 18px;
+            height: 18px;
+            stroke: #ffffff;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            flex-shrink: 0;
+        }
+
+        /* ===== КНОПКА ЯНДЕКС КАРТ ===== */
+        .yandex-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: #ffffff;
+            color: #1a1a1a;
+            padding: 10px 24px 10px 12px;
+            border-radius: 14px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 15px;
+            text-decoration: none;
+            transition: transform 0.25s, box-shadow 0.25s;
+            box-shadow: 0 6px 18px rgba(13,27,62,0.10);
+            border: 1px solid #e6ecf7;
+        }
+        .yandex-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 28px rgba(13,27,62,0.16);
+        }
+        .yandex-btn .ya-tile {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: #ffffff;
+            border-radius: 10px;
+            border: 1px solid #f0f0f0;
+            flex-shrink: 0;
+        }
+        .yandex-btn .ya-tile svg {
+            width: 26px;
+            height: 26px;
+            display: block;
+        }
+        .yandex-btn .ya-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.15;
+            text-align: left;
+        }
+        .yandex-btn .ya-text .ya-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+        .yandex-btn .ya-text .ya-sub {
+            font-size: 12px;
+            color: #888;
+            font-weight: 500;
+        }
+
+        /* ===== КОНТАКТЫ ===== */
+        .contacts {
+            padding: 90px 0;
+            background: #ffffff;
+            text-align: center;
+        }
+        .contacts h2 {
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 30px;
+            color: #0d1b3e;
+        }
+        .contacts .info {
+            font-size: 17px;
+            margin-bottom: 14px;
+            color: #3d4966;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .contacts .info svg {
+            width: 18px;
+            height: 18px;
+            stroke: #2c6fc9;
+            fill: none;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            flex-shrink: 0;
+        }
+        .contacts .info a {
+            color: #0d1b3e;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.25s;
+        }
+        .contacts .info a:hover {
+            color: #2c6fc9;
+        }
+
+        /* ===== ПОДВАЛ ===== */
+        footer {
+            background: linear-gradient(135deg, #0a1428 0%, #12224a 100%);
+            color: #8b98b8;
+            text-align: center;
+            padding: 30px 0;
+            font-size: 14px;
+        }
+
+        /* ===== АДАПТАЦИЯ ===== */
+        @media (max-width: 800px) {
+            header .container {
+                flex-direction: column;
+                align-items: center;
+                gap: 18px;
+            }
+            .nav {
+                justify-content: center;
+                gap: 12px 20px;
+                font-size: 14px;
+            }
+            .hero {
+                padding: 70px 0 80px;
+            }
+            .hero h1 {
+                font-size: 34px;
+            }
+            .hero p {
+                font-size: 16px;
+            }
+            .btn {
+                padding: 15px 34px;
+                font-size: 16px;
+            }
+            .benefits, .tour-block, .contacts {
+                padding: 60px 0;
+            }
+            .benefits h2, .tour-block h2, .contacts h2 {
+                font-size: 28px;
+                margin-bottom: 40px;
+            }
+            .tour-frame {
+                height: 420px;
+            }
+            .tour-title {
+                font-size: 19px;
+                margin-top: 40px;
+            }
+        }
+        @media (max-width: 480px) {
+            .logo {
+                font-size: 24px;
+            }
+            .nav a {
+                font-size: 13px;
+            }
+            .hero h1 {
+                font-size: 27px;
+            }
+            .tour-frame {
+                height: 320px;
+            }
+            .tour-btn-primary {
+                font-size: 14px;
+                padding: 12px 22px;
+            }
+            .yandex-btn {
+                font-size: 13px;
+                padding: 8px 16px 8px 10px;
+                gap: 10px;
+            }
+            .yandex-btn .ya-tile {
+                width: 34px;
+                height: 34px;
+            }
+            .yandex-btn .ya-tile svg {
+                width: 22px;
+                height: 22px;
+            }
+        }
+    </style>
 </head>
-<body class="multiple-scenes ">
+<body>
 
-<div id="pano"></div>
+    <!-- ===== ШАПКА ===== -->
+    <header>
+        <div class="container">
+            <div class="logo">Pro<span>Tour</span>3D</div>
+            <nav class="nav">
+                <a href="#benefits">Преимущества</a>
+                <a href="#tour">Наш тур</a>
+                <a href="#contacts">Контакты</a>
+                <a href="tel:+79063437268" class="contact-link">
+                    <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                    +7-906-343-72-68
+                </a>
+                <a href="mailto:protour3d@yandex.ru" class="contact-link">
+                    <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                    protour3d@yandex.ru
+                </a>
+            </nav>
+        </div>
+    </header>
 
-<div id="sceneList">
-  <ul class="scenes">
-    
-      <a href="javascript:void(0)" class="scene" data-id="0-">
-        <li class="text">Кухня</li>
-      </a>
-    
-      <a href="javascript:void(0)" class="scene" data-id="1-">
-        <li class="text">Коридор</li>
-      </a>
-    
-      <a href="javascript:void(0)" class="scene" data-id="2-----">
-        <li class="text">Вид на гостинную и кухню</li>
-      </a>
-    
-      <a href="javascript:void(0)" class="scene" data-id="3--">
-        <li class="text">Гостинная центр</li>
-      </a>
-    
-      <a href="javascript:void(0)" class="scene" data-id="4---">
-        <li class="text">Гостинная общий вид</li>
-      </a>
-    
-      <a href="javascript:void(0)" class="scene" data-id="5-">
-        <li class="text">Гардеробная</li>
-      </a>
-    
-      <a href="javascript:void(0)" class="scene" data-id="6-">
-        <li class="text">Санузел</li>
-      </a>
-    
-      <a href="javascript:void(0)" class="scene" data-id="7-">
-        <li class="text">Подъезд</li>
-      </a>
-    
-  </ul>
-</div>
+    <!-- ===== ГЛАВНЫЙ БАННЕР ===== -->
+    <section class="hero">
+        <div class="container">
+            <h1>3D-туры для недвижимости</h1>
+            <p>Профессиональная съёмка и создание интерактивных туров для риелторов, застройщиков и собственников.</p>
+            <a href="#contacts" class="btn">Связаться</a>
+        </div>
+    </section>
 
-<div id="titleBar">
-  <h1 class="sceneName"></h1>
-</div>
+    <!-- ===== ПРЕИМУЩЕСТВА ===== -->
+    <section class="benefits" id="benefits">
+        <div class="container">
+            <h2>Почему 3D-тур — это выгодно</h2>
+            <div class="grid">
+                <div class="card">
+                    <div class="icon">
+                        <svg viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="9"/>
+                            <polyline points="12 7 12 12 15.5 14"/>
+                        </svg>
+                    </div>
+                    <h3>Экономия времени</h3>
+                    <p>Один тур заменяет 50 личных показов. Клиенты приходят только заинтересованные.</p>
+                </div>
+                <div class="card">
+                    <div class="icon">
+                        <svg viewBox="0 0 24 24">
+                            <rect x="6" y="2" width="12" height="20" rx="2.5"/>
+                            <line x1="11" y1="18.5" x2="13" y2="18.5"/>
+                        </svg>
+                    </div>
+                    <h3>Совместимость</h3>
+                    <p>Тур работает на Циан, и других сайтах.</p>
+                </div>
+                <div class="card">
+                    <div class="icon">
+                        <svg viewBox="0 0 24 24">
+                            <polygon points="13 2 4 14 12 14 11 22 20 10 12 10 13 2"/>
+                        </svg>
+                    </div>
+                    <h3>Быстро</h3>
+                    <p>Съёмка и обработка занимают всего 1–3 дня. Результат — ссылка для просмотра.</p>
+                </div>
+                <div class="card">
+                    <div class="icon">
+                        <svg viewBox="0 0 24 24">
+                            <polyline points="3 17 9 11 13 15 21 7"/>
+                            <polyline points="15 7 21 7 21 13"/>
+                        </svg>
+                    </div>
+                    <h3>Выше продажи</h3>
+                    <p>Объекты с 3D-туром продаются на 30% быстрее.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<a href="javascript:void(0)" id="autorotateToggle">
-  <img class="icon off" src="img/play.png">
-  <img class="icon on" src="img/pause.png">
-</a>
+    <!-- ===== БЛОК С ТУРАМИ ===== -->
+    <section class="tour-block" id="tour">
+        <div class="container">
+            <h2>Наши работы</h2>
+            <p class="subtitle">Осмотрите объект онлайн — кликните и перетаскивайте мышку</p>
 
-<a href="javascript:void(0)" id="fullscreenToggle">
-  <img class="icon off" src="img/fullscreen.png">
-  <img class="icon on" src="img/windowed.png">
-</a>
+            <!-- Тур 1: Кафе Сковородка -->
+            <div class="tour-item">
+                <h3 class="tour-title">🍳 Кафе «Сковородка»</h3>
+                <iframe class="tour-frame" id="tour-skovorodka"
+                        src="https://protour3d.github.io/tours/skovorodka/index.html"
+                        allowfullscreen></iframe>
+                <div class="tour-actions">
+                    <button class="tour-btn-primary"
+                            onclick="openTourFullscreen('tour-skovorodka', 'https://protour3d.github.io/tours/skovorodka/index.html')">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M8 3H5a2 2 0 0 0-2 2v3"/>
+                            <path d="M21 8V5a2 2 0 0 0-2-2h-3"/>
+                            <path d="M3 16v3a2 2 0 0 0 2 2h3"/>
+                            <path d="M16 21h3a2 2 0 0 0 2-2v-3"/>
+                        </svg>
+                        Посмотреть тур
+                    </button>
+                    <a href="https://yandex.ru/maps/-/CThsRPLH" target="_blank" class="yandex-btn" rel="noopener">
+                        <span class="ya-tile">
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <path fill="#FC3F1D" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/>
+                            </svg>
+                        </span>
+                        <span class="ya-text">
+                            <span class="ya-title">Яндекс Карты</span>
+                            <span class="ya-sub">Смотреть панораму</span>
+                        </span>
+                    </a>
+                </div>
+            </div>
 
-<a href="javascript:void(0)" id="sceneListToggle">
-  <img class="icon off" src="img/expand.png">
-  <img class="icon on" src="img/collapse.png">
-</a>
+            <!-- Тур 2: ФЦ Уютный -->
+            <div class="tour-item">
+                <h3 class="tour-title">🧘 Фитнес-центр «Уютный»</h3>
+                <iframe class="tour-frame" id="tour-uyut"
+                        src="https://protour3d.github.io/tours/uyut/index.html"
+                        allowfullscreen></iframe>
+                <div class="tour-actions">
+                    <button class="tour-btn-primary"
+                            onclick="openTourFullscreen('tour-uyut', 'https://protour3d.github.io/tours/uyut/index.html')">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M8 3H5a2 2 0 0 0-2 2v3"/>
+                            <path d="M21 8V5a2 2 0 0 0-2-2h-3"/>
+                            <path d="M3 16v3a2 2 0 0 0 2 2h3"/>
+                            <path d="M16 21h3a2 2 0 0 0 2-2v-3"/>
+                        </svg>
+                        Посмотреть тур
+                    </button>
+                </div>
+            </div>
 
-<a href="javascript:void(0)" id="viewUp" class="viewControlButton viewControlButton-1">
-  <img class="icon" src="img/up.png">
-</a>
-<a href="javascript:void(0)" id="viewDown" class="viewControlButton viewControlButton-2">
-  <img class="icon" src="img/down.png">
-</a>
-<a href="javascript:void(0)" id="viewLeft" class="viewControlButton viewControlButton-3">
-  <img class="icon" src="img/left.png">
-</a>
-<a href="javascript:void(0)" id="viewRight" class="viewControlButton viewControlButton-4">
-  <img class="icon" src="img/right.png">
-</a>
-<a href="javascript:void(0)" id="viewIn" class="viewControlButton viewControlButton-5">
-  <img class="icon" src="img/plus.png">
-</a>
-<a href="javascript:void(0)" id="viewOut" class="viewControlButton viewControlButton-6">
-  <img class="icon" src="img/minus.png">
-</a>
+            <!-- Тур 3: Дом культуры -->
+            <div class="tour-item">
+                <h3 class="tour-title">🎭 Дом культуры "Нефтяник"</h3>
+                <iframe class="tour-frame" id="tour-dk"
+                        src="https://protour3d.github.io/tours/DK/index.html"
+                        allowfullscreen></iframe>
+                <div class="tour-actions">
+                    <button class="tour-btn-primary"
+                            onclick="openTourFullscreen('tour-dk', 'https://protour3d.github.io/tours/DK/index.html')">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M8 3H5a2 2 0 0 0-2 2v3"/>
+                            <path d="M21 8V5a2 2 0 0 0-2-2h-3"/>
+                            <path d="M3 16v3a2 2 0 0 0 2 2h3"/>
+                            <path d="M16 21h3a2 2 0 0 0 2-2v-3"/>
+                        </svg>
+                        Посмотреть тур
+                    </button>
+                </div>
+            </div>
 
-<!-- Карта квартиры -->
-<div id="floorplan-container">
-    <img src="plan.png" alt="План квартиры" id="floorplan-image">
-    <div id="markers-layer"></div>
-</div>
+            <!-- Тур 4: Строителей -->
+            <div class="tour-item">
+                <h3 class="tour-title">🏢 ул. «Строителей»</h3>
+                <iframe class="tour-frame" id="tour-stroiteli"
+                        src="https://protour3d.github.io/tours/Stroiteli/index.html"
+                        allowfullscreen></iframe>
+                <div class="tour-actions">
+                    <button class="tour-btn-primary"
+                            onclick="openTourFullscreen('tour-stroiteli', 'https://protour3d.github.io/tours/Stroiteli/index.html')">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M8 3H5a2 2 0 0 0-2 2v3"/>
+                            <path d="M21 8V5a2 2 0 0 0-2-2h-3"/>
+                            <path d="M3 16v3a2 2 0 0 0 2 2h3"/>
+                            <path d="M16 21h3a2 2 0 0 0 2-2v-3"/>
+                        </svg>
+                        Посмотреть тур
+                    </button>
+                </div>
+            </div>
 
-<script src="vendor/screenfull.min.js" ></script>
-<script src="vendor/bowser.min.js" ></script>
-<script src="vendor/marzipano.js" ></script>
+        </div>
+    </section>
 
-<script src="data.js"></script>
-<script src="index.js"></script>
+    <!-- ===== КОНТАКТЫ ===== -->
+    <section class="contacts" id="contacts">
+        <div class="container">
+            <h2>Свяжитесь с нами</h2>
+            <p class="info">
+                <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                <a href="tel:+79063437268">+7-906-343-72-68</a>
+            </p>
+            <p class="info">
+                <svg viewBox="0 0 24 24"><path d="M21.5 4.5L2.5 12l5.5 2 2.5 6 4-5.5 6.5-3.5z"/></svg>
+                Telegram / MAX
+            </p>
+            <p class="info">
+                <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                <a href="mailto:protour3d@yandex.ru">protour3d@yandex.ru</a>
+            </p>
+        </div>
+    </section>
 
-<!-- Скрипт для карты -->
-<script>
-    // Координаты маркеров (в процентах от размера картинки)
-    // Кухня и гостиная поменяны местами согласно вашему плану
-    const mapMarkers = [
-        { id: '0-',      x: 30, y: 30 }, // Кухня (верхняя левая комната, у двух окон)
-        { id: '1-',      x: 80, y: 45 }, // Коридор
-        { id: '2-----',  x: 50, y: 50 }, // Вид на гостиную и кухню (центр)
-        { id: '3--',     x: 30, y: 70 }, // Гостиная центр (нижняя левая комната)
-        { id: '4---',    x: 40, y: 75 }, // Гостиная общий вид (там же, чуть правее)
-        { id: '5-',      x: 85, y: 65 }, // Гардеробная
-        { id: '6-',      x: 70, y: 25 }, // Санузел
-        { id: '7-',      x: 90, y: 10 }  // Подъезд
-    ];
+    <!-- ===== ПОДВАЛ ===== -->
+    <footer>
+        <div class="container">
+            &copy; 2026 ProTour3D. Все права защищены.
+        </div>
+    </footer>
 
-    function initMap() {
-        // === ЛАЙФХАК: Код для получения точных координат ===
-        // Кликните по карте в браузере, и в консоли (F12 -> Console) появятся координаты.
-        // После настройки этот блок можно удалить.
-        document.getElementById('floorplan-image').addEventListener('click', function(e) {
-            const rect = this.getBoundingClientRect();
-            const x = ((e.clientX - rect.left) / rect.width) * 100;
-            const y = ((e.clientY - rect.top) / rect.height) * 100;
-            console.log('Координаты для маркера:', 'x: ' + x.toFixed(1) + ', y: ' + y.toFixed(1));
-        });
+    <!-- ===== СКРИПТ ПОЛНОЭКРАННОГО ПРОСМОТРА ===== -->
+    <script>
+        function openTourFullscreen(iframeId, url) {
+            var el = document.getElementById(iframeId);
+            if (!el) return;
 
-        // === ОСНОВНОЙ КОД ДЛЯ СОЗДАНИЯ МАРКЕРОВ ===
-        const markersLayer = document.getElementById('markers-layer');
-        if (!markersLayer) return;
+            var requestMethod = el.requestFullscreen
+                || el.webkitRequestFullscreen
+                || el.mozRequestFullScreen
+                || el.msRequestFullscreen;
 
-        mapMarkers.forEach(marker => {
-            const el = document.createElement('div');
-            el.className = 'map-marker';
-            el.style.left = marker.x + '%';
-            el.style.top = marker.y + '%';
-            el.title = marker.id;
-
-            el.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const sceneLink = document.querySelector(`.scene[data-id="${marker.id}"]`);
-                if (sceneLink) {
-                    sceneLink.click();
-                } else {
-                    console.warn('Сцена не найдена:', marker.id);
+            if (requestMethod) {
+                var result = requestMethod.call(el);
+                if (result && typeof result.catch === 'function') {
+                    result.catch(function () {
+                        window.open(url, '_blank');
+                    });
                 }
-            });
-
-            markersLayer.appendChild(el);
-        });
-    }
-
-    window.addEventListener('load', initMap);
-</script>
+            } else {
+                window.open(url, '_blank');
+            }
+        }
+    </script>
 
 </body>
 </html>
