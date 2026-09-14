@@ -7,6 +7,100 @@
 <style> @-ms-viewport { width: device-width; } </style>
 <link rel="stylesheet" href="vendor/reset.min.css">
 <link rel="stylesheet" href="style.css">
+
+<!-- Стили для карты -->
+<style>
+    #floorplan-container {
+        position: absolute;
+        bottom: 80px; /* поднимаем над кнопками управления */
+        right: 20px;
+        width: 25vmin;
+        height: 25vmin;
+        min-width: 150px;
+        min-height: 150px;
+        max-width: 300px;
+        max-height: 300px;
+        border: 2px solid #fff;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        z-index: 1000;
+        background: #fff;
+        cursor: pointer;
+    }
+    #floorplan-image {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        display: block;
+    }
+    #markers-layer {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none; /* чтобы клики проходили только по маркерам */
+    }
+    .map-marker {
+        position: absolute;
+        width: 16px;
+        height: 16px;
+        background-color: #ff4757;
+        border: 2px solid #fff;
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        cursor: pointer;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        transition: transform 0.2s, background-color 0.2s;
+        pointer-events: auto; /* маркеры кликабельны */
+    }
+    .map-marker:hover {
+        transform: translate(-50%, -50%) scale(1.3);
+        background-color: #ff6b81;
+        z-index: 10;
+    }
+
+    /* 🟢 Активный маркер — пульсирующий зелёный */
+    .map-marker.active {
+        background-color: #2ed573;
+        box-shadow: 0 0 10px #2ed573, 0 0 0 0 rgba(46, 213, 115, 0.7);
+        animation: pulse 1.5s infinite;
+        z-index: 20;
+    }
+    @keyframes pulse {
+        0% {
+            box-shadow: 0 0 10px #2ed573, 0 0 0 0 rgba(46, 213, 115, 0.7);
+        }
+        70% {
+            box-shadow: 0 0 10px #2ed573, 0 0 0 10px rgba(46, 213, 115, 0);
+        }
+        100% {
+            box-shadow: 0 0 10px #2ed573, 0 0 0 0 rgba(46, 213, 115, 0);
+        }
+    }
+
+    /* 📱 Адаптация для телефонов и небольших экранов */
+    @media (max-width: 768px) {
+        #floorplan-container {
+            width: 110px;
+            height: 110px;
+            min-width: auto;
+            min-height: auto;
+            max-width: 110px;
+            max-height: 110px;
+            bottom: 70px;
+            right: 10px;
+            border-width: 1px;
+            border-radius: 8px;
+        }
+        .map-marker {
+            width: 10px;
+            height: 10px;
+            border-width: 1px;
+        }
+    }
+</style>
 </head>
 <body class="multiple-scenes ">
 
@@ -88,12 +182,113 @@
   <img class="icon" src="img/minus.png">
 </a>
 
+<!-- Карта квартиры -->
+<div id="floorplan-container">
+    <img src="plan.png" alt="План квартиры" id="floorplan-image">
+    <div id="markers-layer"></div>
+</div>
+
 <script src="vendor/screenfull.min.js" ></script>
 <script src="vendor/bowser.min.js" ></script>
 <script src="vendor/marzipano.js" ></script>
 
 <script src="data.js"></script>
 <script src="index.js"></script>
+
+<!-- Скрипт для карты -->
+<script>
+    // Координаты маркеров (в процентах от размера картинки)
+    const mapMarkers = [
+        { id: '0-',      x: 37.7, y: 41.1 }, // Кухня
+        { id: '1-',      x: 82.9, y: 32.9 }, // Коридор
+        { id: '2-----',  x: 70.5, y: 52.7 }, // Вид на гостиную и кухню
+        { id: '3--',     x: 54.8, y: 68.5 }, // Гостиная центр
+        { id: '4---',    x: 21.2, y: 67.1 }, // Гостиная общий вид
+        { id: '5-',      x: 84.2, y: 71.9 }, // Гардеробная
+        { id: '6-',      x: 65.1, y: 35.6 }, // Санузел
+        { id: '7-',      x: 80.8, y: 13 }    // Подъезд
+    ];
+
+    // Функция подсветки активного маркера
+    function updateActiveMarker(sceneId) {
+        document.querySelectorAll('.map-marker').forEach(el => {
+            el.classList.remove('active');
+        });
+        const activeMarker = document.querySelector('.map-marker[data-scene-id="' + sceneId + '"]');
+        if (activeMarker) {
+            activeMarker.classList.add('active');
+        }
+    }
+
+    function initMap() {
+        // === ЛАЙФХАК: Код для получения точных координат ===
+        // Кликните по карте, и в консоли (⌘ + Option + J) появятся координаты.
+        // После настройки этот блок можно удалить.
+        document.getElementById('floorplan-image').addEventListener('click', function(e) {
+            const rect = this.getBoundingClientRect();
+            const x = ((e.clientX - rect.left) / rect.width) * 100;
+            const y = ((e.clientY - rect.top) / rect.height) * 100;
+            console.log('Координаты для маркера:', 'x: ' + x.toFixed(1) + ', y: ' + y.toFixed(1));
+        });
+
+        // === СОЗДАНИЕ МАРКЕРОВ ===
+        const markersLayer = document.getElementById('markers-layer');
+        if (!markersLayer) return;
+
+        mapMarkers.forEach(marker => {
+            const el = document.createElement('div');
+            el.className = 'map-marker';
+            el.style.left = marker.x + '%';
+            el.style.top = marker.y + '%';
+            el.setAttribute('data-scene-id', marker.id); // важно для поиска
+            el.title = marker.id;
+
+            el.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const sceneLink = document.querySelector('.scene[data-id="' + marker.id + '"]');
+                if (sceneLink) {
+                    sceneLink.click();
+                } else {
+                    console.warn('Сцена не найдена:', marker.id);
+                }
+            });
+
+            markersLayer.appendChild(el);
+        });
+
+        // === СЛЕЖЕНИЕ ЗА СМЕНОЙ СЦЕНЫ ===
+        // Строим карту "название сцены → ID сцены" из меню
+        const nameToId = {};
+        document.querySelectorAll('.scene').forEach(link => {
+            const id = link.getAttribute('data-id');
+            const name = link.querySelector('.text').textContent.trim();
+            nameToId[name] = id;
+        });
+
+        // Наблюдаем за изменением названия сцены в заголовке
+        const titleElement = document.querySelector('#titleBar .sceneName');
+        if (titleElement) {
+            const observer = new MutationObserver(() => {
+                const currentName = titleElement.textContent.trim();
+                const currentId = nameToId[currentName];
+                if (currentId) {
+                    updateActiveMarker(currentId);
+                }
+            });
+            observer.observe(titleElement, { childList: true, characterData: true, subtree: true });
+        }
+
+        // Подсветить первый маркер при загрузке (если сцена уже открыта)
+        setTimeout(() => {
+            const firstLink = document.querySelector('.scene');
+            if (firstLink) {
+                updateActiveMarker(firstLink.getAttribute('data-id'));
+            }
+        }, 300);
+    }
+
+    window.addEventListener('load', initMap);
+</script>
 
 </body>
 </html>
