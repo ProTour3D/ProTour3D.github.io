@@ -305,9 +305,40 @@
         .tour-block .subtitle {
             text-align: center;
             color: #4d5876;
-            margin-bottom: 55px;
+            margin-bottom: 20px;
             font-size: 17px;
         }
+
+        /* Плашка-подсказка про музыку */
+        .music-hint {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            max-width: 720px;
+            margin: 0 auto 45px;
+            padding: 14px 24px;
+            background: linear-gradient(135deg, #eaf1fc 0%, #e0ecff 100%);
+            border: 1px solid #c9dff7;
+            border-radius: 50px;
+            font-size: 15px;
+            color: #1a3a72;
+            font-weight: 500;
+            text-align: center;
+            box-shadow: 0 6px 20px rgba(91,163,245,0.10);
+        }
+        .music-hint svg {
+            width: 22px;
+            height: 22px;
+            stroke: #2c6fc9;
+            fill: none;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            flex-shrink: 0;
+        }
+        .music-hint strong { color: #0d1b3e; }
+
         .tour-item { margin-bottom: 30px; }
         .tour-title {
             margin: 55px 0 14px 0;
@@ -325,6 +356,36 @@
             box-shadow: 0 12px 36px rgba(13,27,62,0.10);
             background: #e6ecf7;
             display: block;
+        }
+
+        /* Метка с призывом включить музыку под туром */
+        .music-tip {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 14px;
+            padding: 10px 20px;
+            background: #fff8e1;
+            border: 1px solid #ffe082;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #8a6d00;
+            animation: pulse-music 2s ease-in-out infinite;
+        }
+        .music-tip svg {
+            width: 18px;
+            height: 18px;
+            stroke: #8a6d00;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            flex-shrink: 0;
+        }
+        @keyframes pulse-music {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.04); }
         }
 
         .tour-actions {
@@ -451,6 +512,7 @@
             .yandex-block .inner { padding: 36px 24px; }
             .tour-frame { height: 420px; }
             .tour-title { font-size: 19px; margin-top: 40px; }
+            .music-hint { font-size: 14px; padding: 12px 20px; margin-bottom: 35px; }
         }
         @media (max-width: 480px) {
             .logo { font-size: 24px; }
@@ -461,6 +523,7 @@
             .yandex-btn { font-size: 13px; padding: 8px 16px 8px 10px; gap: 10px; }
             .yandex-btn .ya-tile { width: 34px; height: 34px; }
             .yandex-btn .ya-tile svg { width: 22px; height: 22px; }
+            .music-hint { font-size: 13px; padding: 10px 16px; }
         }
     </style>
 </head>
@@ -625,12 +688,30 @@
             <h2>Наши работы</h2>
             <p class="subtitle">Осмотрите объект онлайн — кликните и перетаскивайте мышку</p>
 
+            <!-- Плашка-подсказка про музыку -->
+            <div class="music-hint">
+                <svg viewBox="0 0 24 24">
+                    <path d="M9 18V5l12-2v13"/>
+                    <circle cx="6" cy="18" r="3"/>
+                    <circle cx="18" cy="16" r="3"/>
+                </svg>
+                <span>🎵 Не забудьте <strong>включить музыку</strong> в правом нижнем углу тура «Сковородка» — так атмосфера чувствуется ещё лучше!</span>
+            </div>
+
             <!-- Тур 1: Кафе Сковородка -->
             <div class="tour-item">
                 <h3 class="tour-title">🍳 Кафе «Сковородка»</h3>
                 <iframe class="tour-frame" id="tour-skovorodka"
                         src="https://protour3d.ru/tours/skovorodka/index.html"
                         allowfullscreen></iframe>
+                <div class="music-tip">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M9 18V5l12-2v13"/>
+                        <circle cx="6" cy="18" r="3"/>
+                        <circle cx="18" cy="16" r="3"/>
+                    </svg>
+                    🎵 Нажмите кнопку с нотой в правом нижнем углу — включится музыка
+                </div>
                 <div class="tour-actions">
                     <button class="tour-btn-primary"
                             onclick="openTourFullscreen('tour-skovorodka', 'https://protour3d.ru/tours/skovorodka/index.html')">
@@ -733,6 +814,17 @@
                         </svg>
                         Посмотреть тур
                     </button>
+                    <a href="https://yandex.ru/maps?ll=50.245022,53.218601&panorama%5Bpoint%5D=50.245022,53.218601&panorama%5Bdirection%5D=308.446899,-14.510348&panorama%5Bspan%5D=90.000000,90.000000&panorama%5Bid%5D=1373465055_699209622_23_1789395796&si=tdunkb7cqg83pxfrxd33dywrqc" target="_blank" class="yandex-btn" rel="noopener">
+                        <span class="ya-tile">
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <path fill="#FC3F1D" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/>
+                            </svg>
+                        </span>
+                        <span class="ya-text">
+                            <span class="ya-title">Яндекс Карты</span>
+                            <span class="ya-sub">Смотреть панораму</span>
+                        </span>
+                    </a>
                 </div>
             </div>
 
