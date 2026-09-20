@@ -4,22 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- ===== SEO ЗАГОЛОВОК И ОПИСАНИЕ ===== -->
     <title>3D-туры для недвижимости и бизнеса — съёмка панорам 360° | ProTour3D</title>
     <meta name="description" content="Создание 3D-туров и панорам 360° для квартир, домов, кафе, магазинов и офисов. Публикуем туры на Яндекс Картах. Съёмка в Самаре и по России. Срок — 1–3 дня.">
     <meta name="keywords" content="3D-тур, виртуальный тур, панорама 360, съёмка квартиры, панорамная съёмка, 3D тур недвижимость, виртуальный показ квартиры, тур на Яндекс Картах, размещение панорам на Яндекс Картах, съёмка кафе, съёмка магазина, съёмка офиса, 3D тур Самара, виртуальный тур Самара, риелтор, застройщик, недвижимость">
     <meta name="author" content="ProTour3D">
     <meta name="robots" content="index, follow">
 
-    <!-- ===== OPEN GRAPH (превью в соцсетях и мессенджерах) ===== -->
     <meta property="og:title" content="3D-туры и панорамы 360° для недвижимости | ProTour3D">
     <meta property="og:description" content="Виртуальные туры для квартир, кафе, магазинов и офисов. Публикуем на Яндекс Картах. Съёмка за 1–3 дня.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://protour3d.github.io/">
-    <!-- Если сделаете картинку-обложку preview.jpg — раскомментируйте строку ниже -->
-    <!-- <meta property="og:image" content="https://protour3d.github.io/preview.jpg"> -->
+    <meta property="og:url" content="https://protour3d.ru/">
 
-    <!-- Отключаем восстановление позиции скролла браузером -->
     <script>
         if ('scrollRestoration' in history) {
             history.scrollRestoration = 'manual';
@@ -31,15 +26,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@500;700;800&display=swap" rel="stylesheet">
 
     <style>
-        /* ===== ОБЩИЕ СТИЛИ ===== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        html, body {
-            overflow-anchor: none;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { overflow-anchor: none; }
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
             background: #f6f8fc;
@@ -57,7 +45,6 @@
             padding: 0 24px;
         }
 
-        /* ===== ШАПКА ===== */
         header {
             background: linear-gradient(135deg, #0a1428 0%, #12224a 60%, #16305e 100%);
             color: #eaf0fa;
@@ -73,15 +60,8 @@
             flex-wrap: wrap;
             gap: 30px;
         }
-        .logo {
-            font-size: 30px;
-            font-weight: 800;
-            color: #eaf0fa;
-            letter-spacing: -0.5px;
-        }
-        .logo span {
-            color: #5ba3f5;
-        }
+        .logo { font-size: 30px; font-weight: 800; color: #eaf0fa; letter-spacing: -0.5px; }
+        .logo span { color: #5ba3f5; }
         .nav {
             display: flex;
             align-items: center;
@@ -90,14 +70,8 @@
             font-size: 15px;
             font-weight: 500;
         }
-        .nav a {
-            color: #c9d4ea;
-            text-decoration: none;
-            transition: color 0.25s;
-        }
-        .nav a:hover {
-            color: #5ba3f5;
-        }
+        .nav a { color: #c9d4ea; text-decoration: none; transition: color 0.25s; }
+        .nav a:hover { color: #5ba3f5; }
         .nav .contact-link {
             display: inline-flex;
             align-items: center;
@@ -105,21 +79,14 @@
             color: #96a8cc;
             font-weight: 500;
         }
-        .nav .contact-link:hover {
-            color: #5ba3f5;
-        }
+        .nav .contact-link:hover { color: #5ba3f5; }
         .nav .contact-link svg {
-            width: 15px;
-            height: 15px;
-            stroke: currentColor;
-            fill: none;
-            stroke-width: 1.8;
-            stroke-linecap: round;
-            stroke-linejoin: round;
+            width: 15px; height: 15px;
+            stroke: currentColor; fill: none;
+            stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
             flex-shrink: 0;
         }
 
-        /* ===== ГЛАВНЫЙ БАННЕР ===== */
         .hero {
             background: linear-gradient(135deg, #0c1a3a 0%, #142a56 55%, #1a3a72 100%);
             color: #eaf0fa;
@@ -131,11 +98,9 @@
         .hero::before {
             content: '';
             position: absolute;
-            top: -50%;
-            left: 50%;
+            top: -50%; left: 50%;
             transform: translateX(-50%);
-            width: 900px;
-            height: 900px;
+            width: 900px; height: 900px;
             background: radial-gradient(circle, rgba(91,163,245,0.14) 0%, transparent 60%);
             pointer-events: none;
         }
@@ -175,11 +140,7 @@
             box-shadow: 0 14px 36px rgba(91,163,245,0.55);
         }
 
-        /* ===== ПРЕИМУЩЕСТВА ===== */
-        .benefits {
-            padding: 90px 0;
-            background: #ffffff;
-        }
+        .benefits { padding: 90px 0; background: #ffffff; }
         .benefits h2 {
             text-align: center;
             font-size: 36px;
@@ -209,8 +170,7 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 64px;
-            height: 64px;
+            width: 64px; height: 64px;
             margin-bottom: 20px;
             border-radius: 50%;
             background: linear-gradient(135deg, #e8f1fc 0%, #dae8fb 100%);
@@ -222,31 +182,14 @@
             box-shadow: 0 8px 20px rgba(91,163,245,0.22);
         }
         .card .icon svg {
-            width: 30px;
-            height: 30px;
-            stroke: #2c6fc9;
-            fill: none;
-            stroke-width: 1.8;
-            stroke-linecap: round;
-            stroke-linejoin: round;
+            width: 30px; height: 30px;
+            stroke: #2c6fc9; fill: none;
+            stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
         }
-        .card h3 {
-            font-size: 19px;
-            font-weight: 700;
-            margin-bottom: 10px;
-            color: #0d1b3e;
-        }
-        .card p {
-            font-size: 14.5px;
-            color: #4d5876;
-            line-height: 1.65;
-        }
+        .card h3 { font-size: 19px; font-weight: 700; margin-bottom: 10px; color: #0d1b3e; }
+        .card p { font-size: 14.5px; color: #4d5876; line-height: 1.65; }
 
-        /* ===== О НАС / ЧТО МЫ ДЕЛАЕМ (SEO-БЛОК) ===== */
-        .about {
-            padding: 90px 0;
-            background: linear-gradient(180deg, #ffffff 0%, #f6f8fc 100%);
-        }
+        .about { padding: 90px 0; background: linear-gradient(180deg, #ffffff 0%, #f6f8fc 100%); }
         .about h2 {
             text-align: center;
             font-size: 36px;
@@ -293,32 +236,19 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 34px;
-            height: 34px;
+            width: 34px; height: 34px;
             border-radius: 10px;
             background: linear-gradient(135deg, #e8f1fc 0%, #dae8fb 100%);
             flex-shrink: 0;
         }
         .about-item h3 .badge svg {
-            width: 20px;
-            height: 20px;
-            stroke: #2c6fc9;
-            fill: none;
-            stroke-width: 2;
-            stroke-linecap: round;
-            stroke-linejoin: round;
+            width: 20px; height: 20px;
+            stroke: #2c6fc9; fill: none;
+            stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
         }
-        .about-item p {
-            font-size: 15px;
-            color: #4d5876;
-            line-height: 1.7;
-        }
+        .about-item p { font-size: 15px; color: #4d5876; line-height: 1.7; }
 
-        /* ===== БЛОК ЯНДЕКС КАРТ ===== */
-        .yandex-block {
-            padding: 80px 0;
-            background: linear-gradient(135deg, #f6f8fc 0%, #eaf1fa 100%);
-        }
+        .yandex-block { padding: 80px 0; background: linear-gradient(135deg, #f6f8fc 0%, #eaf1fa 100%); }
         .yandex-block .inner {
             background: #ffffff;
             border-radius: 24px;
@@ -333,24 +263,15 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 64px;
-            height: 64px;
+            width: 64px; height: 64px;
             background: #ffffff;
             border-radius: 16px;
             border: 1px solid #f0f0f0;
             box-shadow: 0 6px 18px rgba(13,27,62,0.08);
             margin-bottom: 20px;
         }
-        .yandex-block .ya-logo svg {
-            width: 38px;
-            height: 38px;
-        }
-        .yandex-block h2 {
-            font-size: 30px;
-            font-weight: 800;
-            margin-bottom: 18px;
-            color: #0d1b3e;
-        }
+        .yandex-block .ya-logo svg { width: 38px; height: 38px; }
+        .yandex-block h2 { font-size: 30px; font-weight: 800; margin-bottom: 18px; color: #0d1b3e; }
         .yandex-block p {
             font-size: 17px;
             color: #4d5876;
@@ -370,7 +291,6 @@
             border: 1px solid #ffe082;
         }
 
-        /* ===== БЛОК С ТУРАМИ ===== */
         .tour-block {
             padding: 90px 0;
             background: linear-gradient(180deg, #f6f8fc 0%, #eef3fb 100%);
@@ -388,9 +308,7 @@
             margin-bottom: 55px;
             font-size: 17px;
         }
-        .tour-item {
-            margin-bottom: 30px;
-        }
+        .tour-item { margin-bottom: 30px; }
         .tour-title {
             margin: 55px 0 14px 0;
             font-size: 22px;
@@ -409,7 +327,6 @@
             display: block;
         }
 
-        /* ===== КНОПКИ ПОД ТУРОМ ===== */
         .tour-actions {
             display: flex;
             justify-content: center;
@@ -440,17 +357,12 @@
             box-shadow: 0 12px 28px rgba(91,163,245,0.50);
         }
         .tour-btn-primary svg {
-            width: 18px;
-            height: 18px;
-            stroke: #ffffff;
-            fill: none;
-            stroke-width: 2;
-            stroke-linecap: round;
-            stroke-linejoin: round;
+            width: 18px; height: 18px;
+            stroke: #ffffff; fill: none;
+            stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
             flex-shrink: 0;
         }
 
-        /* ===== КНОПКА ЯНДЕКС КАРТ ===== */
         .yandex-btn {
             display: inline-flex;
             align-items: center;
@@ -475,47 +387,24 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 40px;
-            height: 40px;
+            width: 40px; height: 40px;
             background: #ffffff;
             border-radius: 10px;
             border: 1px solid #f0f0f0;
             flex-shrink: 0;
         }
-        .yandex-btn .ya-tile svg {
-            width: 26px;
-            height: 26px;
-            display: block;
-        }
+        .yandex-btn .ya-tile svg { width: 26px; height: 26px; display: block; }
         .yandex-btn .ya-text {
             display: flex;
             flex-direction: column;
             line-height: 1.15;
             text-align: left;
         }
-        .yandex-btn .ya-text .ya-title {
-            font-size: 15px;
-            font-weight: 700;
-            color: #1a1a1a;
-        }
-        .yandex-btn .ya-text .ya-sub {
-            font-size: 12px;
-            color: #888;
-            font-weight: 500;
-        }
+        .yandex-btn .ya-text .ya-title { font-size: 15px; font-weight: 700; color: #1a1a1a; }
+        .yandex-btn .ya-text .ya-sub { font-size: 12px; color: #888; font-weight: 500; }
 
-        /* ===== КОНТАКТЫ ===== */
-        .contacts {
-            padding: 90px 0;
-            background: #ffffff;
-            text-align: center;
-        }
-        .contacts h2 {
-            font-size: 36px;
-            font-weight: 800;
-            margin-bottom: 30px;
-            color: #0d1b3e;
-        }
+        .contacts { padding: 90px 0; background: #ffffff; text-align: center; }
+        .contacts h2 { font-size: 36px; font-weight: 800; margin-bottom: 30px; color: #0d1b3e; }
         .contacts .info {
             font-size: 17px;
             margin-bottom: 14px;
@@ -527,13 +416,9 @@
             flex-wrap: wrap;
         }
         .contacts .info svg {
-            width: 18px;
-            height: 18px;
-            stroke: #2c6fc9;
-            fill: none;
-            stroke-width: 1.8;
-            stroke-linecap: round;
-            stroke-linejoin: round;
+            width: 18px; height: 18px;
+            stroke: #2c6fc9; fill: none;
+            stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
             flex-shrink: 0;
         }
         .contacts .info a {
@@ -542,11 +427,8 @@
             font-weight: 600;
             transition: color 0.25s;
         }
-        .contacts .info a:hover {
-            color: #2c6fc9;
-        }
+        .contacts .info a:hover { color: #2c6fc9; }
 
-        /* ===== ПОДВАЛ ===== */
         footer {
             background: linear-gradient(135deg, #0a1428 0%, #12224a 100%);
             color: #8b98b8;
@@ -555,85 +437,35 @@
             font-size: 14px;
         }
 
-        /* ===== АДАПТАЦИЯ ===== */
         @media (max-width: 800px) {
-            header .container {
-                flex-direction: column;
-                align-items: center;
-                gap: 18px;
-            }
-            .nav {
-                justify-content: center;
-                gap: 12px 20px;
-                font-size: 14px;
-            }
-            .hero {
-                padding: 70px 0 80px;
-            }
-            .hero h1 {
-                font-size: 32px;
-            }
-            .hero p {
-                font-size: 16px;
-            }
-            .btn {
-                padding: 15px 34px;
-                font-size: 16px;
-            }
-            .benefits, .about, .yandex-block, .tour-block, .contacts {
-                padding: 60px 0;
-            }
+            header .container { flex-direction: column; align-items: center; gap: 18px; }
+            .nav { justify-content: center; gap: 12px 20px; font-size: 14px; }
+            .hero { padding: 70px 0 80px; }
+            .hero h1 { font-size: 32px; }
+            .hero p { font-size: 16px; }
+            .btn { padding: 15px 34px; font-size: 16px; }
+            .benefits, .about, .yandex-block, .tour-block, .contacts { padding: 60px 0; }
             .benefits h2, .about h2, .yandex-block h2, .tour-block h2, .contacts h2 {
-                font-size: 28px;
-                margin-bottom: 40px;
+                font-size: 28px; margin-bottom: 40px;
             }
-            .yandex-block .inner {
-                padding: 36px 24px;
-            }
-            .tour-frame {
-                height: 420px;
-            }
-            .tour-title {
-                font-size: 19px;
-                margin-top: 40px;
-            }
+            .yandex-block .inner { padding: 36px 24px; }
+            .tour-frame { height: 420px; }
+            .tour-title { font-size: 19px; margin-top: 40px; }
         }
         @media (max-width: 480px) {
-            .logo {
-                font-size: 24px;
-            }
-            .nav a {
-                font-size: 13px;
-            }
-            .hero h1 {
-                font-size: 26px;
-            }
-            .tour-frame {
-                height: 320px;
-            }
-            .tour-btn-primary {
-                font-size: 14px;
-                padding: 12px 22px;
-            }
-            .yandex-btn {
-                font-size: 13px;
-                padding: 8px 16px 8px 10px;
-                gap: 10px;
-            }
-            .yandex-btn .ya-tile {
-                width: 34px;
-                height: 34px;
-            }
-            .yandex-btn .ya-tile svg {
-                width: 22px;
-                height: 22px;
-            }
+            .logo { font-size: 24px; }
+            .nav a { font-size: 13px; }
+            .hero h1 { font-size: 26px; }
+            .tour-frame { height: 320px; }
+            .tour-btn-primary { font-size: 14px; padding: 12px 22px; }
+            .yandex-btn { font-size: 13px; padding: 8px 16px 8px 10px; gap: 10px; }
+            .yandex-btn .ya-tile { width: 34px; height: 34px; }
+            .yandex-btn .ya-tile svg { width: 22px; height: 22px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- ===== ШАПКА ===== -->
     <header>
         <div class="container">
             <div class="logo">Pro<span>Tour</span>3D</div>
@@ -655,7 +487,6 @@
         </div>
     </header>
 
-    <!-- ===== ГЛАВНЫЙ БАННЕР ===== -->
     <section class="hero">
         <div class="container">
             <h1>3D-туры и панорамы 360° для недвижимости и бизнеса</h1>
@@ -664,7 +495,6 @@
         </div>
     </section>
 
-    <!-- ===== ПРЕИМУЩЕСТВА ===== -->
     <section class="benefits" id="benefits">
         <div class="container">
             <h2>Почему 3D-тур — это выгодно</h2>
@@ -712,7 +542,6 @@
         </div>
     </section>
 
-    <!-- ===== О НАС / ЧТО МЫ ДЕЛАЕМ ===== -->
     <section class="about" id="about">
         <div class="container">
             <h2>Что мы делаем</h2>
@@ -766,17 +595,16 @@
                 <div class="about-item">
                     <h3>
                         <span class="badge">
-                            <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                            <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
                         </span>
-                        Встраивание тура на сайт
+                        Готовая ссылка на тур
                     </h3>
-                    <p>Размещаем тур на вашем сайте, в сообществе ВКонтакте или отправляем готовую ссылку для Циан, Авито и мессенджеров.</p>
+                    <p>Отправляем готовую ссылку на тур для Циан, Авито, ВКонтакте и мессенджеров. Клиенты открывают тур в один клик — с любого устройства.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ===== БЛОК ЯНДЕКС КАРТ ===== -->
     <section class="yandex-block" id="yandex">
         <div class="container">
             <div class="inner">
@@ -792,7 +620,6 @@
         </div>
     </section>
 
-    <!-- ===== БЛОК С ТУРАМИ ===== -->
     <section class="tour-block" id="tour">
         <div class="container">
             <h2>Наши работы</h2>
@@ -802,11 +629,11 @@
             <div class="tour-item">
                 <h3 class="tour-title">🍳 Кафе «Сковородка»</h3>
                 <iframe class="tour-frame" id="tour-skovorodka"
-                        src="https://protour3d.github.io/tours/skovorodka/index.html"
+                        src="https://protour3d.ru/tours/skovorodka/index.html"
                         allowfullscreen></iframe>
                 <div class="tour-actions">
                     <button class="tour-btn-primary"
-                            onclick="openTourFullscreen('tour-skovorodka', 'https://protour3d.github.io/tours/skovorodka/index.html')">
+                            onclick="openTourFullscreen('tour-skovorodka', 'https://protour3d.ru/tours/skovorodka/index.html')">
                         <svg viewBox="0 0 24 24">
                             <path d="M8 3H5a2 2 0 0 0-2 2v3"/>
                             <path d="M21 8V5a2 2 0 0 0-2-2h-3"/>
@@ -833,11 +660,11 @@
             <div class="tour-item">
                 <h3 class="tour-title">🧘 Фитнес-центр «Уютный»</h3>
                 <iframe class="tour-frame" id="tour-uyut"
-                        src="https://protour3d.github.io/tours/uyut/index.html"
+                        src="https://protour3d.ru/tours/uyut/index.html"
                         allowfullscreen></iframe>
                 <div class="tour-actions">
                     <button class="tour-btn-primary"
-                            onclick="openTourFullscreen('tour-uyut', 'https://protour3d.github.io/tours/uyut/index.html')">
+                            onclick="openTourFullscreen('tour-uyut', 'https://protour3d.ru/tours/uyut/index.html')">
                         <svg viewBox="0 0 24 24">
                             <path d="M8 3H5a2 2 0 0 0-2 2v3"/>
                             <path d="M21 8V5a2 2 0 0 0-2-2h-3"/>
@@ -853,11 +680,11 @@
             <div class="tour-item">
                 <h3 class="tour-title">🚗 Офис «KONSTANTAUTO»</h3>
                 <iframe class="tour-frame" id="tour-konstanauto"
-                        src="https://protour3d.github.io/tours/KonstanAuto/index.html"
+                        src="https://protour3d.ru/tours/KonstanAuto/index.html"
                         allowfullscreen></iframe>
                 <div class="tour-actions">
                     <button class="tour-btn-primary"
-                            onclick="openTourFullscreen('tour-konstanauto', 'https://protour3d.github.io/tours/KonstanAuto/index.html')">
+                            onclick="openTourFullscreen('tour-konstanauto', 'https://protour3d.ru/tours/KonstanAuto/index.html')">
                         <svg viewBox="0 0 24 24">
                             <path d="M8 3H5a2 2 0 0 0-2 2v3"/>
                             <path d="M21 8V5a2 2 0 0 0-2-2h-3"/>
@@ -873,11 +700,11 @@
             <div class="tour-item">
                 <h3 class="tour-title">🎭 Дом культуры «Нефтяник»</h3>
                 <iframe class="tour-frame" id="tour-dk"
-                        src="https://protour3d.github.io/tours/DK/index.html"
+                        src="https://protour3d.ru/tours/DK/index.html"
                         allowfullscreen></iframe>
                 <div class="tour-actions">
                     <button class="tour-btn-primary"
-                            onclick="openTourFullscreen('tour-dk', 'https://protour3d.github.io/tours/DK/index.html')">
+                            onclick="openTourFullscreen('tour-dk', 'https://protour3d.ru/tours/DK/index.html')">
                         <svg viewBox="0 0 24 24">
                             <path d="M8 3H5a2 2 0 0 0-2 2v3"/>
                             <path d="M21 8V5a2 2 0 0 0-2-2h-3"/>
@@ -893,11 +720,11 @@
             <div class="tour-item">
                 <h3 class="tour-title">🍺 Пивной магазин «Жигулевское пиво» — г. Самара, Ново-Вокзальный тупик, 11</h3>
                 <iframe class="tour-frame" id="tour-zhigulevskshcoepivo"
-                        src="https://protour3d.github.io/tours/zhigulevskshcoepivo/index.html"
+                        src="https://protour3d.ru/tours/zhigulevskshcoepivo/index.html"
                         allowfullscreen></iframe>
                 <div class="tour-actions">
                     <button class="tour-btn-primary"
-                            onclick="openTourFullscreen('tour-zhigulevskshcoepivo', 'https://protour3d.github.io/tours/zhigulevskshcoepivo/index.html')">
+                            onclick="openTourFullscreen('tour-zhigulevskshcoepivo', 'https://protour3d.ru/tours/zhigulevskshcoepivo/index.html')">
                         <svg viewBox="0 0 24 24">
                             <path d="M8 3H5a2 2 0 0 0-2 2v3"/>
                             <path d="M21 8V5a2 2 0 0 0-2-2h-3"/>
@@ -913,11 +740,11 @@
             <div class="tour-item">
                 <h3 class="tour-title">🏢 ул. «Строителей»</h3>
                 <iframe class="tour-frame" id="tour-stroiteli"
-                        src="https://protour3d.github.io/tours/Stroiteli/index.html"
+                        src="https://protour3d.ru/tours/Stroiteli/index.html"
                         allowfullscreen></iframe>
                 <div class="tour-actions">
                     <button class="tour-btn-primary"
-                            onclick="openTourFullscreen('tour-stroiteli', 'https://protour3d.github.io/tours/Stroiteli/index.html')">
+                            onclick="openTourFullscreen('tour-stroiteli', 'https://protour3d.ru/tours/Stroiteli/index.html')">
                         <svg viewBox="0 0 24 24">
                             <path d="M8 3H5a2 2 0 0 0-2 2v3"/>
                             <path d="M21 8V5a2 2 0 0 0-2-2h-3"/>
@@ -932,7 +759,6 @@
         </div>
     </section>
 
-    <!-- ===== КОНТАКТЫ ===== -->
     <section class="contacts" id="contacts">
         <div class="container">
             <h2>Свяжитесь с нами</h2>
@@ -951,14 +777,12 @@
         </div>
     </section>
 
-    <!-- ===== ПОДВАЛ ===== -->
     <footer>
         <div class="container">
             &copy; 2026 ProTour3D. Все права защищены. Съёмка 3D-туров и панорам 360°.
         </div>
     </footer>
 
-    <!-- ===== СКРИПТ ПОЛНОЭКРАННОГО ПРОСМОТРА ===== -->
     <script>
         function openTourFullscreen(iframeId, url) {
             var el = document.getElementById(iframeId);
@@ -982,7 +806,6 @@
         }
     </script>
 
-    <!-- ===== СКРИПТ: возврат наверх при загрузке и очистка хеша ===== -->
     <script>
         (function () {
             if (window.location.hash) {
