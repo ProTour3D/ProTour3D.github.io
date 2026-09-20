@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://protour3d.ru/sitemap.xml
