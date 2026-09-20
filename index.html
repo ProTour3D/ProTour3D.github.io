@@ -3,9 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ProTour3D — 3D-туры для недвижимости</title>
-    <meta name="description" content="Профессиональные 3D-туры для недвижимости. Съёмка и создание интерактивных туров для риелторов, застройщиков и собственников. Быстро, качественно, недорого.">
-    <meta name="keywords" content="3D-тур, виртуальный тур, съемка недвижимости, 3D-туры для риелторов, панорама 360, продажа квартир">
+
+    <!-- ===== SEO ЗАГОЛОВОК И ОПИСАНИЕ ===== -->
+    <title>3D-туры для недвижимости и бизнеса — съёмка панорам 360° | ProTour3D</title>
+    <meta name="description" content="Создание 3D-туров и панорам 360° для квартир, домов, кафе, магазинов и офисов. Публикуем туры на Яндекс Картах. Съёмка в Самаре и по России. Срок — 1–3 дня.">
+    <meta name="keywords" content="3D-тур, виртуальный тур, панорама 360, съёмка квартиры, панорамная съёмка, 3D тур недвижимость, виртуальный показ квартиры, тур на Яндекс Картах, размещение панорам на Яндекс Картах, съёмка кафе, съёмка магазина, съёмка офиса, 3D тур Самара, виртуальный тур Самара, риелтор, застройщик, недвижимость">
+    <meta name="author" content="ProTour3D">
+    <meta name="robots" content="index, follow">
+
+    <!-- ===== OPEN GRAPH (превью в соцсетях и мессенджерах) ===== -->
+    <meta property="og:title" content="3D-туры и панорамы 360° для недвижимости | ProTour3D">
+    <meta property="og:description" content="Виртуальные туры для квартир, кафе, магазинов и офисов. Публикуем на Яндекс Картах. Съёмка за 1–3 дня.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://protour3d.github.io/">
+    <!-- Если сделаете картинку-обложку preview.jpg — раскомментируйте строку ниже -->
+    <!-- <meta property="og:image" content="https://protour3d.github.io/preview.jpg"> -->
 
     <!-- Отключаем восстановление позиции скролла браузером -->
     <script>
@@ -26,7 +38,7 @@
             box-sizing: border-box;
         }
         html, body {
-            overflow-anchor: none; /* Запрещает браузеру "дёргать" скролл */
+            overflow-anchor: none;
         }
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
@@ -128,7 +140,7 @@
             pointer-events: none;
         }
         .hero h1 {
-            font-size: 54px;
+            font-size: 52px;
             font-weight: 800;
             margin-bottom: 20px;
             line-height: 1.15;
@@ -137,7 +149,7 @@
         .hero p {
             font-size: 19px;
             color: #b5c4e0;
-            max-width: 640px;
+            max-width: 720px;
             margin: 0 auto 40px;
             line-height: 1.7;
             position: relative;
@@ -228,6 +240,134 @@
             font-size: 14.5px;
             color: #4d5876;
             line-height: 1.65;
+        }
+
+        /* ===== О НАС / ЧТО МЫ ДЕЛАЕМ (SEO-БЛОК) ===== */
+        .about {
+            padding: 90px 0;
+            background: linear-gradient(180deg, #ffffff 0%, #f6f8fc 100%);
+        }
+        .about h2 {
+            text-align: center;
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            color: #0d1b3e;
+        }
+        .about .subtitle {
+            text-align: center;
+            color: #4d5876;
+            margin-bottom: 50px;
+            font-size: 17px;
+            max-width: 780px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 26px;
+        }
+        .about-item {
+            padding: 30px 26px;
+            border-radius: 18px;
+            background: #ffffff;
+            border: 1px solid #e6ecf7;
+            box-shadow: 0 6px 20px rgba(13,27,62,0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .about-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 14px 32px rgba(13,27,62,0.10);
+        }
+        .about-item h3 {
+            font-size: 19px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #0d1b3e;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .about-item h3 .badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #e8f1fc 0%, #dae8fb 100%);
+            flex-shrink: 0;
+        }
+        .about-item h3 .badge svg {
+            width: 20px;
+            height: 20px;
+            stroke: #2c6fc9;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        .about-item p {
+            font-size: 15px;
+            color: #4d5876;
+            line-height: 1.7;
+        }
+
+        /* ===== БЛОК ЯНДЕКС КАРТ ===== */
+        .yandex-block {
+            padding: 80px 0;
+            background: linear-gradient(135deg, #f6f8fc 0%, #eaf1fa 100%);
+        }
+        .yandex-block .inner {
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 50px 40px;
+            text-align: center;
+            box-shadow: 0 18px 50px rgba(13,27,62,0.08);
+            border: 1px solid #e6ecf7;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .yandex-block .ya-logo {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 64px;
+            height: 64px;
+            background: #ffffff;
+            border-radius: 16px;
+            border: 1px solid #f0f0f0;
+            box-shadow: 0 6px 18px rgba(13,27,62,0.08);
+            margin-bottom: 20px;
+        }
+        .yandex-block .ya-logo svg {
+            width: 38px;
+            height: 38px;
+        }
+        .yandex-block h2 {
+            font-size: 30px;
+            font-weight: 800;
+            margin-bottom: 18px;
+            color: #0d1b3e;
+        }
+        .yandex-block p {
+            font-size: 17px;
+            color: #4d5876;
+            line-height: 1.8;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        .yandex-block .ya-tagline {
+            display: inline-block;
+            margin-top: 22px;
+            padding: 10px 22px;
+            background: #fff8e1;
+            color: #8a6d00;
+            font-weight: 600;
+            border-radius: 30px;
+            font-size: 15px;
+            border: 1px solid #ffe082;
         }
 
         /* ===== БЛОК С ТУРАМИ ===== */
@@ -431,7 +571,7 @@
                 padding: 70px 0 80px;
             }
             .hero h1 {
-                font-size: 34px;
+                font-size: 32px;
             }
             .hero p {
                 font-size: 16px;
@@ -440,12 +580,15 @@
                 padding: 15px 34px;
                 font-size: 16px;
             }
-            .benefits, .tour-block, .contacts {
+            .benefits, .about, .yandex-block, .tour-block, .contacts {
                 padding: 60px 0;
             }
-            .benefits h2, .tour-block h2, .contacts h2 {
+            .benefits h2, .about h2, .yandex-block h2, .tour-block h2, .contacts h2 {
                 font-size: 28px;
                 margin-bottom: 40px;
+            }
+            .yandex-block .inner {
+                padding: 36px 24px;
             }
             .tour-frame {
                 height: 420px;
@@ -463,7 +606,7 @@
                 font-size: 13px;
             }
             .hero h1 {
-                font-size: 27px;
+                font-size: 26px;
             }
             .tour-frame {
                 height: 320px;
@@ -496,7 +639,9 @@
             <div class="logo">Pro<span>Tour</span>3D</div>
             <nav class="nav">
                 <a href="#benefits">Преимущества</a>
-                <a href="#tour">Наш тур</a>
+                <a href="#about">Услуги</a>
+                <a href="#yandex">Яндекс Карты</a>
+                <a href="#tour">Наши туры</a>
                 <a href="#contacts">Контакты</a>
                 <a href="tel:+79063437268" class="contact-link">
                     <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
@@ -513,9 +658,9 @@
     <!-- ===== ГЛАВНЫЙ БАННЕР ===== -->
     <section class="hero">
         <div class="container">
-            <h1>3D-туры для недвижимости</h1>
-            <p>Профессиональная съёмка и создание интерактивных туров для риелторов, застройщиков и собственников.</p>
-            <a href="#contacts" class="btn">Связаться</a>
+            <h1>3D-туры и панорамы 360° для недвижимости и бизнеса</h1>
+            <p>Профессиональная съёмка и создание интерактивных виртуальных туров для квартир, домов, кафе, магазинов, офисов и застройщиков. Публикуем туры на Яндекс Картах. Срок — 1–3 дня.</p>
+            <a href="#contacts" class="btn">Заказать тур</a>
         </div>
     </section>
 
@@ -532,7 +677,7 @@
                         </svg>
                     </div>
                     <h3>Экономия времени</h3>
-                    <p>Один тур заменяет 50 личных показов. Клиенты приходят только заинтересованные.</p>
+                    <p>Один виртуальный тур заменяет 50 личных показов. Клиенты приходят только заинтересованные.</p>
                 </div>
                 <div class="card">
                     <div class="icon">
@@ -542,7 +687,7 @@
                         </svg>
                     </div>
                     <h3>Совместимость</h3>
-                    <p>Тур работает на Циан, и других сайтах.</p>
+                    <p>Тур работает на Циан, Авито, Яндекс Картах и вашем сайте. Смотрится на ПК и телефоне.</p>
                 </div>
                 <div class="card">
                     <div class="icon">
@@ -551,7 +696,7 @@
                         </svg>
                     </div>
                     <h3>Быстро</h3>
-                    <p>Съёмка и обработка занимают всего 1–3 дня. Результат — ссылка для просмотра.</p>
+                    <p>Съёмка панорам 360° и обработка занимают 1–3 дня. Результат — готовая ссылка на тур.</p>
                 </div>
                 <div class="card">
                     <div class="icon">
@@ -561,8 +706,88 @@
                         </svg>
                     </div>
                     <h3>Выше продажи</h3>
-                    <p>Объекты с 3D-туром продаются на 30% быстрее.</p>
+                    <p>Объекты с 3D-туром продаются на 30% быстрее. Виртуальный показ повышает доверие клиентов.</p>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== О НАС / ЧТО МЫ ДЕЛАЕМ ===== -->
+    <section class="about" id="about">
+        <div class="container">
+            <h2>Что мы делаем</h2>
+            <p class="subtitle">Создаём виртуальные туры и панорамы 360° для недвижимости, бизнеса и коммерческих объектов. Съёмка в Самаре и по России.</p>
+            <div class="about-grid">
+                <div class="about-item">
+                    <h3>
+                        <span class="badge">
+                            <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                        </span>
+                        3D-туры для квартир и домов
+                    </h3>
+                    <p>Виртуальный тур по квартире, дому или коттеджу. Идеально для риелторов, агентств недвижимости и собственников. Показывайте объект удалённо.</p>
+                </div>
+                <div class="about-item">
+                    <h3>
+                        <span class="badge">
+                            <svg viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/></svg>
+                        </span>
+                        3D-туры для кафе и ресторанов
+                    </h3>
+                    <p>Панорамы 360° для кафе, баров, ресторанов. Покажите атмосферу заведения до визита — гости выбирают место осознанно.</p>
+                </div>
+                <div class="about-item">
+                    <h3>
+                        <span class="badge">
+                            <svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                        </span>
+                        3D-туры для магазинов
+                    </h3>
+                    <p>Виртуальный тур по магазину или торговому залу. Клиент видит ассортимент и планировку, приходит целенаправленно.</p>
+                </div>
+                <div class="about-item">
+                    <h3>
+                        <span class="badge">
+                            <svg viewBox="0 0 24 24"><path d="M3 3h18v18H3z"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+                        </span>
+                        3D-туры для офисов
+                    </h3>
+                    <p>Панорамы 360° для офисов, коворкингов, салонов красоты. Показывайте пространство будущим сотрудникам и клиентам онлайн.</p>
+                </div>
+                <div class="about-item">
+                    <h3>
+                        <span class="badge">
+                            <svg viewBox="0 0 24 24"><circle cx="12" cy="10" r="3"/><path d="M12 21.7C17.3 17 20 13 20 10a8 8 0 1 0-16 0c0 3 2.7 6.9 8 11.7z"/></svg>
+                        </span>
+                        Публикация на Яндекс Картах
+                    </h3>
+                    <p>Размещаем ваши панорамы и 3D-туры на Яндекс Картах — так их увидят тысячи пользователей, которые ищут кафе, магазины и организации рядом с собой.</p>
+                </div>
+                <div class="about-item">
+                    <h3>
+                        <span class="badge">
+                            <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                        </span>
+                        Встраивание тура на сайт
+                    </h3>
+                    <p>Размещаем тур на вашем сайте, в сообществе ВКонтакте или отправляем готовую ссылку для Циан, Авито и мессенджеров.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== БЛОК ЯНДЕКС КАРТ ===== -->
+    <section class="yandex-block" id="yandex">
+        <div class="container">
+            <div class="inner">
+                <div class="ya-logo">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path fill="#FC3F1D" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/>
+                    </svg>
+                </div>
+                <h2>Публикуем ваши туры на Яндекс Картах</h2>
+                <p>У нас есть возможность размещать панорамы 360° и виртуальные туры на Яндекс Картах. Это значит, что ваше кафе, магазин, офис или объект недвижимости увидят тысячи пользователей, которые ищут вас на картах. Панорама внутри карточки организации повышает доверие клиентов и увеличивает посещаемость.</p>
+                <div class="ya-tagline">🎯 Размещение панорам на Яндекс Картах — включено в услугу</div>
             </div>
         </div>
     </section>
@@ -626,7 +851,7 @@
 
             <!-- Тур 3: Офис КонстанАвто -->
             <div class="tour-item">
-                <h3 class="tour-title"> Офис "KONSTANTAUTO"</h3>
+                <h3 class="tour-title">🚗 Офис «KONSTANTAUTO»</h3>
                 <iframe class="tour-frame" id="tour-konstanauto"
                         src="https://protour3d.github.io/tours/KonstanAuto/index.html"
                         allowfullscreen></iframe>
@@ -643,10 +868,10 @@
                     </button>
                 </div>
             </div>
-            
+
             <!-- Тур 4: Дом культуры -->
             <div class="tour-item">
-                <h3 class="tour-title">🎭 Дом культуры "Нефтяник"</h3>
+                <h3 class="tour-title">🎭 Дом культуры «Нефтяник»</h3>
                 <iframe class="tour-frame" id="tour-dk"
                         src="https://protour3d.github.io/tours/DK/index.html"
                         allowfullscreen></iframe>
@@ -666,7 +891,7 @@
 
             <!-- Тур 5: Пивной магазин Жигулевское пиво -->
             <div class="tour-item">
-                <h3 class="tour-title"> 🍺 Пивной магазин "Жигулевское пиво" по адресу г. Самара Ново-Вокзальный тупик, 11</h3>
+                <h3 class="tour-title">🍺 Пивной магазин «Жигулевское пиво» — г. Самара, Ново-Вокзальный тупик, 11</h3>
                 <iframe class="tour-frame" id="tour-zhigulevskshcoepivo"
                         src="https://protour3d.github.io/tours/zhigulevskshcoepivo/index.html"
                         allowfullscreen></iframe>
@@ -683,7 +908,7 @@
                     </button>
                 </div>
             </div>
-            
+
             <!-- Тур 6: Строителей -->
             <div class="tour-item">
                 <h3 class="tour-title">🏢 ул. «Строителей»</h3>
@@ -729,7 +954,7 @@
     <!-- ===== ПОДВАЛ ===== -->
     <footer>
         <div class="container">
-            &copy; 2026 ProTour3D. Все права защищены.
+            &copy; 2026 ProTour3D. Все права защищены. Съёмка 3D-туров и панорам 360°.
         </div>
     </footer>
 
@@ -759,22 +984,17 @@
 
     <!-- ===== СКРИПТ: возврат наверх при загрузке и очистка хеша ===== -->
     <script>
-        // Если в URL есть якорь (#tour, #contacts и т.п.) — очищаем его,
-        // чтобы браузер не прыгал в середину страницы.
         (function () {
             if (window.location.hash) {
-                // Сохраняем путь без хеша и заменяем адрес в истории
                 var cleanUrl = window.location.pathname + window.location.search;
                 history.replaceState(null, '', cleanUrl);
             }
         })();
 
-        // Принудительно скроллим в самое начало при загрузке
         window.addEventListener('load', function () {
             window.scrollTo(0, 0);
         });
 
-        // Дополнительно — сразу после отрисовки DOM
         document.addEventListener('DOMContentLoaded', function () {
             window.scrollTo(0, 0);
         });
