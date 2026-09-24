@@ -35,7 +35,7 @@
             line-height: 1.7;
             -webkit-font-smoothing: antialiased;
         }
-        h1, h2, h3, .logo {
+        h1, h2, h3, h4, .logo {
             font-family: 'Manrope', 'Inter', sans-serif;
             letter-spacing: -0.02em;
         }
@@ -104,12 +104,19 @@
             background: radial-gradient(circle, rgba(91,163,245,0.14) 0%, transparent 60%);
             pointer-events: none;
         }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
         .hero h1 {
             font-size: 52px;
             font-weight: 800;
             margin-bottom: 20px;
             line-height: 1.15;
             position: relative;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
         }
         .hero p {
             font-size: 19px;
@@ -118,10 +125,15 @@
             margin: 0 auto 40px;
             line-height: 1.7;
             position: relative;
+            animation: fadeInUp 0.8s ease-out 0.6s both;
         }
+        
         .btn {
-            display: inline-block;
-            background: #5ba3f5;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
             color: #ffffff;
             padding: 18px 46px;
             border-radius: 50px;
@@ -130,14 +142,20 @@
             font-weight: 700;
             text-decoration: none;
             letter-spacing: 0.2px;
-            transition: transform 0.25s, box-shadow 0.25s, background 0.25s;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
             position: relative;
-            box-shadow: 0 6px 20px rgba(91,163,245,0.35);
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(79, 172, 254, 0.4);
+            animation: fadeInUp 0.8s ease-out 1s both;
         }
         .btn:hover {
-            background: #3d8ae8;
-            transform: translateY(-3px);
-            box-shadow: 0 14px 36px rgba(91,163,245,0.55);
+            background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(79, 172, 254, 0.6);
+        }
+        .btn:active {
+            transform: translateY(-1px) scale(0.98);
         }
 
         .benefits { padding: 90px 0; background: #ffffff; }
@@ -248,6 +266,7 @@
         }
         .about-item p { font-size: 15px; color: #4d5876; line-height: 1.7; }
 
+        /* ===== YANDEX BLOCK ===== */
         .yandex-block { padding: 80px 0; background: linear-gradient(135deg, #f6f8fc 0%, #eaf1fa 100%); }
         .yandex-block .inner {
             background: #ffffff;
@@ -259,18 +278,18 @@
             max-width: 900px;
             margin: 0 auto;
         }
-        .yandex-block .ya-logo {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 64px; height: 64px;
-            background: #ffffff;
-            border-radius: 16px;
-            border: 1px solid #f0f0f0;
-            box-shadow: 0 6px 18px rgba(13,27,62,0.08);
+        /* Новая текстовая плашка вместо логотипа */
+        .yandex-block .ya-text-badge {
+            display: inline-block;
+            padding: 8px 20px;
+            background: #f0f4f9;
+            color: #2c6fc9;
+            font-weight: 700;
+            font-size: 15px;
+            border-radius: 30px;
             margin-bottom: 20px;
+            border: 1px solid #d0e2f7;
         }
-        .yandex-block .ya-logo svg { width: 38px; height: 38px; }
         .yandex-block h2 { font-size: 30px; font-weight: 800; margin-bottom: 18px; color: #0d1b3e; }
         .yandex-block p {
             font-size: 17px;
@@ -291,6 +310,7 @@
             border: 1px solid #ffe082;
         }
 
+        /* ===== ПРИМЕРЫ РАБОТ ===== */
         .tour-block {
             padding: 90px 0;
             background: linear-gradient(180deg, #f6f8fc 0%, #eef3fb 100%);
@@ -308,8 +328,6 @@
             margin-bottom: 20px;
             font-size: 17px;
         }
-
-        /* Плашка-подсказка про музыку */
         .music-hint {
             display: flex;
             align-items: center;
@@ -328,14 +346,8 @@
             box-shadow: 0 6px 20px rgba(91,163,245,0.10);
         }
         .music-hint svg {
-            width: 22px;
-            height: 22px;
-            stroke: #2c6fc9;
-            fill: none;
-            stroke-width: 1.8;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-            flex-shrink: 0;
+            width: 22px; height: 22px; stroke: #2c6fc9; fill: none;
+            stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0;
         }
         .music-hint strong { color: #0d1b3e; }
 
@@ -349,146 +361,244 @@
             border-left: 4px solid #5ba3f5;
         }
         .tour-frame {
-            width: 100%;
-            height: 600px;
-            border: none;
-            border-radius: 18px;
+            width: 100%; height: 600px; border: none; border-radius: 18px;
             box-shadow: 0 12px 36px rgba(13,27,62,0.10);
-            background: #e6ecf7;
-            display: block;
+            background: #e6ecf7; display: block;
         }
-
-        /* Метка с призывом включить музыку под туром */
         .music-tip {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            margin-top: 14px;
-            padding: 10px 20px;
-            background: #fff8e1;
-            border: 1px solid #ffe082;
-            border-radius: 30px;
-            font-size: 14px;
-            font-weight: 600;
-            color: #8a6d00;
-            animation: pulse-music 2s ease-in-out infinite;
+            display: inline-flex; align-items: center; gap: 8px;
+            margin-top: 14px; padding: 10px 20px;
+            background: #fff8e1; border: 1px solid #ffe082;
+            border-radius: 30px; font-size: 14px; font-weight: 600;
+            color: #8a6d00; animation: pulse-music 2s ease-in-out infinite;
         }
         .music-tip svg {
-            width: 18px;
-            height: 18px;
-            stroke: #8a6d00;
-            fill: none;
-            stroke-width: 2;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-            flex-shrink: 0;
+            width: 18px; height: 18px; stroke: #8a6d00; fill: none;
+            stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0;
         }
         @keyframes pulse-music {
             0%, 100% { transform: scale(1); }
             50% { transform: scale(1.04); }
         }
-
         .tour-actions {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 14px;
-            margin-top: 20px;
+            display: flex; justify-content: center; align-items: center;
+            flex-wrap: wrap; gap: 14px; margin-top: 20px;
         }
         .tour-btn-primary {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            background: #5ba3f5;
-            color: #ffffff;
-            padding: 14px 30px;
-            border-radius: 50px;
-            font-family: 'Manrope', 'Inter', sans-serif;
-            font-weight: 700;
-            font-size: 15px;
-            border: none;
-            cursor: pointer;
-            transition: transform 0.25s, box-shadow 0.25s, background 0.25s;
-            box-shadow: 0 6px 18px rgba(91,163,245,0.35);
+            display: inline-flex; align-items: center; gap: 10px;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: #ffffff; padding: 16px 36px; border-radius: 50px;
+            font-family: 'Manrope', 'Inter', sans-serif; font-weight: 700;
+            font-size: 15px; border: none; cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 8px 25px rgba(79, 172, 254, 0.4);
         }
         .tour-btn-primary:hover {
-            background: #3d8ae8;
-            transform: translateY(-2px);
-            box-shadow: 0 12px 28px rgba(91,163,245,0.50);
+            background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 12px 35px rgba(79, 172, 254, 0.6);
         }
+        .tour-btn-primary:active { transform: translateY(-1px) scale(0.98); }
         .tour-btn-primary svg {
-            width: 18px; height: 18px;
-            stroke: #ffffff; fill: none;
-            stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
-            flex-shrink: 0;
+            width: 18px; height: 18px; stroke: #ffffff; fill: none;
+            stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0;
         }
-
         .yandex-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            background: #ffffff;
-            color: #1a1a1a;
-            padding: 10px 24px 10px 12px;
-            border-radius: 14px;
-            font-family: 'Inter', sans-serif;
-            font-weight: 600;
-            font-size: 15px;
-            text-decoration: none;
-            transition: transform 0.25s, box-shadow 0.25s;
-            box-shadow: 0 6px 18px rgba(13,27,62,0.10);
-            border: 1px solid #e6ecf7;
+            display: inline-flex; align-items: center; gap: 12px;
+            background: #ffffff; color: #1a1a1a; padding: 12px 28px 12px 14px;
+            border-radius: 16px; font-family: 'Inter', sans-serif; font-weight: 600;
+            font-size: 15px; text-decoration: none; transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08); border: 1px solid #e0e0e0;
         }
         .yandex-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 28px rgba(13,27,62,0.16);
+            transform: translateY(-3px); box-shadow: 0 12px 25px rgba(0,0,0,0.12);
+            border-color: #FC3F1D;
         }
         .yandex-btn .ya-tile {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px; height: 40px;
-            background: #ffffff;
-            border-radius: 10px;
-            border: 1px solid #f0f0f0;
-            flex-shrink: 0;
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 40px; height: 40px; background: #ffffff;
+            border-radius: 10px; border: 1px solid #f0f0f0; flex-shrink: 0;
         }
         .yandex-btn .ya-tile svg { width: 26px; height: 26px; display: block; }
         .yandex-btn .ya-text {
-            display: flex;
-            flex-direction: column;
-            line-height: 1.15;
-            text-align: left;
+            display: flex; flex-direction: column; line-height: 1.15; text-align: left;
         }
         .yandex-btn .ya-text .ya-title { font-size: 15px; font-weight: 700; color: #1a1a1a; }
         .yandex-btn .ya-text .ya-sub { font-size: 12px; color: #888; font-weight: 500; }
 
+        /* ===== КОНТАКТЫ ===== */
         .contacts { padding: 90px 0; background: #ffffff; text-align: center; }
         .contacts h2 { font-size: 36px; font-weight: 800; margin-bottom: 30px; color: #0d1b3e; }
         .contacts .info {
-            font-size: 17px;
-            margin-bottom: 14px;
-            color: #3d4966;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            flex-wrap: wrap;
+            font-size: 17px; margin-bottom: 14px; color: #3d4966;
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap;
         }
         .contacts .info svg {
-            width: 18px; height: 18px;
-            stroke: #2c6fc9; fill: none;
-            stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
-            flex-shrink: 0;
+            width: 18px; height: 18px; stroke: #2c6fc9; fill: none;
+            stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0;
         }
         .contacts .info a {
-            color: #0d1b3e;
-            text-decoration: none;
-            font-weight: 600;
-            transition: color 0.25s;
+            color: #0d1b3e; text-decoration: none; font-weight: 600; transition: color 0.25s;
         }
         .contacts .info a:hover { color: #2c6fc9; }
+
+        /* ===== НОВЫЙ ДИЗАЙН СПИСКА МЕССЕНДЖЕРОВ ===== */
+        .messengers-list {
+            max-width: 520px;
+            margin: 50px auto 0;
+            background: #ffffff;
+            border-radius: 20px;
+            border: 1px solid #e6ecf7;
+            overflow: hidden;
+            text-align: left;
+            box-shadow: 0 10px 30px rgba(13,27,62,0.04);
+        }
+        .messenger-item {
+            display: flex;
+            align-items: center;
+            padding: 22px 26px;
+            border-bottom: 1px solid #f0f4f9;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+        .messenger-item:last-child {
+            border-bottom: none;
+        }
+        .messenger-item:hover {
+            background: #fbfcfe;
+        }
+        .messenger-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
+            border: 1px solid #e6ecf7;
+            background: #f8faff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-right: 18px;
+            transition: all 0.3s ease;
+        }
+        .messenger-item:hover .messenger-icon {
+            background: #eaf1fc;
+            border-color: #c9dff7;
+        }
+        .messenger-icon svg {
+            width: 26px;
+            height: 26px;
+            stroke: #0d1b3e; fill: none;
+            stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+        }
+        .messenger-text {
+            flex-grow: 1;
+        }
+        .messenger-text h4 {
+            font-family: 'Manrope', sans-serif;
+            font-size: 17px;
+            font-weight: 700;
+            color: #0d1b3e;
+            margin-bottom: 4px;
+        }
+        .messenger-text p {
+            font-size: 14px;
+            color: #8b98b8;
+            margin: 0;
+            line-height: 1.4;
+        }
+        .messenger-arrow {
+            width: 24px;
+            height: 24px;
+            flex-shrink: 0;
+            margin-left: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .messenger-arrow svg {
+            width: 22px;
+            height: 22px;
+            stroke: #e53e3e;
+            fill: none;
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            transition: transform 0.3s ease;
+        }
+        .messenger-item:hover .messenger-arrow svg {
+            transform: translateX(4px);
+        }
+
+        .form-wrapper {
+            max-width: 520px; margin: 40px auto 0; background: #f6f8fc;
+            padding: 35px; border-radius: 20px; text-align: left; border: 1px solid #e6ecf7;
+        }
+        .form-wrapper h3 {
+            text-align: center; margin-bottom: 25px; font-size: 22px; font-weight: 700; color: #0d1b3e;
+        }
+        .form-wrapper label {
+            display: block; font-weight: 600; margin-bottom: 6px; color: #0d1b3e;
+        }
+        .form-wrapper input,
+        .form-wrapper textarea {
+            width: 100%; padding: 14px; border: 1px solid #cdd9ec;
+            border-radius: 10px; font-size: 16px; font-family: inherit; margin-bottom: 18px;
+        }
+        .form-wrapper textarea { resize: vertical; }
+        .form-wrapper .btn { width: 100%; padding: 16px; font-size: 17px; border: none; cursor: pointer; animation: none; }
+
+        /* ===== FAQ ===== */
+        .faq { padding: 90px 0; background: linear-gradient(180deg, #ffffff 0%, #f6f8fc 100%); }
+        .faq h2 {
+            text-align: center;
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 50px;
+            color: #0d1b3e;
+        }
+        .faq-list {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .faq-list details {
+            background: #ffffff;
+            padding: 22px 26px;
+            border-radius: 16px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            border: 1px solid #e6ecf7;
+            box-shadow: 0 4px 12px rgba(13,27,62,0.04);
+            transition: box-shadow 0.3s;
+        }
+        .faq-list details:hover {
+            box-shadow: 0 8px 20px rgba(13,27,62,0.08);
+        }
+        .faq-list summary {
+            font-weight: 700;
+            font-size: 17px;
+            color: #0d1b3e;
+            list-style: none;
+            position: relative;
+            padding-right: 30px;
+        }
+        .faq-list summary::after {
+            content: '+';
+            position: absolute;
+            right: 0;
+            top: 0;
+            font-size: 22px;
+            color: #2c6fc9;
+            font-weight: 400;
+            transition: transform 0.3s;
+        }
+        .faq-list details[open] summary::after {
+            content: '−';
+        }
+        .faq-list details p {
+            margin-top: 15px;
+            color: #4d5876;
+            line-height: 1.7;
+        }
 
         footer {
             background: linear-gradient(135deg, #0a1428 0%, #12224a 100%);
@@ -505,14 +615,19 @@
             .hero h1 { font-size: 32px; }
             .hero p { font-size: 16px; }
             .btn { padding: 15px 34px; font-size: 16px; }
-            .benefits, .about, .yandex-block, .tour-block, .contacts { padding: 60px 0; }
-            .benefits h2, .about h2, .yandex-block h2, .tour-block h2, .contacts h2 {
+            .benefits, .about, .faq, .yandex-block, .tour-block, .contacts { padding: 60px 0; }
+            .benefits h2, .about h2, .faq h2, .yandex-block h2, .tour-block h2, .contacts h2 {
                 font-size: 28px; margin-bottom: 40px;
             }
             .yandex-block .inner { padding: 36px 24px; }
             .tour-frame { height: 420px; }
             .tour-title { font-size: 19px; margin-top: 40px; }
             .music-hint { font-size: 14px; padding: 12px 20px; margin-bottom: 35px; }
+            .messengers-list { margin-top: 35px; }
+            .messenger-item { padding: 18px 20px; }
+            .messenger-icon { width: 44px; height: 44px; margin-right: 14px; }
+            .messenger-icon svg { width: 22px; height: 22px; }
+            .form-wrapper { margin-top: 30px; }
         }
         @media (max-width: 480px) {
             .logo { font-size: 24px; }
@@ -523,7 +638,8 @@
             .yandex-btn { font-size: 13px; padding: 8px 16px 8px 10px; gap: 10px; }
             .yandex-btn .ya-tile { width: 34px; height: 34px; }
             .yandex-btn .ya-tile svg { width: 22px; height: 22px; }
-            .music-hint { font-size: 13px; padding: 10px 16px; }
+            .messenger-text h4 { font-size: 15px; }
+            .messenger-text p { font-size: 12px; }
         }
     </style>
 </head>
@@ -536,8 +652,9 @@
                 <a href="#benefits">Преимущества</a>
                 <a href="#about">Услуги</a>
                 <a href="#yandex">Яндекс Карты</a>
-                <a href="#tour">Наши туры</a>
+                <a href="#tour">Примеры работ</a>
                 <a href="#contacts">Контакты</a>
+                <a href="#faq">FAQ</a>
                 <a href="tel:+79063437268" class="contact-link">
                     <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
                     +7-906-343-72-68
@@ -580,7 +697,7 @@
                         </svg>
                     </div>
                     <h3>Совместимость</h3>
-                    <p>Тур работает на Циан, Авито, Яндекс Картах и вашем сайте. Смотрится на ПК и телефоне.</p>
+                    <p>Тур работает на Циан, Яндекс Картах и вашем сайте. Смотрится на ПК и телефоне.</p>
                 </div>
                 <div class="card">
                     <div class="icon">
@@ -613,7 +730,7 @@
                 <div class="about-item">
                     <h3>
                         <span class="badge">
-                            <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                            <svg viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/><path d="M9 9h1"/><path d="M9 12h1"/><path d="M9 15h1"/><path d="M9 18h1"/></svg>
                         </span>
                         3D-туры для квартир и домов
                     </h3>
@@ -622,7 +739,7 @@
                 <div class="about-item">
                     <h3>
                         <span class="badge">
-                            <svg viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/></svg>
+                            <svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
                         </span>
                         3D-туры для кафе и ресторанов
                     </h3>
@@ -631,7 +748,7 @@
                 <div class="about-item">
                     <h3>
                         <span class="badge">
-                            <svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                            <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
                         </span>
                         3D-туры для магазинов
                     </h3>
@@ -640,7 +757,7 @@
                 <div class="about-item">
                     <h3>
                         <span class="badge">
-                            <svg viewBox="0 0 24 24"><path d="M3 3h18v18H3z"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+                            <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
                         </span>
                         3D-туры для офисов
                     </h3>
@@ -649,7 +766,7 @@
                 <div class="about-item">
                     <h3>
                         <span class="badge">
-                            <svg viewBox="0 0 24 24"><circle cx="12" cy="10" r="3"/><path d="M12 21.7C17.3 17 20 13 20 10a8 8 0 1 0-16 0c0 3 2.7 6.9 8 11.7z"/></svg>
+                            <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
                         </span>
                         Публикация на Яндекс Картах
                     </h3>
@@ -658,11 +775,11 @@
                 <div class="about-item">
                     <h3>
                         <span class="badge">
-                            <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                            <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
                         </span>
                         Готовая ссылка на тур
                     </h3>
-                    <p>Отправляем готовую ссылку на тур для Циан, Авито, ВКонтакте и мессенджеров. Клиенты открывают тур в один клик — с любого устройства.</p>
+                    <p>Отправляем готовую ссылку на тур для Циан, ВКонтакте и мессенджеров. Клиенты открывают тур в один клик — с любого устройства.</p>
                 </div>
             </div>
         </div>
@@ -671,24 +788,20 @@
     <section class="yandex-block" id="yandex">
         <div class="container">
             <div class="inner">
-                <div class="ya-logo">
-                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                        <path fill="#FC3F1D" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/>
-                    </svg>
-                </div>
+                <!-- Убрали крупный логотип, оставили текстовую плашку -->
+                <div class="ya-text-badge">Яндекс Карты</div>
                 <h2>Публикуем ваши туры на Яндекс Картах</h2>
                 <p>У нас есть возможность размещать панорамы 360° и виртуальные туры на Яндекс Картах. Это значит, что ваше кафе, магазин, офис или объект недвижимости увидят тысячи пользователей, которые ищут вас на картах. Панорама внутри карточки организации повышает доверие клиентов и увеличивает посещаемость.</p>
-                <div class="ya-tagline">🎯 Размещение панорам на Яндекс Картах — включено в услугу</div>
+                <div class="ya-tagline">Размещение панорам на Яндекс Картах — включено в услугу</div>
             </div>
         </div>
     </section>
 
     <section class="tour-block" id="tour">
         <div class="container">
-            <h2>Наши работы</h2>
+            <h2>Примеры работ</h2>
             <p class="subtitle">Осмотрите объект онлайн — кликните и перетаскивайте мышку</p>
 
-            <!-- Плашка-подсказка про музыку -->
             <div class="music-hint">
                 <svg viewBox="0 0 24 24">
                     <path d="M9 18V5l12-2v13"/>
@@ -847,31 +960,144 @@
                     </button>
                 </div>
             </div>
-
         </div>
     </section>
 
+    <!-- ===== КОНТАКТЫ (ПОРЯДОК: Телефон -> Мессенджеры -> Форма) ===== -->
     <section class="contacts" id="contacts">
         <div class="container">
             <h2>Свяжитесь с нами</h2>
+            
+            <!-- 1. Телефон -->
             <p class="info">
                 <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
                 <a href="tel:+79063437268">+7-906-343-72-68</a>
             </p>
-            <p class="info">
-                <svg viewBox="0 0 24 24"><path d="M21.5 4.5L2.5 12l5.5 2 2.5 6 4-5.5 6.5-3.5z"/></svg>
-                Telegram / MAX
-            </p>
-            <p class="info">
-                <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-                <a href="mailto:protour3d@yandex.ru">protour3d@yandex.ru</a>
-            </p>
+
+            <!-- 2. Мессенджеры -->
+            <div class="messengers-list">
+                <!-- Telegram -->
+                <a href="https://t.me/Fedor_Proskryakov" target="_blank" class="messenger-item">
+                    <div class="messenger-icon">
+                        <svg viewBox="0 0 24 24"><path d="M21.5 4.5L2.5 12l5.5 2 2.5 6 4-5.5 6.5-3.5z"/></svg>
+                    </div>
+                    <div class="messenger-text">
+                        <h4>Telegram</h4>
+                        <p>Заявка, консультация и трекинг</p>
+                    </div>
+                    <div class="messenger-arrow">
+                        <svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+                    </div>
+                </a>
+
+                <!-- ВКонтакте -->
+                <a href="https://vk.com/protour3d" target="_blank" class="messenger-item">
+                    <div class="messenger-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M13.162 18.994c.609 0 .858-.406.851-.915-.031-1.917.714-2.949 2.059-1.604 1.488 1.488 1.796 2.519 3.603 2.519h3.2c.808 0 1.126-.26 1.126-.668 0-.863-1.421-2.386-2.625-3.504-1.686-1.565-1.765-1.602-.313-3.486 1.801-2.339 4.157-5.336 2.073-5.336h-3.981c-.772 0-.828.435-1.103 1.083-.995 2.347-2.886 5.387-3.604 4.922-.751-.485-.407-2.406-.35-4.311.015-.722.075-1.38-.5-1.57-.38-.127-1.024-.168-1.65-.168-1.45 0-2.357.341-2.73 1.023-.176.321-.208.622-.208.622.071.621.53 1.015.718 1.143.332.225.72.242.964.242.443 0 .56-.09.857-.218.237-.102.49-.208.934-.208.57 0 .736.54.802 1.002.124.873.218 2.933.128 3.242-.204.698-.806.698-1.513.304-.769-.429-1.444-1.482-2.086-2.639-.551-1.002-1.354-2.289-1.354-2.289s-.144-.247-.43-.38c-.253-.115-.604-.133-.767-.133h-3.2c-.531 0-.78.243-.78.516 0 .54.566 1.244 1.076 2.09 1.453 2.418 2.695 4.247 4.122 5.822 1.446 1.602 3.054 2.28 4.721 2.28z"/>
+                        </svg>
+                    </div>
+                    <div class="messenger-text">
+                        <h4>ВКонтакте</h4>
+                        <p>Сообщество и сообщения</p>
+                    </div>
+                    <div class="messenger-arrow">
+                        <svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+                    </div>
+                </a>
+
+                <!-- MAX (Обновленная иконка) -->
+                <a href="https://max.ru/u/f9LHodD0cOJsa2Mc3dgbA36GUVxb6ydtwCt0n" target="_blank" class="messenger-item">
+                    <div class="messenger-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2C6.48 2 2 6.48 2 12c0 1.5.33 2.93.92 4.2L2 22l5.8-.92C9.07 21.67 10.5 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/>
+                            <circle cx="12" cy="12" r="4"/>
+                        </svg>
+                    </div>
+                    <div class="messenger-text">
+                        <h4>MAX</h4>
+                        <p>Связаться с менеджером</p>
+                    </div>
+                    <div class="messenger-arrow">
+                        <svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+                    </div>
+                </a>
+
+                <!-- Email -->
+                <a href="mailto:protour3d@yandex.ru" class="messenger-item">
+                    <div class="messenger-icon">
+                        <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                    </div>
+                    <div class="messenger-text">
+                        <h4>Почта</h4>
+                        <p>Напишите нам на email</p>
+                    </div>
+                    <div class="messenger-arrow">
+                        <svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+                    </div>
+                </a>
+            </div>
+
+            <!-- 3. Форма заявки -->
+            <div class="form-wrapper">
+                <h3>📩 Оставить заявку</h3>
+                
+                <form action="https://formspree.io/f/xvkgregd" method="POST">
+                    <label for="name">Ваше имя</label>
+                    <input type="text" id="name" name="name" required>
+
+                    <label for="contact">Телефон или мессенджер</label>
+                    <input type="text" id="contact" name="contact" required>
+
+                    <label for="message">Что нужно снять?</label>
+                    <textarea id="message" name="message" rows="3"></textarea>
+
+                    <button type="submit" class="btn">Отправить заявку</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FAQ ===== -->
+    <section class="faq" id="faq">
+        <div class="container">
+            <h2>Часто задаваемые вопросы</h2>
+            
+            <div class="faq-list">
+                <details>
+                    <summary>Сколько времени занимает создание 3D-тура?</summary>
+                    <p>Съёмка обычно занимает 1–2 часа. Обработка и сборка тура — ещё 1–2 дня. Итого вы получаете готовый тур в течение 1–3 рабочих дней.</p>
+                </details>
+
+                <details>
+                    <summary>Где можно разместить 3D-тур?</summary>
+                    <p>Тур можно разместить на вашем сайте, в соцсетях, на площадках (Циан, Яндекс Недвижимость), а также привязать к карточке организации на Яндекс Картах.</p>
+                </details>
+
+                <details>
+                    <summary>Нужно ли закрывать заведение на время съёмки?</summary>
+                    <p>Нет, съёмка проходит быстро и не мешает работе. Мы стараемся делать это в удобное для вас время, чтобы не мешать посетителям.</p>
+                </details>
+
+                <details>
+                    <summary>Сколько стоит 3D-тур?</summary>
+                    <p>Стоимость зависит от площади объекта и количества сцен. Напишите мне в Telegram или MAX — я сделаю расчёт за 5 минут.</p>
+                </details>
+
+                <details>
+                    <summary>Вы размещаете туры на Яндекс Картах?</summary>
+                    <p>Да, у нас есть возможность размещать панорамы 360° и виртуальные туры на Яндекс Картах. Это входит в стоимость услуги.</p>
+                </details>
+            </div>
         </div>
     </section>
 
     <footer>
         <div class="container">
-            &copy; 2026 ProTour3D. Все права защищены. Съёмка 3D-туров и панорам 360°.
+            <p style="margin-bottom: 10px;">&copy; 2026 ProTour3D. Все права защищены. Съёмка 3D-туров и панорам 360°.</p>
+            <p style="font-size: 12px; color: #6b7a99; max-width: 700px; margin: 0 auto; line-height: 1.5;">
+                Яндекс Карты — товарный знак ООО «ЯНДЕКС». Мы не являемся официальным партнёром или представителем компании Яндекс.
+            </p>
         </div>
     </footer>
 
