@@ -288,32 +288,27 @@
         });
 
         // === СЛЕЖЕНИЕ ЗА СМЕНОЙ СЦЕНЫ ===
-        const nameToId = {};
-        document.querySelectorAll('.scene').forEach(link => {
-            const id = link.getAttribute('data-id');
-            const name = link.querySelector('.text').textContent.trim();
-            nameToId[name] = id;
-        });
+        // Следим за классом "current" у пунктов меню — это надёжнее, чем
+        // сравнение по названию, потому что у вас есть сцены с одинаковыми
+        // именами (например, «Коридор» — 5- и 6-).
+        var sceneLinks = document.querySelectorAll('.scene');
 
-        const titleElement = document.querySelector('#titleBar .sceneName');
-        if (titleElement) {
-            const observer = new MutationObserver(() => {
-                const currentName = titleElement.textContent.trim();
-                const currentId = nameToId[currentName];
-                if (currentId) {
-                    updateActiveMarker(currentId);
-                }
-            });
-            observer.observe(titleElement, { childList: true, characterData: true, subtree: true });
+        function syncActiveMarker() {
+            // Ищем пункт меню, у которого сейчас класс "current"
+            var currentLink = document.querySelector('.scene.current');
+            if (currentLink) {
+                updateActiveMarker(currentLink.getAttribute('data-id'));
+            }
         }
 
-        // Подсветить первый маркер при загрузке
-        setTimeout(() => {
-            const firstLink = document.querySelector('.scene');
-            if (firstLink) {
-                updateActiveMarker(firstLink.getAttribute('data-id'));
-            }
-        }, 300);
+        // Наблюдаем за изменением класса у всех пунктов меню
+        var listObserver = new MutationObserver(syncActiveMarker);
+        sceneLinks.forEach(function(link) {
+            listObserver.observe(link, { attributes: true, attributeFilter: ['class'] });
+        });
+
+        // Подсветить текущий маркер при загрузке
+        setTimeout(syncActiveMarker, 300);
     }
 
     window.addEventListener('load', initMap);
