@@ -30,6 +30,12 @@
   var autorotateToggleElement = document.querySelector('#autorotateToggle');
   var fullscreenToggleElement = document.querySelector('#fullscreenToggle');
 
+  // 🎬 Настройки плавного перехода между сценами
+  // Меняйте эти значения, если хотите другой эффект.
+  var TRANSITION_FADE_OUT = 350;  // мс — затемнение старой сцены
+  var TRANSITION_FADE_IN  = 450;  // мс — проявление новой сцены
+  var TRANSITION_PAUSE    = 40;   // мс — пауза между затемнением и проявлением
+
   // Detect desktop or mobile mode.
   if (window.matchMedia) {
     var setMode = function() {
@@ -78,8 +84,6 @@
   var scenes = data.scenes.map(function(data) {
 
     // 📱 Мобильная оптимизация: обрезаем уровни детализации до 1024px.
-    // На телефоне экран всё равно не покажет больше — экономим трафик и время.
-    // На компьютере оставляем все уровни (256, 512, 1024, 2048, 4096).
     var levels = data.levels;
     if (isMobile && levels && levels.length > 3) {
       levels = levels.slice(0, 3);
@@ -94,10 +98,6 @@
     var limiter = Marzipano.RectilinearView.limit.traditional(data.faceSize, 100*Math.PI/180, 120*Math.PI/180);
     var view = new Marzipano.RectilinearView(data.initialViewParameters, limiter);
 
-    // ⚠️ Убрано pinFirstLevel: true.
-    // Это убирает эффект растянутых грубых тайлов 256px на весь экран,
-    // из-за которого в полноэкранном режиме были заметны «квадраты».
-    // Пока грузятся тайлы, показывается preview.jpg (размытая панорама).
     var scene = viewer.createScene({
       source: source,
       geometry: geometry,
@@ -198,27 +198,69 @@
     return s.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;');
   }
 
-    function switchScene(scene) {
+  // 🎬 Защита от наложения переходов
+  var isTransitioning = false;
+
+  // 🎬 Плавный переход: fade-out → switchScene → fade-in
+  function switchScene(scene) {
+    // Если это первая сцена при загрузке — переключаем без анимации
+    var isFirstSwitch = !panoElement.style.opacity || panoElement.style.opacity === '';
+
+    if (isFirstSwitch) {
+      applySceneSwitch(scene);
+      startAutorotate();
+      return;
+    }
+
+    // Защита от наложения переходов
+    if (isTransitioning) return;
+    isTransitioning = true;
+
     stopAutorotate();
-    
+
+    // Фаза 1: затемняем текущую сцену
+    panoElement.style.transition = 'opacity ' + TRANSITION_FADE_OUT + 'ms ease-out';
+    panoElement.style.opacity = '0';
+
+    setTimeout(function() {
+      // Фаза 2: пока экран тёмный — подменяем сцену
+      applySceneSwitch(scene);
+
+      // Фаза 3: проявляем новую сцену
+      panoElement.style.transition = 'opacity ' + TRANSITION_FADE_IN + 'ms ease-in';
+
+      setTimeout(function() {
+        panoElement.style.opacity = '1';
+
+        setTimeout(function() {
+          isTransitioning = false;
+          startAutorotate();
+        }, TRANSITION_FADE_IN);
+
+      }, TRANSITION_PAUSE);
+
+    }, TRANSITION_FADE_OUT);
+  }
+
+  // 🎬 Применение сцены (ваша логика с requestAnimationFrame и setTimeout сохранена)
+  function applySceneSwitch(scene) {
     // 1. Сбрасываем view на начальные параметры сцены ДО переключения
     scene.view.setParameters(scene.data.initialViewParameters);
-    
+
     // 2. Переключаем сцену
     scene.scene.switchTo();
-    
+
     // 3. Сбрасываем view ЕЩЁ РАЗ через следующий кадр отрисовки,
     //    чтобы Marzipano не перезаписал его во время анимации перехода
     requestAnimationFrame(function() {
       scene.view.setParameters(scene.data.initialViewParameters);
     });
-    
+
     // 4. Дополнительно — через 300 мс после перехода (на случай медленной анимации)
     setTimeout(function() {
       scene.view.setParameters(scene.data.initialViewParameters);
     }, 300);
-    
-    startAutorotate();
+
     updateSceneName(scene);
     updateSceneList(scene);
   }
