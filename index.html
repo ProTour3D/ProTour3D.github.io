@@ -1123,21 +1123,16 @@
         }
     </script>
 
-    <script>
+        <script>
         (function () {
+            // Очищаем якорь из URL, если он есть
             if (window.location.hash) {
                 var cleanUrl = window.location.pathname + window.location.search;
                 history.replaceState(null, '', cleanUrl);
             }
+            // Скролл наверх — только ОДИН раз, при парсинге страницы
+            window.scrollTo(0, 0);
         })();
-
-        window.addEventListener('load', function () {
-            window.scrollTo(0, 0);
-        });
-
-        document.addEventListener('DOMContentLoaded', function () {
-            window.scrollTo(0, 0);
-        });
     </script>
 
 </body>
