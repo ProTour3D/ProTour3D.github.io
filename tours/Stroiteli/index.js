@@ -198,10 +198,26 @@
     return s.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;');
   }
 
-  function switchScene(scene) {
+    function switchScene(scene) {
     stopAutorotate();
+    
+    // 1. Сбрасываем view на начальные параметры сцены ДО переключения
     scene.view.setParameters(scene.data.initialViewParameters);
+    
+    // 2. Переключаем сцену
     scene.scene.switchTo();
+    
+    // 3. Сбрасываем view ЕЩЁ РАЗ через следующий кадр отрисовки,
+    //    чтобы Marzipano не перезаписал его во время анимации перехода
+    requestAnimationFrame(function() {
+      scene.view.setParameters(scene.data.initialViewParameters);
+    });
+    
+    // 4. Дополнительно — через 300 мс после перехода (на случай медленной анимации)
+    setTimeout(function() {
+      scene.view.setParameters(scene.data.initialViewParameters);
+    }, 300);
+    
     startAutorotate();
     updateSceneName(scene);
     updateSceneList(scene);
