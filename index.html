@@ -19,7 +19,6 @@
 <noscript><div><img src="https://mc.yandex.ru/watch/113216468" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
 <!-- /Yandex.Metrika counter -->
 
-    <!-- Canonical — главный адрес страницы -->
     <link rel="canonical" href="https://protour3d.ru/">
 
     <title>3D-туры для недвижимости и бизнеса — съёмка панорам 360° | ProTour3D</title>
@@ -601,7 +600,6 @@
         .consent-label a:hover {
             color: #1a4f9c;
         }
-        /* Кнопка неактивна, пока не отмечен чекбокс */
         #submitBtn:disabled {
             opacity: 0.5;
             cursor: not-allowed;
@@ -1170,6 +1168,11 @@
 
     <script>
         function openTourFullscreen(iframeId, url) {
+            /* Отправляем цель в Метрику ДО вызова fullscreen */
+            if (typeof ym === 'function') {
+                ym(113216468, 'reachGoal', 'click_tour_view');
+            }
+
             var el = document.getElementById(iframeId);
             if (!el) return;
 
@@ -1213,6 +1216,7 @@
             window.scrollTo(0, 0);
         })();
     </script>
+
 <!-- ===== ОТСЛЕЖИВАНИЕ ЦЕЛЕЙ В МЕТРИКЕ ===== -->
 <script>
 document.addEventListener('DOMContentLoaded', function () {
@@ -1225,14 +1229,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    /* 2. Клики по кнопкам «Посмотреть тур» */
-    document.querySelectorAll('.tour-btn-primary').forEach(function (btn) {
-        btn.addEventListener('click', function () {
-            if (typeof ym === 'function') ym(113216468, 'reachGoal', 'click_tour_view');
-        });
-    });
-
-    /* 3. Клики по мессенджерам (Telegram, VK, MAX) */
+    /* 2. Клики по мессенджерам (Telegram, VK, MAX) */
     document.querySelectorAll('a[href]').forEach(function (link) {
         var href = link.getAttribute('href') || '';
 
@@ -1253,7 +1250,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    /* 4. Отправка формы */
+    /* 3. Отправка формы */
     var form = document.getElementById('orderForm');
     if (form) {
         form.addEventListener('submit', function () {
