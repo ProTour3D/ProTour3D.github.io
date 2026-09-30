@@ -1113,31 +1113,14 @@
             <div class="form-wrapper">
                 <h3>📩 Оставить заявку</h3>
 
-                <form action="https://formspree.io/f/xvkgregd" method="POST" id="orderForm">
-                    <label for="name">Ваше имя</label>
-                    <input type="text" id="name" name="name" required>
-
-                    <label for="contact">Телефон или мессенджер</label>
-                    <input type="text" id="contact" name="contact" required>
-
-                    <label for="message">Что нужно снять?</label>
-                    <textarea id="message" name="message" rows="3"></textarea>
-
-                    <!-- ЧЕКБОКС СОГЛАСИЯ (ФЗ-152) -->
-                    <div class="consent-block">
-                        <label class="consent-label">
-                            <input type="checkbox" id="consent" name="consent" required>
-                            <span>
-                                Я согласен(а) на обработку персональных данных
-                                и согласен(а) с
-                                <a href="/privacy.html" target="_blank">политикой конфиденциальности</a>
-                            </span>
-                        </label>
-                    </div>
-
-                    <button type="submit" class="btn" id="submitBtn" disabled>Отправить заявку</button>
-                </form>
-            </div>
+                <script src="https://forms.yandex.ru/_static/embed.js"></script>
+                <iframe
+                    src="https://forms.yandex.ru/u/6abd58c095add5531fefb5fe?iframe=1"
+                    frameborder="0"
+                    name="ya-form-6abd58c095add5531fefb5fe"
+                    style="width: 100%; min-height: 650px; border: none; border-radius: 12px;"
+                    allow="clipboard-write">
+                </iframe>
         </div>
     </section>
 
