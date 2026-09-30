@@ -561,54 +561,6 @@
         .form-wrapper h3 {
             text-align: center; margin-bottom: 25px; font-size: 22px; font-weight: 700; color: #0d1b3e;
         }
-        .form-wrapper label {
-            display: block; font-weight: 600; margin-bottom: 6px; color: #0d1b3e;
-        }
-        .form-wrapper input,
-        .form-wrapper textarea {
-            width: 100%; padding: 14px; border: 1px solid #cdd9ec;
-            border-radius: 10px; font-size: 16px; font-family: inherit; margin-bottom: 18px;
-        }
-        .form-wrapper textarea { resize: vertical; }
-        .form-wrapper .btn { width: 100%; padding: 16px; font-size: 17px; border: none; cursor: pointer; animation: none; }
-
-        /* ===== ЧЕКБОКС СОГЛАСИЯ (ФЗ-152) ===== */
-        .consent-block {
-            margin: 4px 0 20px;
-            font-size: 14px;
-            color: #4d5876;
-            line-height: 1.5;
-        }
-        .consent-label {
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-            cursor: pointer;
-        }
-        .consent-label input[type="checkbox"] {
-            margin-top: 3px;
-            width: 18px;
-            height: 18px;
-            cursor: pointer;
-            flex-shrink: 0;
-            accent-color: #4facfe;
-        }
-        .consent-label a {
-            color: #2c6fc9;
-            text-decoration: underline;
-        }
-        .consent-label a:hover {
-            color: #1a4f9c;
-        }
-        #submitBtn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            filter: grayscale(0.4);
-        }
-        #submitBtn:disabled:hover {
-            transform: none;
-            box-shadow: 0 10px 30px rgba(79, 172, 254, 0.4);
-        }
 
         .faq { padding: 55px 0 90px; background: linear-gradient(180deg, #ffffff 0%, #f6f8fc 100%); }
         .faq h2 {
@@ -1011,7 +963,7 @@
                 </div>
             </div>
 
-                        <!-- Тур 6: Ново-Садовая 303А (квартира) -->
+            <!-- Тур 6: Ново-Садовая 303А (квартира) -->
             <div class="tour-item">
                 <h3 class="tour-title">🏠 Ново-Садовая 303А</h3>
                 <iframe class="tour-frame" id="tour-novosadovaya"
@@ -1121,6 +1073,7 @@
                     style="width: 100%; min-height: 650px; border: none; border-radius: 12px;"
                     allow="clipboard-write">
                 </iframe>
+            </div>
         </div>
     </section>
 
@@ -1197,19 +1150,6 @@
         }
     </script>
 
-    <!-- Активация кнопки после согласия (ФЗ-152) -->
-    <script>
-        (function () {
-            var consent = document.getElementById('consent');
-            var submitBtn = document.getElementById('submitBtn');
-            if (consent && submitBtn) {
-                consent.addEventListener('change', function () {
-                    submitBtn.disabled = !consent.checked;
-                });
-            }
-        })();
-    </script>
-
     <script>
         (function () {
             if (window.location.hash) {
@@ -1253,13 +1193,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    /* 3. Отправка формы */
-    var form = document.getElementById('orderForm');
-    if (form) {
-        form.addEventListener('submit', function () {
-            if (typeof ym === 'function') ym(113216468, 'reachGoal', 'form_submit');
-        });
-    }
 });
 </script>
 </body>
