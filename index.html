@@ -1213,6 +1213,54 @@
             window.scrollTo(0, 0);
         })();
     </script>
+<!-- ===== ОТСЛЕЖИВАНИЕ ЦЕЛЕЙ В МЕТРИКЕ ===== -->
+<script>
+document.addEventListener('DOMContentLoaded', function () {
 
+    /* 1. Клик по кнопке «Заказать тур» в баннере */
+    var heroBtn = document.querySelector('.hero .btn');
+    if (heroBtn) {
+        heroBtn.addEventListener('click', function () {
+            if (typeof ym === 'function') ym(113216468, 'reachGoal', 'click_hero_button');
+        });
+    }
+
+    /* 2. Клики по кнопкам «Посмотреть тур» */
+    document.querySelectorAll('.tour-btn-primary').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            if (typeof ym === 'function') ym(113216468, 'reachGoal', 'click_tour_view');
+        });
+    });
+
+    /* 3. Клики по мессенджерам (Telegram, VK, MAX) */
+    document.querySelectorAll('a[href]').forEach(function (link) {
+        var href = link.getAttribute('href') || '';
+
+        if (href.indexOf('t.me') !== -1) {
+            link.addEventListener('click', function () {
+                if (typeof ym === 'function') ym(113216468, 'reachGoal', 'click_telegram');
+            });
+        }
+        if (href.indexOf('vk.com') !== -1) {
+            link.addEventListener('click', function () {
+                if (typeof ym === 'function') ym(113216468, 'reachGoal', 'click_vk');
+            });
+        }
+        if (href.indexOf('max.ru') !== -1) {
+            link.addEventListener('click', function () {
+                if (typeof ym === 'function') ym(113216468, 'reachGoal', 'click_max');
+            });
+        }
+    });
+
+    /* 4. Отправка формы */
+    var form = document.getElementById('orderForm');
+    if (form) {
+        form.addEventListener('submit', function () {
+            if (typeof ym === 'function') ym(113216468, 'reachGoal', 'form_submit');
+        });
+    }
+});
+</script>
 </body>
 </html>
