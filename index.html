@@ -568,6 +568,45 @@
         .form-wrapper textarea { resize: vertical; }
         .form-wrapper .btn { width: 100%; padding: 16px; font-size: 17px; border: none; cursor: pointer; animation: none; }
 
+        /* ===== ЧЕКБОКС СОГЛАСИЯ (ФЗ-152) ===== */
+        .consent-block {
+            margin: 4px 0 20px;
+            font-size: 14px;
+            color: #4d5876;
+            line-height: 1.5;
+        }
+        .consent-label {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            cursor: pointer;
+        }
+        .consent-label input[type="checkbox"] {
+            margin-top: 3px;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            flex-shrink: 0;
+            accent-color: #4facfe;
+        }
+        .consent-label a {
+            color: #2c6fc9;
+            text-decoration: underline;
+        }
+        .consent-label a:hover {
+            color: #1a4f9c;
+        }
+        /* Кнопка неактивна, пока не отмечен чекбокс */
+        #submitBtn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            filter: grayscale(0.4);
+        }
+        #submitBtn:disabled:hover {
+            transform: none;
+            box-shadow: 0 10px 30px rgba(79, 172, 254, 0.4);
+        }
+
         .faq { padding: 55px 0 90px; background: linear-gradient(180deg, #ffffff 0%, #f6f8fc 100%); }
         .faq h2 {
             text-align: center;
@@ -626,6 +665,15 @@
             text-align: center;
             padding: 30px 0;
             font-size: 14px;
+        }
+        footer a.footer-link {
+            color: #c9d4ea;
+            text-decoration: underline;
+            font-size: 14px;
+            transition: color 0.25s;
+        }
+        footer a.footer-link:hover {
+            color: #5ba3f5;
         }
 
         @media (max-width: 800px) {
@@ -1042,7 +1090,7 @@
             <div class="form-wrapper">
                 <h3>📩 Оставить заявку</h3>
 
-                <form action="https://formspree.io/f/xvkgregd" method="POST">
+                <form action="https://formspree.io/f/xvkgregd" method="POST" id="orderForm">
                     <label for="name">Ваше имя</label>
                     <input type="text" id="name" name="name" required>
 
@@ -1052,7 +1100,19 @@
                     <label for="message">Что нужно снять?</label>
                     <textarea id="message" name="message" rows="3"></textarea>
 
-                    <button type="submit" class="btn">Отправить заявку</button>
+                    <!-- ЧЕКБОКС СОГЛАСИЯ (ФЗ-152) -->
+                    <div class="consent-block">
+                        <label class="consent-label">
+                            <input type="checkbox" id="consent" name="consent" required>
+                            <span>
+                                Я согласен(а) на обработку персональных данных
+                                и согласен(а) с
+                                <a href="/privacy.html" target="_blank">политикой конфиденциальности</a>
+                            </span>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn" id="submitBtn" disabled>Отправить заявку</button>
                 </form>
             </div>
         </div>
@@ -1093,7 +1153,10 @@
 
     <footer>
         <div class="container">
-            <p style="margin-bottom: 10px;">&copy; 2026 ProTour3D. Все права защищены. Съёмка 3D-туров и панорам 360°.</p>
+            <p style="margin-bottom: 12px;">&copy; 2026 ProTour3D. Все права защищены. Съёмка 3D-туров и панорам 360°.</p>
+            <p style="margin-bottom: 14px;">
+                <a href="/privacy.html" class="footer-link">Политика конфиденциальности</a>
+            </p>
             <p style="font-size: 12px; color: #6b7a99; max-width: 700px; margin: 0 auto; line-height: 1.5;">
                 Яндекс Карты — товарный знак ООО «ЯНДЕКС». Мы не являемся официальным партнёром или представителем компании Яндекс.
             </p>
@@ -1123,14 +1186,25 @@
         }
     </script>
 
-        <script>
+    <!-- Активация кнопки после согласия (ФЗ-152) -->
+    <script>
         (function () {
-            // Очищаем якорь из URL, если он есть
+            var consent = document.getElementById('consent');
+            var submitBtn = document.getElementById('submitBtn');
+            if (consent && submitBtn) {
+                consent.addEventListener('change', function () {
+                    submitBtn.disabled = !consent.checked;
+                });
+            }
+        })();
+    </script>
+
+    <script>
+        (function () {
             if (window.location.hash) {
                 var cleanUrl = window.location.pathname + window.location.search;
                 history.replaceState(null, '', cleanUrl);
             }
-            // Скролл наверх — только ОДИН раз, при парсинге страницы
             window.scrollTo(0, 0);
         })();
     </script>
