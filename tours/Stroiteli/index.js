@@ -31,10 +31,17 @@
   var fullscreenToggleElement = document.querySelector('#fullscreenToggle');
 
   // 🎬 Настройки плавного перехода между сценами
-  // Меняйте эти значения, если хотите другой эффект.
   var TRANSITION_FADE_OUT = 350;  // мс — затемнение старой сцены
   var TRANSITION_FADE_IN  = 450;  // мс — проявление новой сцены
   var TRANSITION_PAUSE    = 40;   // мс — пауза между затемнением и проявлением
+
+  // 🧠 Хранилище запомненных видов для каждой сцены.
+  // Ключ — id сцены, значение — { yaw, pitch, fov }.
+  // Пока пользователь в туре, все виды сохраняются и восстанавливаются.
+  var savedViews = {};
+
+  // 🧠 Ссылка на текущую активную сцену (чтобы знать, чей вид сохранять)
+  var currentSceneRef = null;
 
   // Detect desktop or mobile mode.
   if (window.matchMedia) {
@@ -198,6 +205,36 @@
     return s.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;');
   }
 
+  // 🧠 Сохраняем текущий вид активной сцены перед переходом
+  function saveCurrentView() {
+    if (!currentSceneRef) return;
+    var view = currentSceneRef.view;
+    var id = currentSceneRef.data.id;
+    var yaw = view.yaw();
+    var pitch = view.pitch();
+    var fov = view.fov();
+
+    // Не сохраняем «пустой» вид, если сцена ещё не отрисована
+    if (isNaN(yaw) || isNaN(pitch) || isNaN(fov)) return;
+
+    savedViews[id] = { yaw: yaw, pitch: pitch, fov: fov };
+  }
+
+  // 🧠 Возвращаем параметры вида для сцены:
+  //   - если пользователь уже был в этой сцене — сохранённый вид,
+  //   - если нет — initialViewParameters из data.js
+  function getViewParameters(sceneData) {
+    var saved = savedViews[sceneData.id];
+    if (saved) {
+      return {
+        yaw: saved.yaw,
+        pitch: saved.pitch,
+        fov: saved.fov
+      };
+    }
+    return sceneData.initialViewParameters;
+  }
+
   // 🎬 Защита от наложения переходов
   var isTransitioning = false;
 
@@ -215,6 +252,9 @@
     // Защита от наложения переходов
     if (isTransitioning) return;
     isTransitioning = true;
+
+    // 🧠 Запоминаем вид текущей сцены ПЕРЕД началом перехода
+    saveCurrentView();
 
     stopAutorotate();
 
@@ -242,24 +282,30 @@
     }, TRANSITION_FADE_OUT);
   }
 
-  // 🎬 Применение сцены (ваша логика с requestAnimationFrame и setTimeout сохранена)
+  // 🎬 Применение сцены
   function applySceneSwitch(scene) {
-    // 1. Сбрасываем view на начальные параметры сцены ДО переключения
-    scene.view.setParameters(scene.data.initialViewParameters);
+    // 🧠 Берём либо сохранённый вид, либо initialViewParameters
+    var viewParams = getViewParameters(scene.data);
+
+    // 1. Устанавливаем view ДО переключения
+    scene.view.setParameters(viewParams);
 
     // 2. Переключаем сцену
     scene.scene.switchTo();
 
-    // 3. Сбрасываем view ЕЩЁ РАЗ через следующий кадр отрисовки,
-    //    чтобы Marzipano не перезаписал его во время анимации перехода
+    // 3. Ещё раз через следующий кадр отрисовки — чтобы Marzipano
+    //    не перезаписал view своей внутренней логикой
     requestAnimationFrame(function() {
-      scene.view.setParameters(scene.data.initialViewParameters);
+      scene.view.setParameters(viewParams);
     });
 
-    // 4. Дополнительно — через 300 мс после перехода (на случай медленной анимации)
+    // 4. Дополнительно — через 300 мс (на случай медленной анимации)
     setTimeout(function() {
-      scene.view.setParameters(scene.data.initialViewParameters);
+      scene.view.setParameters(viewParams);
     }, 300);
+
+    // 🧠 Запоминаем, что теперь активна эта сцена
+    currentSceneRef = scene;
 
     updateSceneName(scene);
     updateSceneList(scene);
@@ -320,33 +366,26 @@
 
   function createLinkHotspotElement(hotspot) {
 
-    // Create wrapper element to hold icon and tooltip.
     var wrapper = document.createElement('div');
     wrapper.classList.add('hotspot');
     wrapper.classList.add('link-hotspot');
 
-    // Create image element.
     var icon = document.createElement('img');
     icon.src = 'img/link.png';
     icon.classList.add('link-hotspot-icon');
 
-    // Set rotation transform.
     var transformProperties = [ '-ms-transform', '-webkit-transform', 'transform' ];
     for (var i = 0; i < transformProperties.length; i++) {
       var property = transformProperties[i];
       icon.style[property] = 'rotate(' + hotspot.rotation + 'rad)';
     }
 
-    // Add click event handler.
     wrapper.addEventListener('click', function() {
       switchScene(findSceneById(hotspot.target));
     });
 
-    // Prevent touch and scroll events from reaching the parent element.
-    // This prevents the view control logic from interfering with the hotspot.
     stopTouchAndScrollEventPropagation(wrapper);
 
-    // Create tooltip element.
     var tooltip = document.createElement('div');
     tooltip.classList.add('hotspot-tooltip');
     tooltip.classList.add('link-hotspot-tooltip');
@@ -360,16 +399,13 @@
 
   function createInfoHotspotElement(hotspot) {
 
-    // Create wrapper element to hold icon and tooltip.
     var wrapper = document.createElement('div');
     wrapper.classList.add('hotspot');
     wrapper.classList.add('info-hotspot');
 
-    // Create hotspot/tooltip header.
     var header = document.createElement('div');
     header.classList.add('info-hotspot-header');
 
-    // Create image element.
     var iconWrapper = document.createElement('div');
     iconWrapper.classList.add('info-hotspot-icon-wrapper');
     var icon = document.createElement('img');
@@ -377,7 +413,6 @@
     icon.classList.add('info-hotspot-icon');
     iconWrapper.appendChild(icon);
 
-    // Create title element.
     var titleWrapper = document.createElement('div');
     titleWrapper.classList.add('info-hotspot-title-wrapper');
     var title = document.createElement('div');
@@ -385,7 +420,6 @@
     title.innerHTML = hotspot.title;
     titleWrapper.appendChild(title);
 
-    // Create close element.
     var closeWrapper = document.createElement('div');
     closeWrapper.classList.add('info-hotspot-close-wrapper');
     var closeIcon = document.createElement('img');
@@ -393,21 +427,17 @@
     closeIcon.classList.add('info-hotspot-close-icon');
     closeWrapper.appendChild(closeIcon);
 
-    // Construct header element.
     header.appendChild(iconWrapper);
     header.appendChild(titleWrapper);
     header.appendChild(closeWrapper);
 
-    // Create text element.
     var text = document.createElement('div');
     text.classList.add('info-hotspot-text');
     text.innerHTML = hotspot.text;
 
-    // Place header and text into wrapper element.
     wrapper.appendChild(header);
     wrapper.appendChild(text);
 
-    // Create a modal for the hotspot content to appear on mobile mode.
     var modal = document.createElement('div');
     modal.innerHTML = wrapper.innerHTML;
     modal.classList.add('info-hotspot-modal');
@@ -418,20 +448,14 @@
       modal.classList.toggle('visible');
     };
 
-    // Show content when hotspot is clicked.
     wrapper.querySelector('.info-hotspot-header').addEventListener('click', toggle);
-
-    // Hide content when close icon is clicked.
     modal.querySelector('.info-hotspot-close-wrapper').addEventListener('click', toggle);
 
-    // Prevent touch and scroll events from reaching the parent element.
-    // This prevents the view control logic from interfering with the hotspot.
     stopTouchAndScrollEventPropagation(wrapper);
 
     return wrapper;
   }
 
-  // Prevent touch and scroll events from reaching the parent element.
   function stopTouchAndScrollEventPropagation(element, eventList) {
     var eventList = [ 'touchstart', 'touchmove', 'touchend', 'touchcancel',
                       'wheel', 'mousewheel' ];
