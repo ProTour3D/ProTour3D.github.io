@@ -30,11 +30,6 @@
   var autorotateToggleElement = document.querySelector('#autorotateToggle');
   var fullscreenToggleElement = document.querySelector('#fullscreenToggle');
 
-  // 🎬 Настройки плавного перехода между сценами
-  var TRANSITION_FADE_OUT = 350;
-  var TRANSITION_FADE_IN  = 450;
-  var TRANSITION_PAUSE    = 40;
-
   // 🧠 Хранилище запомненных видов для каждой сцены
   var savedViews = {};
 
@@ -223,13 +218,10 @@
     return sceneData.initialViewParameters;
   }
 
-  // 🎬 Защита от наложения переходов
-  var isTransitioning = false;
-
   // 🎬 Флаг: первая сцена при загрузке уже отрисована?
   var isFirstSwitchDone = false;
 
-  // 🎬 Плавный переход: fade-out → switchScene → fade-in
+  // 🎬 Переключение сцены — без анимации, только view memory
   function switchScene(scene) {
     if (!isFirstSwitchDone) {
       isFirstSwitchDone = true;
@@ -238,65 +230,30 @@
       return;
     }
 
-    if (isTransitioning) return;
-    isTransitioning = true;
-
-    // 🧠 Запоминаем вид текущей сцены ПЕРЕД началом перехода
+    // 🧠 Запоминаем вид текущей сцены ПЕРЕД переходом
     saveCurrentView();
 
     stopAutorotate();
 
-    // Фаза 1: затемняем
-    panoElement.style.transition = 'opacity ' + TRANSITION_FADE_OUT + 'ms ease-out';
-    panoElement.style.opacity = '0';
+    // Переключаем
+    applySceneSwitch(scene);
 
-    setTimeout(function() {
-      // Фаза 2: подменяем сцену
-      applySceneSwitch(scene);
-
-      // Фаза 3: проявляем
-      panoElement.style.transition = 'opacity ' + TRANSITION_FADE_IN + 'ms ease-in';
-
-      setTimeout(function() {
-        panoElement.style.opacity = '1';
-
-        setTimeout(function() {
-          isTransitioning = false;
-          startAutorotate();
-        }, TRANSITION_FADE_IN);
-
-      }, TRANSITION_PAUSE);
-
-    }, TRANSITION_FADE_OUT);
+    startAutorotate();
   }
 
   // 🎬 Применение сцены
   function applySceneSwitch(scene) {
-    // 🧠 Берём либо сохранённый вид, либо initialViewParameters
     var viewParams = getViewParameters(scene.data);
 
-    // 🧠 ВАЖНО: подменяем initialViewParameters у сцены.
-    // Если Marzipano где-то внутри снова применит их при переключении —
-    // он применит наш сохранённый вид, а не стартовый из data.js.
+    // Подменяем initialViewParameters — чтобы Marzipano,
+    // если он снова их применит при switchTo, применил наш сохранённый вид.
     scene.data.initialViewParameters = viewParams;
 
-    // 1. Устанавливаем view ДО переключения
+    // Устанавливаем view и переключаем
     scene.view.setParameters(viewParams);
-
-    // 2. Переключаем сцену
     scene.scene.switchTo();
 
-    // 3. Ещё раз через следующий кадр отрисовки
-    requestAnimationFrame(function() {
-      scene.view.setParameters(viewParams);
-    });
-
-    // 4. Дополнительные повторы — чтобы точно перебить внутренние сбросы Marzipano
-    setTimeout(function() { scene.view.setParameters(viewParams); }, 100);
-    setTimeout(function() { scene.view.setParameters(viewParams); }, 300);
-    setTimeout(function() { scene.view.setParameters(viewParams); }, 600);
-
-    // 🧠 Запоминаем, что теперь активна эта сцена
+    // 🧠 Запоминаем активную сцену
     currentSceneRef = scene;
 
     updateSceneName(scene);
