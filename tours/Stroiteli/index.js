@@ -29,20 +29,6 @@
   var autorotateToggleElement = document.querySelector('#autorotateToggle');
   var fullscreenToggleElement = document.querySelector('#fullscreenToggle');
 
-  // 🎯 РУЧНАЯ НАСТРОЙКА ВИДА ПРИ ВХОДЕ В СЦЕНУ
-  // Формат: 'куда_пришли': { 'откуда_пришли': { yaw, pitch, fov } }
-  // Если для пары сцен правило есть — используется оно.
-  // Если нет — включается авто-режим (см. computeArrivalView).
-  //
-  // ПРИМЕР (замените на свои значения):
-  // '6-': {
-  //   '5-': { yaw: 1.57, pitch: 0, fov: 1.57 },  // пришли из 5- в 6-, смотрим сюда
-  //   '7-': { yaw: -1.2, pitch: 0, fov: 1.57 }   // пришли из 7- в 6-, смотрим сюда
-  // }
-  var ARRIVAL_VIEWS = {
-    // Здесь ваши ручные правила. Пока пусто — работает авто-режим.
-  };
-
   // 🧠 Хранилище запомненных видов (для навигации через меню сцен)
   var savedViews = {};
 
@@ -165,6 +151,7 @@
   scenes.forEach(function(scene) {
     var el = document.querySelector('#sceneList .scene[data-id="' + scene.data.id + '"]');
     el.addEventListener('click', function() {
+      // 🧠 Клик по меню — не считается «переходом через дверь»
       switchScene(scene, false);
       if (document.body.classList.contains('mobile')) {
         hideSceneList();
@@ -201,7 +188,9 @@
     return a;
   }
 
-  // 🧠 Сохраняем текущий вид активной сцены (не сохраняем вид на дверь)
+  // 🧠 Сохраняем текущий вид активной сцены.
+  // НО: если пользователь смотрит на какую-то дверь — не сохраняем,
+  // чтобы не «застрять» на виде двери при возврате.
   function saveCurrentView() {
     if (!currentSceneRef) return;
     var view = currentSceneRef.view;
@@ -212,84 +201,65 @@
 
     if (isNaN(yaw) || isNaN(pitch) || isNaN(fov)) return;
 
+    // Проверяем: смотрит ли пользователь на одну из дверей (link hotspot)
     var linkHotspots = currentSceneRef.data.linkHotspots || [];
     for (var i = 0; i < linkHotspots.length; i++) {
       var doorYaw = linkHotspots[i].yaw;
       var diff = Math.abs(normalizeAngle(yaw - doorYaw));
-      if (diff < Math.PI / 4) {
-        return;  // смотрит на дверь — не сохраняем
+      if (diff < Math.PI / 4) {  // в пределах 45° от двери
+        return;  // не сохраняем — чтобы не «залипнуть» на двери
       }
     }
 
     savedViews[id] = { yaw: yaw, pitch: pitch, fov: fov };
   }
 
-  // 🎯 Вычисляем «вид в комнату» при входе через дверь.
-  //
-  // Приоритет:
-  //   1. Ручное правило из ARRIVAL_VIEWS
-  //   2. Смотрим на любой hotspot, ведущий НЕ обратно в sourceSceneId
-  //      (то есть на «следующую дверь» или интересную точку в комнате)
-  //   3. Резервный вариант: 180° от двери, через которую вошли
+  // 🧠 Вычисляем «вид в комнату» для сцены, в которую мы входим
+  // через дверь из sourceSceneId.
+  // Ищем в сцене hotspot, ведущий обратно в sourceSceneId,
+  // и смотрим в противоположную от него сторону.
   function computeArrivalView(sceneData, sourceSceneId) {
     if (!sourceSceneId) return null;
 
-    // Приоритет 1: ручное правило
-    var manual = ARRIVAL_VIEWS[sceneData.id];
-    if (manual && manual[sourceSceneId]) {
-      return manual[sourceSceneId];
-    }
-
     var linkHotspots = sceneData.linkHotspots || [];
-
-    // Приоритет 2: смотрим на следующую дверь (не обратно)
-    var forwardLinks = [];
     var backLink = null;
 
     for (var i = 0; i < linkHotspots.length; i++) {
       if (linkHotspots[i].target === sourceSceneId) {
         backLink = linkHotspots[i];
-      } else {
-        forwardLinks.push(linkHotspots[i]);
+        break;
       }
     }
 
-    if (forwardLinks.length > 0) {
-      // Берём первый forward-link (обычно главный)
-      var target = forwardLinks[0];
-      return {
-        yaw: target.yaw,
-        pitch: sceneData.initialViewParameters.pitch,
-        fov: sceneData.initialViewParameters.fov
-      };
-    }
+    if (!backLink) return null;
 
-    // Приоритет 3: 180° от двери, через которую вошли
-    if (backLink) {
-      return {
-        yaw: backLink.yaw + Math.PI,
-        pitch: sceneData.initialViewParameters.pitch,
-        fov: sceneData.initialViewParameters.fov
-      };
-    }
-
-    return null;
+    return {
+      yaw: backLink.yaw + Math.PI,     // 180° от двери — смотрим В КОМНАТУ
+      pitch: sceneData.initialViewParameters.pitch,
+      fov: sceneData.initialViewParameters.fov
+    };
   }
 
+  // 🧠 Определяем, какие параметры вида применить при входе в сцену.
   function getViewParameters(sceneData, sourceSceneId, fromHotspot) {
+    // 1. Если зашли через дверь — всегда смотрим В КОМНАТУ (не на дверь)
     if (fromHotspot && sourceSceneId) {
       var arrival = computeArrivalView(sceneData, sourceSceneId);
       if (arrival) return arrival;
     }
 
+    // 2. Если есть сохранённый вид (навигация через меню) — используем его
     var saved = savedViews[sceneData.id];
     if (saved) return saved;
 
+    // 3. Иначе — начальный вид из data.js
     return sceneData.initialViewParameters;
   }
 
+  // 🎬 Флаг: первая сцена при загрузке уже отрисована?
   var isFirstSwitchDone = false;
 
+  // 🎬 Переключение сцены
   function switchScene(scene, fromHotspot) {
     if (!isFirstSwitchDone) {
       isFirstSwitchDone = true;
@@ -298,18 +268,27 @@
       return;
     }
 
+    // 🧠 Запоминаем, откуда идём (для вычисления arrival view)
     var sourceSceneId = (fromHotspot && currentSceneRef) ? currentSceneRef.data.id : null;
 
+    // 🧠 Сохраняем текущий вид (если он «осмысленный»)
     saveCurrentView();
+
     stopAutorotate();
+
     applySceneSwitch(scene, sourceSceneId, fromHotspot);
+
     startAutorotate();
   }
 
+  // 🎬 Применение сцены
   function applySceneSwitch(scene, sourceSceneId, fromHotspot) {
     var viewParams = getViewParameters(scene.data, sourceSceneId, fromHotspot);
 
+    // Подменяем initialViewParameters — чтобы Marzipano, если он снова
+    // применит их при switchTo, применил именно наш вид.
     scene.data.initialViewParameters = viewParams;
+
     scene.view.setParameters(viewParams);
     scene.scene.switchTo();
 
@@ -389,6 +368,7 @@
     }
 
     wrapper.addEventListener('click', function() {
+      // 🧠 true = переход через дверь (hotspot)
       switchScene(findSceneById(hotspot.target), true);
     });
 
