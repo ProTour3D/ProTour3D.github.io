@@ -31,12 +31,11 @@
   var fullscreenToggleElement = document.querySelector('#fullscreenToggle');
 
   // 🎬 Настройки плавного перехода между сценами
-  var TRANSITION_FADE_OUT = 350;  // мс — затемнение старой сцены
-  var TRANSITION_FADE_IN  = 450;  // мс — проявление новой сцены
-  var TRANSITION_PAUSE    = 40;   // мс — пауза между затемнением и проявлением
+  var TRANSITION_FADE_OUT = 350;
+  var TRANSITION_FADE_IN  = 450;
+  var TRANSITION_PAUSE    = 40;
 
-  // 🧠 Хранилище запомненных видов для каждой сцены.
-  // Ключ — id сцены, значение — { yaw, pitch, fov }.
+  // 🧠 Хранилище запомненных видов для каждой сцены
   var savedViews = {};
 
   // 🧠 Ссылка на текущую активную сцену
@@ -89,7 +88,7 @@
   // Create scenes.
   var scenes = data.scenes.map(function(data) {
 
-    // 📱 Мобильная оптимизация: обрезаем уровни детализации до 1024px.
+    // 📱 Мобильная оптимизация
     var levels = data.levels;
     if (isMobile && levels && levels.length > 3) {
       levels = levels.slice(0, 3);
@@ -139,7 +138,6 @@
     autorotateToggleElement.classList.add('enabled');
   }
 
-  // Set handler for autorotate toggle.
   autorotateToggleElement.addEventListener('click', toggleAutorotate);
 
   // Set up fullscreen mode, if supported.
@@ -159,15 +157,12 @@
     document.body.classList.add('fullscreen-disabled');
   }
 
-  // Set handler for scene list toggle.
   sceneListToggleElement.addEventListener('click', toggleSceneList);
 
-  // Start with the scene list open on desktop.
   if (!document.body.classList.contains('mobile')) {
     showSceneList();
   }
 
-  // Set handler for scene switch.
   scenes.forEach(function(scene) {
     var el = document.querySelector('#sceneList .scene[data-id="' + scene.data.id + '"]');
     el.addEventListener('click', function() {
@@ -186,11 +181,9 @@
   var viewInElement = document.querySelector('#viewIn');
   var viewOutElement = document.querySelector('#viewOut');
 
-  // Dynamic parameters for controls.
   var velocity = 0.7;
   var friction = 3;
 
-  // Associate view controls with elements.
   var controls = viewer.controls();
   controls.registerMethod('upElement',    new Marzipano.ElementPressControlMethod(viewUpElement,     'y', -velocity, friction), true);
   controls.registerMethod('downElement',  new Marzipano.ElementPressControlMethod(viewDownElement,   'y',  velocity, friction), true);
@@ -238,7 +231,6 @@
 
   // 🎬 Плавный переход: fade-out → switchScene → fade-in
   function switchScene(scene) {
-    // Первая сцена при загрузке — без анимации
     if (!isFirstSwitchDone) {
       isFirstSwitchDone = true;
       applySceneSwitch(scene);
@@ -246,7 +238,6 @@
       return;
     }
 
-    // Защита от наложения переходов
     if (isTransitioning) return;
     isTransitioning = true;
 
@@ -255,15 +246,15 @@
 
     stopAutorotate();
 
-    // Фаза 1: затемняем текущую сцену
+    // Фаза 1: затемняем
     panoElement.style.transition = 'opacity ' + TRANSITION_FADE_OUT + 'ms ease-out';
     panoElement.style.opacity = '0';
 
     setTimeout(function() {
-      // Фаза 2: пока экран тёмный — подменяем сцену
+      // Фаза 2: подменяем сцену
       applySceneSwitch(scene);
 
-      // Фаза 3: проявляем новую сцену
+      // Фаза 3: проявляем
       panoElement.style.transition = 'opacity ' + TRANSITION_FADE_IN + 'ms ease-in';
 
       setTimeout(function() {
@@ -284,6 +275,11 @@
     // 🧠 Берём либо сохранённый вид, либо initialViewParameters
     var viewParams = getViewParameters(scene.data);
 
+    // 🧠 ВАЖНО: подменяем initialViewParameters у сцены.
+    // Если Marzipano где-то внутри снова применит их при переключении —
+    // он применит наш сохранённый вид, а не стартовый из data.js.
+    scene.data.initialViewParameters = viewParams;
+
     // 1. Устанавливаем view ДО переключения
     scene.view.setParameters(viewParams);
 
@@ -295,10 +291,10 @@
       scene.view.setParameters(viewParams);
     });
 
-    // 4. Дополнительно — через 300 мс
-    setTimeout(function() {
-      scene.view.setParameters(viewParams);
-    }, 300);
+    // 4. Дополнительные повторы — чтобы точно перебить внутренние сбросы Marzipano
+    setTimeout(function() { scene.view.setParameters(viewParams); }, 100);
+    setTimeout(function() { scene.view.setParameters(viewParams); }, 300);
+    setTimeout(function() { scene.view.setParameters(viewParams); }, 600);
 
     // 🧠 Запоминаем, что теперь активна эта сцена
     currentSceneRef = scene;
