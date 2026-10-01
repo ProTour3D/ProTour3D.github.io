@@ -37,10 +37,9 @@
 
   // 🧠 Хранилище запомненных видов для каждой сцены.
   // Ключ — id сцены, значение — { yaw, pitch, fov }.
-  // Пока пользователь в туре, все виды сохраняются и восстанавливаются.
   var savedViews = {};
 
-  // 🧠 Ссылка на текущую активную сцену (чтобы знать, чей вид сохранять)
+  // 🧠 Ссылка на текущую активную сцену
   var currentSceneRef = null;
 
   // Detect desktop or mobile mode.
@@ -83,7 +82,7 @@
   // Initialize viewer.
   var viewer = new Marzipano.Viewer(panoElement, viewerOpts);
 
-  // 📱 Определяем мобильное устройство (для оптимизации загрузки тайлов)
+  // 📱 Определяем мобильное устройство
   var isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)
                  || window.innerWidth < 768;
 
@@ -173,7 +172,6 @@
     var el = document.querySelector('#sceneList .scene[data-id="' + scene.data.id + '"]');
     el.addEventListener('click', function() {
       switchScene(scene);
-      // On mobile, hide scene list after selecting a scene.
       if (document.body.classList.contains('mobile')) {
         hideSceneList();
       }
@@ -214,15 +212,12 @@
     var pitch = view.pitch();
     var fov = view.fov();
 
-    // Не сохраняем «пустой» вид, если сцена ещё не отрисована
     if (isNaN(yaw) || isNaN(pitch) || isNaN(fov)) return;
 
     savedViews[id] = { yaw: yaw, pitch: pitch, fov: fov };
   }
 
-  // 🧠 Возвращаем параметры вида для сцены:
-  //   - если пользователь уже был в этой сцене — сохранённый вид,
-  //   - если нет — initialViewParameters из data.js
+  // 🧠 Возвращаем параметры вида для сцены
   function getViewParameters(sceneData) {
     var saved = savedViews[sceneData.id];
     if (saved) {
@@ -238,12 +233,14 @@
   // 🎬 Защита от наложения переходов
   var isTransitioning = false;
 
+  // 🎬 Флаг: первая сцена при загрузке уже отрисована?
+  var isFirstSwitchDone = false;
+
   // 🎬 Плавный переход: fade-out → switchScene → fade-in
   function switchScene(scene) {
-    // Если это первая сцена при загрузке — переключаем без анимации
-    var isFirstSwitch = !panoElement.style.opacity || panoElement.style.opacity === '';
-
-    if (isFirstSwitch) {
+    // Первая сцена при загрузке — без анимации
+    if (!isFirstSwitchDone) {
+      isFirstSwitchDone = true;
       applySceneSwitch(scene);
       startAutorotate();
       return;
@@ -293,13 +290,12 @@
     // 2. Переключаем сцену
     scene.scene.switchTo();
 
-    // 3. Ещё раз через следующий кадр отрисовки — чтобы Marzipano
-    //    не перезаписал view своей внутренней логикой
+    // 3. Ещё раз через следующий кадр отрисовки
     requestAnimationFrame(function() {
       scene.view.setParameters(viewParams);
     });
 
-    // 4. Дополнительно — через 300 мс (на случай медленной анимации)
+    // 4. Дополнительно — через 300 мс
     setTimeout(function() {
       scene.view.setParameters(viewParams);
     }, 300);
