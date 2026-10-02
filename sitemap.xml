@@ -50,5 +50,10 @@
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-
+    <url>
+    <loc>https://protour3d.ru/tours/Novo-Sadovaya_303A/</loc>
+    <lastmod>2026-09-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
 </urlset>

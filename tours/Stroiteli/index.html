@@ -12,7 +12,7 @@
 <style>
     #floorplan-container {
         position: absolute;
-        bottom: 80px; /* поднимаем над кнопками управления */
+        bottom: 80px;
         right: 20px;
         width: 25vmin;
         height: 25vmin;
@@ -27,6 +27,7 @@
         z-index: 1000;
         background: #fff;
         cursor: pointer;
+        transition: width 0.2s, height 0.2s, border-radius 0.2s;
     }
     #floorplan-image {
         width: 100%;
@@ -40,7 +41,7 @@
         left: 0;
         width: 100%;
         height: 100%;
-        pointer-events: none; /* чтобы клики проходили только по маркерам */
+        pointer-events: none;
     }
     .map-marker {
         position: absolute;
@@ -52,8 +53,8 @@
         transform: translate(-50%, -50%);
         cursor: pointer;
         box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-        transition: transform 0.2s, background-color 0.2s;
-        pointer-events: auto; /* маркеры кликабельны */
+        transition: transform 0.2s, background-color 0.2s, width 0.2s, height 0.2s;
+        pointer-events: auto;
     }
     .map-marker:hover {
         transform: translate(-50%, -50%) scale(1.3);
@@ -69,20 +70,77 @@
         z-index: 20;
     }
     @keyframes pulse {
-        0% {
-            box-shadow: 0 0 10px #2ed573, 0 0 0 0 rgba(46, 213, 115, 0.7);
-        }
-        70% {
-            box-shadow: 0 0 10px #2ed573, 0 0 0 10px rgba(46, 213, 115, 0);
-        }
-        100% {
-            box-shadow: 0 0 10px #2ed573, 0 0 0 0 rgba(46, 213, 115, 0);
-        }
+        0%   { box-shadow: 0 0 10px #2ed573, 0 0 0 0 rgba(46, 213, 115, 0.7); }
+        70%  { box-shadow: 0 0 10px #2ed573, 0 0 0 10px rgba(46, 213, 115, 0); }
+        100% { box-shadow: 0 0 10px #2ed573, 0 0 0 0 rgba(46, 213, 115, 0); }
+    }
+
+    /* Кнопка закрытия (видна только в развёрнутом виде) */
+    #floorplan-close {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        width: 32px;
+        height: 32px;
+        background: rgba(0,0,0,0.7);
+        color: #fff;
+        border-radius: 50%;
+        font-size: 22px;
+        line-height: 32px;
+        text-align: center;
+        cursor: pointer;
+        display: none;
+        z-index: 2001;
+        font-family: Arial, sans-serif;
+        user-select: none;
+        -webkit-user-select: none;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Тёмный фон за развёрнутой картой */
+    #floorplan-backdrop {
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(0,0,0,0.75);
+        z-index: 1999;
+        display: none;
+    }
+    #floorplan-backdrop.visible {
+        display: block;
+    }
+
+    /* 🖥 Развёрнутое состояние карты (только на телефоне) */
+    #floorplan-container.expanded {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 90vmin;
+        height: 90vmin;
+        min-width: auto;
+        min-height: auto;
+        max-width: 500px;
+        max-height: 500px;
+        right: auto;
+        bottom: auto;
+        z-index: 2000;
+        cursor: default;
+        border-radius: 14px;
+        border-width: 2px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+    }
+    #floorplan-container.expanded #floorplan-close {
+        display: block;
+    }
+    #floorplan-container.expanded .map-marker {
+        width: 24px;
+        height: 24px;
+        border-width: 2px;
     }
 
     /* 📱 Адаптация для телефонов и небольших экранов */
     @media (max-width: 768px) {
-        #floorplan-container {
+        #floorplan-container:not(.expanded) {
             width: 110px;
             height: 110px;
             min-width: auto;
@@ -94,9 +152,9 @@
             border-width: 1px;
             border-radius: 8px;
         }
-        .map-marker {
-            width: 10px;
-            height: 10px;
+        #floorplan-container:not(.expanded) .map-marker {
+            width: 12px;
+            height: 12px;
             border-width: 1px;
         }
     }
@@ -108,39 +166,39 @@
 
 <div id="sceneList">
   <ul class="scenes">
-    
+
       <a href="javascript:void(0)" class="scene" data-id="0-">
         <li class="text">Кухня</li>
       </a>
-    
+
       <a href="javascript:void(0)" class="scene" data-id="1-">
         <li class="text">Коридор</li>
       </a>
-    
+
       <a href="javascript:void(0)" class="scene" data-id="2-----">
         <li class="text">Вид на гостинную и кухню</li>
       </a>
-    
+
       <a href="javascript:void(0)" class="scene" data-id="3--">
         <li class="text">Гостинная центр</li>
       </a>
-    
+
       <a href="javascript:void(0)" class="scene" data-id="4---">
         <li class="text">Гостинная общий вид</li>
       </a>
-    
+
       <a href="javascript:void(0)" class="scene" data-id="5-">
         <li class="text">Гардеробная</li>
       </a>
-    
+
       <a href="javascript:void(0)" class="scene" data-id="6-">
         <li class="text">Санузел</li>
       </a>
-    
+
       <a href="javascript:void(0)" class="scene" data-id="7-">
         <li class="text">Подъезд</li>
       </a>
-    
+
   </ul>
 </div>
 
@@ -182,10 +240,12 @@
   <img class="icon" src="img/minus.png">
 </a>
 
-<!-- Карта квартиры -->
+<!-- Тёмный фон + карта квартиры -->
+<div id="floorplan-backdrop"></div>
 <div id="floorplan-container">
     <img src="plan.png" alt="План квартиры" id="floorplan-image">
     <div id="markers-layer"></div>
+    <div id="floorplan-close">×</div>
 </div>
 
 <script src="vendor/screenfull.min.js" ></script>
@@ -208,6 +268,27 @@
         { id: '6-',      x: 65.1, y: 35.6 }, // Санузел
         { id: '7-',      x: 80.8, y: 13 }    // Подъезд
     ];
+
+    // Является ли устройство мобильным (ширина до 768px)
+    var isMobileView = window.matchMedia('(max-width: 768px)').matches;
+
+    // Элементы карты
+    var floorplanContainer = document.getElementById('floorplan-container');
+    var floorplanBackdrop  = document.getElementById('floorplan-backdrop');
+    var floorplanClose     = document.getElementById('floorplan-close');
+
+    // Развернуть карту (только на телефоне)
+    function expandMap() {
+        if (!isMobileView) return;
+        floorplanContainer.classList.add('expanded');
+        floorplanBackdrop.classList.add('visible');
+    }
+
+    // Свернуть карту
+    function collapseMap() {
+        floorplanContainer.classList.remove('expanded');
+        floorplanBackdrop.classList.remove('visible');
+    }
 
     // Функция подсветки активного маркера
     function updateActiveMarker(sceneId) {
@@ -240,7 +321,7 @@
             el.className = 'map-marker';
             el.style.left = marker.x + '%';
             el.style.top = marker.y + '%';
-            el.setAttribute('data-scene-id', marker.id); // важно для поиска
+            el.setAttribute('data-scene-id', marker.id);
             el.title = marker.id;
 
             el.addEventListener('click', (e) => {
@@ -251,13 +332,36 @@
                 } else {
                     console.warn('Сцена не найдена:', marker.id);
                 }
+                // На телефоне после перехода сворачиваем карту
+                if (isMobileView) {
+                    setTimeout(collapseMap, 150);
+                }
             });
 
             markersLayer.appendChild(el);
         });
 
+        // === РАЗВОРАЧИВАНИЕ КАРТЫ ПО ТАПУ (только на телефоне) ===
+        floorplanContainer.addEventListener('click', function(e) {
+            if (!isMobileView) return;
+            if (floorplanContainer.classList.contains('expanded')) return;
+            if (e.target.classList && e.target.classList.contains('map-marker')) return;
+            if (e.target.id === 'floorplan-close') return;
+            expandMap();
+        });
+
+        // Закрытие карты: крестик или тап по тёмному фону
+        if (floorplanClose) {
+            floorplanClose.addEventListener('click', function(e) {
+                e.stopPropagation();
+                collapseMap();
+            });
+        }
+        if (floorplanBackdrop) {
+            floorplanBackdrop.addEventListener('click', collapseMap);
+        }
+
         // === СЛЕЖЕНИЕ ЗА СМЕНОЙ СЦЕНЫ ===
-        // Строим карту "название сцены → ID сцены" из меню
         const nameToId = {};
         document.querySelectorAll('.scene').forEach(link => {
             const id = link.getAttribute('data-id');
@@ -265,7 +369,6 @@
             nameToId[name] = id;
         });
 
-        // Наблюдаем за изменением названия сцены в заголовке
         const titleElement = document.querySelector('#titleBar .sceneName');
         if (titleElement) {
             const observer = new MutationObserver(() => {
@@ -278,7 +381,7 @@
             observer.observe(titleElement, { childList: true, characterData: true, subtree: true });
         }
 
-        // Подсветить первый маркер при загрузке (если сцена уже открыта)
+        // Подсветить первый маркер при загрузке
         setTimeout(() => {
             const firstLink = document.querySelector('.scene');
             if (firstLink) {
