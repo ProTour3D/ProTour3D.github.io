@@ -75,6 +75,19 @@
         100% { box-shadow: 0 0 10px #2ed573, 0 0 0 0 rgba(46, 213, 115, 0); }
     }
 
+    /* 🏷️ Логотип на карте */
+    #map-logo {
+        position: absolute;
+        bottom: 6px;
+        left: 6px;
+        width: 50px; /* Размер логотипа */
+        height: auto;
+        opacity: 0.85; /* Немного прозрачный */
+        pointer-events: none; /* Чтобы клики проходили сквозь него */
+        z-index: 5; /* Под маркерами, но над картой */
+        transition: width 0.2s;
+    }
+
     /* Кнопка закрытия (видна только в развёрнутом виде) */
     #floorplan-close {
         position: absolute;
@@ -137,6 +150,12 @@
         height: 22px;
         border-width: 2px;
     }
+    /* Увеличиваем логотип при развороте карты */
+    #floorplan-container.expanded #map-logo {
+        width: 80px;
+        bottom: 10px;
+        left: 10px;
+    }
 
     /* 📱 Адаптация для телефонов */
     @media (max-width: 768px) {
@@ -156,6 +175,11 @@
             width: 10px;
             height: 10px;
             border-width: 1px;
+        }
+        #floorplan-container:not(.expanded) #map-logo {
+            width: 35px; /* Чуть меньше на телефоне */
+            bottom: 4px;
+            left: 4px;
         }
     }
 </style>
@@ -293,6 +317,9 @@
 <div id="floorplan-container">
     <img src="plan.png" alt="План дома" id="floorplan-image">
     <div id="markers-layer"></div>
+    <!-- ЛОГОТИП -->
+    <img src="img/logo.png" id="map-logo" alt="ProTour">
+    
     <div id="floorplan-close">×</div>
 </div>
 
@@ -306,53 +333,46 @@
 <!-- Скрипт для карты -->
 <script>
     // ⚠️ Координаты маркеров (в процентах от размера картинки).
-    // Я расставил их примерно: комнаты внутри дома, уличные сцены по краям.
-    // Используйте лайфхак ниже, чтобы сделать это идеально точно.
     const mapMarkers = [
-        { id: '0---',      x: 50, y: 95 }, // Парковка перед домом (снизу)
-        { id: '1--',       x: 45, y: 85 }, // Входная группа (снизу)
-        { id: '2-',        x: 45, y: 75 }, // Тамбур (нижняя пристройка)
-        { id: '3-',        x: 45, y: 50 }, // Холл (центр)
-        { id: '4--1',      x: 25, y: 25 }, // Спальня 1 (верхняя левая комната)
-        { id: '5--2',      x: 25, y: 65 }, // Спальня 2 (нижняя левая комната)
-        { id: '6--',       x: 50, y: 25 }, // Ванная комната (верхняя центральная)
-        { id: '7-',        x: 75, y: 25 }, // Кухня (верхняя правая комната)
+        { id: '0---',      x: 50, y: 95 }, // Парковка перед домом
+        { id: '1--',       x: 45, y: 85 }, // Входная группа
+        { id: '2-',        x: 45, y: 75 }, // Тамбур
+        { id: '3-',        x: 45, y: 50 }, // Холл
+        { id: '4--1',      x: 25, y: 25 }, // Спальня 1
+        { id: '5--2',      x: 25, y: 65 }, // Спальня 2
+        { id: '6--',       x: 50, y: 25 }, // Ванная комната
+        { id: '7-',        x: 75, y: 25 }, // Кухня
         { id: '8--',       x: 75, y: 40 }, // Кухня открытая
         { id: '9---',      x: 65, y: 55 }, // Кухня-гостиная центр
-        { id: '10--',      x: 80, y: 65 }, // Кухня-Гостиная (нижняя правая комната)
-        { id: '11---',     x: 90, y: 50 }, // Место для барбекю (справа)
-        { id: '12-',       x: 70, y: 85 }, // Тераса (справа снизу)
-        { id: '13---',     x: 10, y: 50 }, // Зона для бассейна (слева)
-        { id: '14-',       x: 55, y: 75 }, // Инвентарная (рядом с тамбуром)
-        { id: '15--',      x: 50, y: 5 },  // Фасад центр (сверху)
-        { id: '16----',    x: 10, y: 5 },  // Фасад с левой стороны (сверху слева)
-        { id: '17----',    x: 90, y: 90 }, // Въезд на территорию (снизу справа)
-        { id: '18-',       x: 10, y: 90 }, // Перекресток (снизу слева)
-        { id: '19-',       x: 90, y: 10 }  // Остановка (сверху справа)
+        { id: '10--',      x: 80, y: 65 }, // Кухня-Гостиная
+        { id: '11---',     x: 90, y: 50 }, // Место для барбекю
+        { id: '12-',       x: 70, y: 85 }, // Тераса
+        { id: '13---',     x: 10, y: 50 }, // Зона для бассейна
+        { id: '14-',       x: 55, y: 75 }, // Инвентарная
+        { id: '15--',      x: 50, y: 5 },  // Фасад центр
+        { id: '16----',    x: 10, y: 5 },  // Фасад с левой стороны
+        { id: '17----',    x: 90, y: 90 }, // Въезд на закрытую территорию
+        { id: '18-',       x: 10, y: 90 }, // Перекресток
+        { id: '19-',       x: 90, y: 10 }  // Остановка
     ];
 
-    // Является ли устройство мобильным (ширина до 768px)
     var isMobileView = window.matchMedia('(max-width: 768px)').matches;
 
-    // Элементы карты
     var floorplanContainer = document.getElementById('floorplan-container');
     var floorplanBackdrop  = document.getElementById('floorplan-backdrop');
     var floorplanClose     = document.getElementById('floorplan-close');
 
-    // Развернуть карту (только на телефоне)
     function expandMap() {
         if (!isMobileView) return;
         floorplanContainer.classList.add('expanded');
         floorplanBackdrop.classList.add('visible');
     }
 
-    // Свернуть карту
     function collapseMap() {
         floorplanContainer.classList.remove('expanded');
         floorplanBackdrop.classList.remove('visible');
     }
 
-    // Функция подсветки активного маркера
     function updateActiveMarker(sceneId) {
         document.querySelectorAll('.map-marker').forEach(el => {
             el.classList.remove('active');
@@ -365,10 +385,6 @@
 
     function initMap() {
         // === ЛАЙФХАК: Получение точных координат ===
-        // Кликните по карте — координаты появятся в консоли браузера.
-        // На Mac консоль открывается через ⌘ + Option + J.
-        // На Windows/Linux — F12 → вкладка Console.
-        // После настройки этот блок можно удалить.
         document.getElementById('floorplan-image').addEventListener('click', function(e) {
             const rect = this.getBoundingClientRect();
             const x = ((e.clientX - rect.left) / rect.width) * 100;
@@ -376,7 +392,6 @@
             console.log('Координаты для маркера:', 'x: ' + x.toFixed(1) + ', y: ' + y.toFixed(1));
         });
 
-        // === СОЗДАНИЕ МАРКЕРОВ ===
         const markersLayer = document.getElementById('markers-layer');
         if (!markersLayer) return;
 
@@ -396,7 +411,6 @@
                 } else {
                     console.warn('Сцена не найдена:', marker.id);
                 }
-                // На телефоне после перехода сворачиваем карту
                 if (isMobileView) {
                     setTimeout(collapseMap, 150);
                 }
@@ -405,7 +419,6 @@
             markersLayer.appendChild(el);
         });
 
-        // === РАЗВОРАЧИВАНИЕ КАРТЫ ПО ТАПУ (только на телефоне) ===
         floorplanContainer.addEventListener('click', function(e) {
             if (!isMobileView) return;
             if (floorplanContainer.classList.contains('expanded')) return;
@@ -414,7 +427,6 @@
             expandMap();
         });
 
-        // Закрытие карты: крестик или тап по тёмному фону
         if (floorplanClose) {
             floorplanClose.addEventListener('click', function(e) {
                 e.stopPropagation();
@@ -425,8 +437,6 @@
             floorplanBackdrop.addEventListener('click', collapseMap);
         }
 
-        // === СЛЕЖЕНИЕ ЗА СМЕНОЙ СЦЕНЫ ===
-        // Следим за классом "current" у пунктов меню
         var sceneLinks = document.querySelectorAll('.scene');
 
         function syncActiveMarker() {
@@ -441,7 +451,6 @@
             listObserver.observe(link, { attributes: true, attributeFilter: ['class'] });
         });
 
-        // Подсветить текущий маркер при загрузке
         setTimeout(syncActiveMarker, 300);
     }
 
