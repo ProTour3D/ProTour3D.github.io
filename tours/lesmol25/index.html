@@ -7,6 +7,182 @@
 <style> @-ms-viewport { width: device-width; } </style>
 <link rel="stylesheet" href="vendor/reset.min.css">
 <link rel="stylesheet" href="style.css">
+
+<!-- Стили для карты -->
+<style>
+    #floorplan-container {
+        position: absolute;
+        bottom: 80px;
+        right: 20px;
+        width: 25vmin;
+        height: 25vmin;
+        min-width: 150px;
+        min-height: 150px;
+        max-width: 300px;
+        max-height: 300px;
+        border: 2px solid #fff;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        z-index: 1000;
+        background: #fff;
+        cursor: pointer;
+        transition: width 0.2s, height 0.2s, border-radius 0.2s;
+    }
+    #floorplan-image {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        display: block;
+    }
+    #markers-layer {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+    }
+    .map-marker {
+        position: absolute;
+        width: 14px;
+        height: 14px;
+        background-color: #ff4757;
+        border: 2px solid #fff;
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        cursor: pointer;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        transition: transform 0.2s, background-color 0.2s, width 0.2s, height 0.2s;
+        pointer-events: auto;
+    }
+    .map-marker:hover {
+        transform: translate(-50%, -50%) scale(1.3);
+        background-color: #ff6b81;
+        z-index: 10;
+    }
+
+    /* 🟢 Активный маркер — пульсирующий зелёный */
+    .map-marker.active {
+        background-color: #2ed573;
+        box-shadow: 0 0 10px #2ed573, 0 0 0 0 rgba(46, 213, 115, 0.7);
+        animation: pulse 1.5s infinite;
+        z-index: 20;
+    }
+    @keyframes pulse {
+        0%   { box-shadow: 0 0 10px #2ed573, 0 0 0 0 rgba(46, 213, 115, 0.7); }
+        70%  { box-shadow: 0 0 10px #2ed573, 0 0 0 10px rgba(46, 213, 115, 0); }
+        100% { box-shadow: 0 0 10px #2ed573, 0 0 0 0 rgba(46, 213, 115, 0); }
+    }
+
+    /* 🏷️ Логотип на карте */
+    #map-logo {
+        position: absolute;
+        bottom: 6px;
+        left: 6px;
+        width: 50px; /* Размер логотипа */
+        height: auto;
+        opacity: 0.85; /* Немного прозрачный */
+        pointer-events: none; /* Чтобы клики проходили сквозь него */
+        z-index: 5; /* Под маркерами, но над картой */
+        transition: width 0.2s;
+    }
+
+    /* Кнопка закрытия (видна только в развёрнутом виде) */
+    #floorplan-close {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        width: 32px;
+        height: 32px;
+        background: rgba(0,0,0,0.7);
+        color: #fff;
+        border-radius: 50%;
+        font-size: 22px;
+        line-height: 32px;
+        text-align: center;
+        cursor: pointer;
+        display: none;
+        z-index: 2001;
+        font-family: Arial, sans-serif;
+        user-select: none;
+        -webkit-user-select: none;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Тёмный фон за развёрнутой картой */
+    #floorplan-backdrop {
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(0,0,0,0.75);
+        z-index: 1999;
+        display: none;
+    }
+    #floorplan-backdrop.visible {
+        display: block;
+    }
+
+    /* 🖥 Развёрнутое состояние карты (только на телефоне) */
+    #floorplan-container.expanded {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 90vmin;
+        height: 90vmin;
+        min-width: auto;
+        min-height: auto;
+        max-width: 500px;
+        max-height: 500px;
+        right: auto;
+        bottom: auto;
+        z-index: 2000;
+        cursor: default;
+        border-radius: 14px;
+        border-width: 2px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+    }
+    #floorplan-container.expanded #floorplan-close {
+        display: block;
+    }
+    #floorplan-container.expanded .map-marker {
+        width: 22px;
+        height: 22px;
+        border-width: 2px;
+    }
+    /* Увеличиваем логотип при развороте карты */
+    #floorplan-container.expanded #map-logo {
+        width: 80px;
+        bottom: 10px;
+        left: 10px;
+    }
+
+    /* 📱 Адаптация для телефонов */
+    @media (max-width: 768px) {
+        #floorplan-container:not(.expanded) {
+            width: 110px;
+            height: 110px;
+            min-width: auto;
+            min-height: auto;
+            max-width: 110px;
+            max-height: 110px;
+            bottom: 70px;
+            right: 10px;
+            border-width: 1px;
+            border-radius: 8px;
+        }
+        #floorplan-container:not(.expanded) .map-marker {
+            width: 10px;
+            height: 10px;
+            border-width: 1px;
+        }
+        #floorplan-container:not(.expanded) #map-logo {
+            width: 35px; /* Чуть меньше на телефоне */
+            bottom: 4px;
+            left: 4px;
+        }
+    }
+</style>
 </head>
 <body class="multiple-scenes ">
 
@@ -136,12 +312,150 @@
   <img class="icon" src="img/minus.png">
 </a>
 
+<!-- Тёмный фон + карта -->
+<div id="floorplan-backdrop"></div>
+<div id="floorplan-container">
+    <img src="plan.png" alt="План дома" id="floorplan-image">
+    <div id="markers-layer"></div>
+    <!-- ЛОГОТИП -->
+    <img src="img/logo.png" id="map-logo" alt="ProTour">
+    
+    <div id="floorplan-close">×</div>
+</div>
+
 <script src="vendor/screenfull.min.js" ></script>
 <script src="vendor/bowser.min.js" ></script>
 <script src="vendor/marzipano.js" ></script>
 
 <script src="data.js"></script>
 <script src="index.js"></script>
+
+<!-- Скрипт для карты -->
+<script>
+    // ⚠️ Координаты маркеров (в процентах от размера картинки).
+    const mapMarkers = [
+        { id: '0---',      x: 13.3, y: 81.6 }, // Парковка перед домом
+        { id: '1--',       x: 49.7, y: 76.3 }, // Входная группа
+        { id: '2-',        x: 51.2, y: 59.7 }, // Тамбур
+        { id: '3-',        x: 51.8, y: 43.1 }, // Холл
+        { id: '4--1',      x: 30.1, y: 31.2 }, // Спальня 1
+        { id: '5--2',      x: 30.5, y: 55.7 }, // Спальня 2
+        { id: '6--',       x: 52.5, y: 27.3 }, // Ванная комната
+        { id: '7-',        x: 71.4, y: 29.4 }, // Кухня
+        { id: '8--',       x: 64.1, y: 22.8 }, // Кухня открытая
+        { id: '9---',      x: 72.1, y: 43.1 }, // Кухня-гостиная центр
+        { id: '10--',      x: 73.2, y: 58.1 }, // Кухня-Гостиная
+        { id: '11---',     x: 96.3, y: 15.8 }, // Место для барбекю
+        { id: '12-',       x: 93.8, y: 38.5 }, // Тераса
+        { id: '13---',     x: 95.2, y: 85.4 }, // Зона для бассейна
+        { id: '14-',       x: 72.5, y: 76.7 }, // Инвентарная
+        { id: '15--',      x: 6.7, y: 42.4 },  // Фасад центр
+        { id: '16----',    x: 7.7, y: 16.8 },  // Фасад с левой стороны
+        { id: '17----',    x: 90, y: 98.4 }, // Въезд на закрытую территорию
+        { id: '18-',       x: 40.3, y: 98.7 }, // Перекресток
+        { id: '19-',       x: 6.3, y: 97 }  // Остановка
+    ];
+
+    var isMobileView = window.matchMedia('(max-width: 768px)').matches;
+
+    var floorplanContainer = document.getElementById('floorplan-container');
+    var floorplanBackdrop  = document.getElementById('floorplan-backdrop');
+    var floorplanClose     = document.getElementById('floorplan-close');
+
+    function expandMap() {
+        if (!isMobileView) return;
+        floorplanContainer.classList.add('expanded');
+        floorplanBackdrop.classList.add('visible');
+    }
+
+    function collapseMap() {
+        floorplanContainer.classList.remove('expanded');
+        floorplanBackdrop.classList.remove('visible');
+    }
+
+    function updateActiveMarker(sceneId) {
+        document.querySelectorAll('.map-marker').forEach(el => {
+            el.classList.remove('active');
+        });
+        const activeMarker = document.querySelector('.map-marker[data-scene-id="' + sceneId + '"]');
+        if (activeMarker) {
+            activeMarker.classList.add('active');
+        }
+    }
+
+    function initMap() {
+        // === ЛАЙФХАК: Получение точных координат ===
+        document.getElementById('floorplan-image').addEventListener('click', function(e) {
+            const rect = this.getBoundingClientRect();
+            const x = ((e.clientX - rect.left) / rect.width) * 100;
+            const y = ((e.clientY - rect.top) / rect.height) * 100;
+            console.log('Координаты для маркера:', 'x: ' + x.toFixed(1) + ', y: ' + y.toFixed(1));
+        });
+
+        const markersLayer = document.getElementById('markers-layer');
+        if (!markersLayer) return;
+
+        mapMarkers.forEach(marker => {
+            const el = document.createElement('div');
+            el.className = 'map-marker';
+            el.style.left = marker.x + '%';
+            el.style.top = marker.y + '%';
+            el.setAttribute('data-scene-id', marker.id);
+            el.title = marker.id;
+
+            el.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const sceneLink = document.querySelector('.scene[data-id="' + marker.id + '"]');
+                if (sceneLink) {
+                    sceneLink.click();
+                } else {
+                    console.warn('Сцена не найдена:', marker.id);
+                }
+                if (isMobileView) {
+                    setTimeout(collapseMap, 150);
+                }
+            });
+
+            markersLayer.appendChild(el);
+        });
+
+        floorplanContainer.addEventListener('click', function(e) {
+            if (!isMobileView) return;
+            if (floorplanContainer.classList.contains('expanded')) return;
+            if (e.target.classList && e.target.classList.contains('map-marker')) return;
+            if (e.target.id === 'floorplan-close') return;
+            expandMap();
+        });
+
+        if (floorplanClose) {
+            floorplanClose.addEventListener('click', function(e) {
+                e.stopPropagation();
+                collapseMap();
+            });
+        }
+        if (floorplanBackdrop) {
+            floorplanBackdrop.addEventListener('click', collapseMap);
+        }
+
+        var sceneLinks = document.querySelectorAll('.scene');
+
+        function syncActiveMarker() {
+            var currentLink = document.querySelector('.scene.current');
+            if (currentLink) {
+                updateActiveMarker(currentLink.getAttribute('data-id'));
+            }
+        }
+
+        var listObserver = new MutationObserver(syncActiveMarker);
+        sceneLinks.forEach(function(link) {
+            listObserver.observe(link, { attributes: true, attributeFilter: ['class'] });
+        });
+
+        setTimeout(syncActiveMarker, 300);
+    }
+
+    window.addEventListener('load', initMap);
+</script>
 
 </body>
 </html>
