@@ -230,109 +230,9 @@
         .card h3 { font-size: 19px; font-weight: 700; margin-bottom: 10px; color: #0d1b3e; }
         .card p { font-size: 14.5px; color: #4d5876; line-height: 1.65; }
 
-        .about { padding: 55px 0 60px; background: linear-gradient(180deg, #ffffff 0%, #f6f8fc 100%); }
-        .about h2 {
-            text-align: center;
-            font-size: 36px;
-            font-weight: 800;
-            margin-bottom: 18px;
-            color: #0d1b3e;
-        }
-        .about .subtitle {
-            text-align: center;
-            color: #4d5876;
-            margin-bottom: 45px;
-            font-size: 17px;
-            max-width: 780px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        .about-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 26px;
-        }
-        .about-item {
-            padding: 30px 26px;
-            border-radius: 18px;
-            background: #ffffff;
-            border: 1px solid #e6ecf7;
-            box-shadow: 0 6px 20px rgba(13,27,62,0.05);
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        .about-item:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 14px 32px rgba(13,27,62,0.10);
-        }
-        .about-item h3 {
-            font-size: 19px;
-            font-weight: 700;
-            margin-bottom: 12px;
-            color: #0d1b3e;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .about-item h3 .badge {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 34px; height: 34px;
-            border-radius: 10px;
-            background: linear-gradient(135deg, #e8f1fc 0%, #dae8fb 100%);
-            flex-shrink: 0;
-        }
-        .about-item h3 .badge svg {
-            width: 20px; height: 20px;
-            stroke: #2c6fc9; fill: none;
-            stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
-        }
-        .about-item p { font-size: 15px; color: #4d5876; line-height: 1.7; }
-
-        .yandex-block { padding: 55px 0 70px; background: linear-gradient(135deg, #f6f8fc 0%, #eaf1fa 100%); }
-        .yandex-block .inner {
-            background: #ffffff;
-            border-radius: 24px;
-            padding: 50px 40px;
-            text-align: center;
-            box-shadow: 0 18px 50px rgba(13,27,62,0.08);
-            border: 1px solid #e6ecf7;
-            max-width: 900px;
-            margin: 0 auto;
-        }
-        .yandex-block .ya-text-badge {
-            display: inline-block;
-            padding: 8px 20px;
-            background: #f0f4f9;
-            color: #2c6fc9;
-            font-weight: 700;
-            font-size: 15px;
-            border-radius: 30px;
-            margin-bottom: 20px;
-            border: 1px solid #d0e2f7;
-        }
-        .yandex-block h2 { font-size: 30px; font-weight: 800; margin-bottom: 18px; color: #0d1b3e; }
-        .yandex-block p {
-            font-size: 17px;
-            color: #4d5876;
-            line-height: 1.8;
-            max-width: 700px;
-            margin: 0 auto;
-        }
-        .yandex-block .ya-tagline {
-            display: inline-block;
-            margin-top: 22px;
-            padding: 10px 22px;
-            background: #fff8e1;
-            color: #8a6d00;
-            font-weight: 600;
-            border-radius: 30px;
-            font-size: 15px;
-            border: 1px solid #ffe082;
-        }
-
+        /* ===== БЛОК С ТУРАМИ ===== */
         .tour-block {
-            padding: 55px 0 90px;
+            padding: 60px 0 90px;
             background: linear-gradient(180deg, #f6f8fc 0%, #eef3fb 100%);
         }
         .tour-block h2 {
@@ -445,6 +345,107 @@
         }
         .yandex-btn .ya-text .ya-title { font-size: 15px; font-weight: 700; color: #1a1a1a; }
         .yandex-btn .ya-text .ya-sub { font-size: 12px; color: #888; font-weight: 500; }
+
+        .about { padding: 60px 0; background: #ffffff; }
+        .about h2 {
+            text-align: center;
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 18px;
+            color: #0d1b3e;
+        }
+        .about .subtitle {
+            text-align: center;
+            color: #4d5876;
+            margin-bottom: 45px;
+            font-size: 17px;
+            max-width: 780px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 26px;
+        }
+        .about-item {
+            padding: 30px 26px;
+            border-radius: 18px;
+            background: #f6f8fc;
+            border: 1px solid #e6ecf7;
+            box-shadow: 0 6px 20px rgba(13,27,62,0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .about-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 14px 32px rgba(13,27,62,0.10);
+        }
+        .about-item h3 {
+            font-size: 19px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #0d1b3e;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .about-item h3 .badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 34px; height: 34px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #e8f1fc 0%, #dae8fb 100%);
+            flex-shrink: 0;
+        }
+        .about-item h3 .badge svg {
+            width: 20px; height: 20px;
+            stroke: #2c6fc9; fill: none;
+            stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+        }
+        .about-item p { font-size: 15px; color: #4d5876; line-height: 1.7; }
+
+        .yandex-block { padding: 60px 0; background: linear-gradient(135deg, #f6f8fc 0%, #eaf1fa 100%); }
+        .yandex-block .inner {
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 50px 40px;
+            text-align: center;
+            box-shadow: 0 18px 50px rgba(13,27,62,0.08);
+            border: 1px solid #e6ecf7;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .yandex-block .ya-text-badge {
+            display: inline-block;
+            padding: 8px 20px;
+            background: #f0f4f9;
+            color: #2c6fc9;
+            font-weight: 700;
+            font-size: 15px;
+            border-radius: 30px;
+            margin-bottom: 20px;
+            border: 1px solid #d0e2f7;
+        }
+        .yandex-block h2 { font-size: 30px; font-weight: 800; margin-bottom: 18px; color: #0d1b3e; }
+        .yandex-block p {
+            font-size: 17px;
+            color: #4d5876;
+            line-height: 1.8;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        .yandex-block .ya-tagline {
+            display: inline-block;
+            margin-top: 22px;
+            padding: 10px 22px;
+            background: #fff8e1;
+            color: #8a6d00;
+            font-weight: 600;
+            border-radius: 30px;
+            font-size: 15px;
+            border: 1px solid #ffe082;
+        }
 
         .contacts { padding: 70px 0 90px; background: #ffffff; text-align: center; }
         .contacts h2 {
@@ -562,7 +563,7 @@
             text-align: center; margin-bottom: 25px; font-size: 22px; font-weight: 700; color: #0d1b3e;
         }
 
-        .faq { padding: 55px 0 90px; background: linear-gradient(180deg, #ffffff 0%, #f6f8fc 100%); }
+        .faq { padding: 60px 0 90px; background: linear-gradient(180deg, #ffffff 0%, #f6f8fc 100%); }
         .faq h2 {
             text-align: center;
             font-size: 36px;
@@ -673,9 +674,9 @@
             <div class="logo">Pro<span>Tour</span>3D</div>
             <nav class="nav">
                 <a href="#benefits">Преимущества</a>
+                <a href="#tour">Примеры работ</a>
                 <a href="#about">Услуги</a>
                 <a href="#yandex">Яндекс Карты</a>
-                <a href="#tour">Примеры работ</a>
                 <a href="#contacts">Контакты</a>
                 <a href="#faq">FAQ</a>
                 <a href="tel:+79063437268" class="contact-link">
@@ -698,6 +699,7 @@
         </div>
     </section>
 
+    <!-- ===== ПРЕИМУЩЕСТВА ===== -->
     <section class="benefits" id="benefits">
         <div class="container">
             <h2>Почему 3D-тур — это выгодно</h2>
@@ -745,80 +747,7 @@
         </div>
     </section>
 
-    <section class="about" id="about">
-        <div class="container">
-            <h2>Что мы делаем</h2>
-            <p class="subtitle">Создаём виртуальные туры и панорамы 360° для недвижимости, бизнеса и коммерческих объектов. Съёмка в Самаре и по России.</p>
-            <div class="about-grid">
-                <div class="about-item">
-                    <h3>
-                        <span class="badge">
-                            <svg viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/><path d="M9 9h1"/><path d="M9 12h1"/><path d="M9 15h1"/><path d="M9 18h1"/></svg>
-                        </span>
-                        3D-туры для квартир и домов
-                    </h3>
-                    <p>Виртуальный тур по квартире, дому или коттеджу. Идеально для риелторов, агентств недвижимости и собственников. Показывайте объект удалённо.</p>
-                </div>
-                <div class="about-item">
-                    <h3>
-                        <span class="badge">
-                            <svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
-                        </span>
-                        3D-туры для кафе и ресторанов
-                    </h3>
-                    <p>Панорамы 360° для кафе, баров, ресторанов. Покажите атмосферу заведения до визита — гости выбирают место осознанно.</p>
-                </div>
-                <div class="about-item">
-                    <h3>
-                        <span class="badge">
-                            <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-                        </span>
-                        3D-туры для магазинов
-                    </h3>
-                    <p>Виртуальный тур по магазину или торговому залу. Клиент видит ассортимент и планировку, приходит целенаправленно.</p>
-                </div>
-                <div class="about-item">
-                    <h3>
-                        <span class="badge">
-                            <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-                        </span>
-                        3D-туры для офисов
-                    </h3>
-                    <p>Панорамы 360° для офисов, коворкингов, салонов красоты. Показывайте пространство будущим сотрудникам и клиентам онлайн.</p>
-                </div>
-                <div class="about-item">
-                    <h3>
-                        <span class="badge">
-                            <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                        </span>
-                        Публикация на Яндекс Картах
-                    </h3>
-                    <p>Размещаем ваши панорамы и 3D-туры на Яндекс Картах — так их увидят тысячи пользователей, которые ищут кафе, магазины и организации рядом с собой.</p>
-                </div>
-                <div class="about-item">
-                    <h3>
-                        <span class="badge">
-                            <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-                        </span>
-                        Готовая ссылка на тур
-                    </h3>
-                    <p>Отправляем готовую ссылку на тур для Циан, ВКонтакте и мессенджеров. Клиенты открывают тур в один клик — с любого устройства.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="yandex-block" id="yandex">
-        <div class="container">
-            <div class="inner">
-                <div class="ya-text-badge">Яндекс Карты</div>
-                <h2>Публикуем ваши туры на Яндекс Картах</h2>
-                <p>У нас есть возможность размещать панорамы 360° и виртуальные туры на Яндекс Картах. Это значит, что ваше кафе, магазин, офис или объект недвижимости увидят тысячи пользователей, которые ищут вас на картах. Панорама внутри карточки организации повышает доверие клиентов и увеличивает посещаемость.</p>
-                <div class="ya-tagline">Размещение панорам на Яндекс Картах — включено в услугу</div>
-            </div>
-        </div>
-    </section>
-
+    <!-- ===== БЛОК С ТУРАМИ (ПЕРЕМЕЩЕН ВЫШЕ) ===== -->
     <section class="tour-block" id="tour">
         <div class="container">
             <h2>Примеры работ</h2>
@@ -874,7 +803,7 @@
 
             <!-- Тур 2: Салон мототехники АТВ-Самара -->
             <div class="tour-item">
-                <h3 class="tour-title">🍺 Салон мототехники АТВ-Самара п. Мехзавод, Квартал 8, дом 45</h3>
+                <h3 class="tour-title">🏍 Салон мототехники АТВ-Самара п. Мехзавод, Квартал 8, дом 45</h3>
                 <iframe class="tour-frame" id="tour-ATV-SAMARA"
                         src="https://protour3d.ru/tours/ATV-SAMARA/index.html"
                         allowfullscreen></iframe>
@@ -1016,6 +945,83 @@
         </div>
     </section>
 
+    <!-- ===== О НАС / ЧТО МЫ ДЕЛАЕМ ===== -->
+    <section class="about" id="about">
+        <div class="container">
+            <h2>Что мы делаем</h2>
+            <p class="subtitle">Создаём виртуальные туры и панорамы 360° для недвижимости, бизнеса и коммерческих объектов. Съёмка в Самаре и по России.</p>
+            <div class="about-grid">
+                <div class="about-item">
+                    <h3>
+                        <span class="badge">
+                            <svg viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/><path d="M9 9h1"/><path d="M9 12h1"/><path d="M9 15h1"/><path d="M9 18h1"/></svg>
+                        </span>
+                        3D-туры для квартир и домов
+                    </h3>
+                    <p>Виртуальный тур по квартире, дому или коттеджу. Идеально для риелторов, агентств недвижимости и собственников. Показывайте объект удалённо.</p>
+                </div>
+                <div class="about-item">
+                    <h3>
+                        <span class="badge">
+                            <svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+                        </span>
+                        3D-туры для кафе и ресторанов
+                    </h3>
+                    <p>Панорамы 360° для кафе, баров, ресторанов. Покажите атмосферу заведения до визита — гости выбирают место осознанно.</p>
+                </div>
+                <div class="about-item">
+                    <h3>
+                        <span class="badge">
+                            <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                        </span>
+                        3D-туры для магазинов
+                    </h3>
+                    <p>Виртуальный тур по магазину или торговому залу. Клиент видит ассортимент и планировку, приходит целенаправленно.</p>
+                </div>
+                <div class="about-item">
+                    <h3>
+                        <span class="badge">
+                            <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                        </span>
+                        3D-туры для офисов
+                    </h3>
+                    <p>Панорамы 360° для офисов, коворкингов, салонов красоты. Показывайте пространство будущим сотрудникам и клиентам онлайн.</p>
+                </div>
+                <div class="about-item">
+                    <h3>
+                        <span class="badge">
+                            <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                        </span>
+                        Публикация на Яндекс Картах
+                    </h3>
+                    <p>Размещаем ваши панорамы и 3D-туры на Яндекс Картах — так их увидят тысячи пользователей, которые ищут кафе, магазины и организации рядом с собой.</p>
+                </div>
+                <div class="about-item">
+                    <h3>
+                        <span class="badge">
+                            <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                        </span>
+                        Готовая ссылка на тур
+                    </h3>
+                    <p>Отправляем готовую ссылку на тур для Циан, ВКонтакте и мессенджеров. Клиенты открывают тур в один клик — с любого устройства.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== БЛОК ЯНДЕКС КАРТ ===== -->
+    <section class="yandex-block" id="yandex">
+        <div class="container">
+            <div class="inner">
+                <div class="ya-text-badge">Яндекс Карты</div>
+                <h2>Публикуем ваши туры на Яндекс Картах</h2>
+                <p>У нас есть возможность размещать панорамы 360° и виртуальные туры на Яндекс Картах. Это значит, что ваше кафе, магазин, офис или объект недвижимости увидят тысячи пользователей, которые ищут вас на картах. Панорама внутри карточки организации повышает доверие клиентов и увеличивает посещаемость.</p>
+                <div class="ya-tagline">Размещение панорам на Яндекс Картах — включено в услугу</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== КОНТАКТЫ ===== -->
     <section class="contacts" id="contacts">
         <div class="container">
             <h2>Свяжитесь с нами</h2>
@@ -1088,6 +1094,7 @@
         </div>
     </section>
 
+    <!-- ===== FAQ ===== -->
     <section class="faq" id="faq">
         <div class="container">
             <h2>Часто задаваемые вопросы</h2>
