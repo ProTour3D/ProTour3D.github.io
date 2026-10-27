@@ -447,6 +447,89 @@
             border: 1px solid #ffe082;
         }
 
+        /* ===== ОТЗЫВЫ ===== */
+        .reviews { padding: 70px 0; background: #f6f8fc; }
+        .reviews h2 {
+            text-align: center;
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 14px;
+            color: #0d1b3e;
+        }
+        .reviews .subtitle {
+            text-align: center;
+            color: #4d5876;
+            margin-bottom: 45px;
+            font-size: 17px;
+        }
+        .reviews-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 26px;
+        }
+        .review-card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 34px 30px;
+            border: 1px solid #e6ecf7;
+            box-shadow: 0 10px 30px rgba(13,27,62,0.06);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .review-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 18px 40px rgba(13,27,62,0.10);
+        }
+        .review-text {
+            font-size: 16px;
+            color: #3d4966;
+            line-height: 1.7;
+            margin-bottom: 25px;
+            font-style: italic;
+            position: relative;
+        }
+        .review-text::before {
+            content: '“';
+            font-family: serif;
+            font-size: 50px;
+            color: #d0e2f7;
+            position: absolute;
+            top: -25px;
+            left: -10px;
+            z-index: 0;
+        }
+        .review-text span {
+            position: relative;
+            z-index: 1;
+        }
+        .review-author-block {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            border-top: 1px solid #f0f4f9;
+            padding-top: 20px;
+            margin-top: auto;
+        }
+        .review-author-info h4 {
+            font-family: 'Manrope', sans-serif;
+            font-size: 17px;
+            font-weight: 700;
+            color: #0d1b3e;
+            margin-bottom: 4px;
+        }
+        .review-author-info p {
+            font-size: 13px;
+            color: #8b98b8;
+        }
+        .review-company {
+            font-size: 13px;
+            color: #5ba3f5;
+            font-weight: 600;
+            text-align: right;
+        }
+
         .contacts { padding: 70px 0 90px; background: #ffffff; text-align: center; }
         .contacts h2 {
             font-size: 36px;
@@ -639,8 +722,8 @@
             .hero h1 { font-size: 32px; }
             .hero p { font-size: 16px; }
             .btn { padding: 15px 34px; font-size: 16px; }
-            .benefits, .about, .faq, .yandex-block, .tour-block, .contacts { padding: 45px 0 60px; }
-            .benefits h2, .about h2, .faq h2, .yandex-block h2, .tour-block h2, .contacts h2 {
+            .benefits, .about, .faq, .yandex-block, .tour-block, .contacts, .reviews { padding: 45px 0 60px; }
+            .benefits h2, .about h2, .faq h2, .yandex-block h2, .tour-block h2, .contacts h2, .reviews h2 {
                 font-size: 28px; margin-bottom: 35px;
             }
             .yandex-block .inner { padding: 36px 24px; }
@@ -664,6 +747,8 @@
             .yandex-btn .ya-tile svg { width: 22px; height: 22px; }
             .messenger-text h4 { font-size: 15px; }
             .messenger-text p { font-size: 12px; }
+            .review-author-block { flex-direction: column; align-items: flex-start; gap: 10px; }
+            .review-company { text-align: left; }
         }
     </style>
 </head>
@@ -677,6 +762,7 @@
                 <a href="#tour">Примеры работ</a>
                 <a href="#about">Услуги</a>
                 <a href="#yandex">Яндекс Карты</a>
+                <a href="#reviews">Отзывы</a>
                 <a href="#contacts">Контакты</a>
                 <a href="#faq">FAQ</a>
                 <a href="tel:+79063437268" class="contact-link">
@@ -747,7 +833,7 @@
         </div>
     </section>
 
-    <!-- ===== БЛОК С ТУРАМИ (ПЕРЕМЕЩЕН ВЫШЕ) ===== -->
+    <!-- ===== БЛОК С ТУРАМИ ===== -->
     <section class="tour-block" id="tour">
         <div class="container">
             <h2>Примеры работ</h2>
@@ -1017,6 +1103,65 @@
                 <h2>Публикуем ваши туры на Яндекс Картах</h2>
                 <p>У нас есть возможность размещать панорамы 360° и виртуальные туры на Яндекс Картах. Это значит, что ваше кафе, магазин, офис или объект недвижимости увидят тысячи пользователей, которые ищут вас на картах. Панорама внутри карточки организации повышает доверие клиентов и увеличивает посещаемость.</p>
                 <div class="ya-tagline">Размещение панорам на Яндекс Картах — включено в услугу</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== ОТЗЫВЫ ===== -->
+    <section class="reviews" id="reviews">
+        <div class="container">
+            <h2>Нам доверяют</h2>
+            <p class="subtitle">Что говорят о нас клиенты и партнёры</p>
+            <div class="reviews-grid">
+                
+                <!-- Отзыв 1 -->
+                <div class="review-card">
+                    <div class="review-text">
+                        <span>С 3D-турами квартиры стали продаваться заметно быстрее. Клиенты приходят на просмотр уже подготовленными, отсеиваются те, кому не подходит планировка. Качество съемки отличное!</span>
+                    </div>
+                    <div class="review-author-block">
+                        <div class="review-author-info">
+                            <h4>Наталья</h4>
+                            <p>г. Самара</p>
+                        </div>
+                        <div class="review-company">
+                            Риелтор, Сменикварти.ру
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Отзыв 2 -->
+                <div class="review-card">
+                    <div class="review-text">
+                        <span>Тур получился просто волшебным! Музыка, четкие переходы — гости часто говорят, что выбрали наше кафе, потому что "погуляли" по нему онлайн. Спасибо за оперативность и креатив!</span>
+                    </div>
+                    <div class="review-author-block">
+                        <div class="review-author-info">
+                            <h4>Владислав</h4>
+                            <p>г. Самара</p>
+                        </div>
+                        <div class="review-company">
+                            Управляющий кафе «Сковородка»
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Отзыв 3 -->
+                <div class="review-card">
+                    <div class="review-text">
+                        <span>Заказывали съемку магазина и публикацию на Яндекс Картах. Теперь люди находят нас на картах и сразу видят ассортимент. Очень удобно, что всё сделали "под ключ" за пару дней.</span>
+                    </div>
+                    <div class="review-author-block">
+                        <div class="review-author-info">
+                            <h4>Константин</h4>
+                            <p>г. Самара</p>
+                        </div>
+                        <div class="review-company">
+                            Директор магазина «Жигулевское»
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </section>
