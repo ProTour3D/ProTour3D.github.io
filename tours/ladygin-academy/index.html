@@ -7,6 +7,181 @@
 <style> @-ms-viewport { width: device-width; } </style>
 <link rel="stylesheet" href="vendor/reset.min.css">
 <link rel="stylesheet" href="style.css">
+
+<!-- Стили для карты -->
+<style>
+    #floorplan-container {
+        position: absolute;
+        bottom: 80px;
+        right: 20px;
+        width: 25vmin;
+        height: 25vmin;
+        min-width: 150px;
+        min-height: 150px;
+        max-width: 300px;
+        max-height: 300px;
+        border: 2px solid #fff;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        z-index: 1000;
+        background: #fff;
+        cursor: pointer;
+        transition: width 0.2s, height 0.2s, border-radius 0.2s;
+    }
+    #floorplan-image {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        display: block;
+    }
+    #markers-layer {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+    }
+    .map-marker {
+        position: absolute;
+        width: 14px;
+        height: 14px;
+        background-color: #ff4757;
+        border: 2px solid #fff;
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        cursor: pointer;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        transition: transform 0.2s, background-color 0.2s, width 0.2s, height 0.2s;
+        pointer-events: auto;
+    }
+    .map-marker:hover {
+        transform: translate(-50%, -50%) scale(1.3);
+        background-color: #ff6b81;
+        z-index: 10;
+    }
+
+    /* 🟢 Активный маркер — пульсирующий зелёный */
+    .map-marker.active {
+        background-color: #2ed573;
+        box-shadow: 0 0 10px #2ed573, 0 0 0 0 rgba(46, 213, 115, 0.7);
+        animation: pulse 1.5s infinite;
+        z-index: 20;
+    }
+    @keyframes pulse {
+        0%   { box-shadow: 0 0 10px #2ed573, 0 0 0 0 rgba(46, 213, 115, 0.7); }
+        70%  { box-shadow: 0 0 10px #2ed573, 0 0 0 10px rgba(46, 213, 115, 0); }
+        100% { box-shadow: 0 0 10px #2ed573, 0 0 0 0 rgba(46, 213, 115, 0); }
+    }
+
+    /* 🏷️ Логотип на карте */
+    #map-logo {
+        position: absolute;
+        bottom: 6px;
+        left: 6px;
+        width: 50px;
+        height: auto;
+        opacity: 0.85;
+        pointer-events: none;
+        z-index: 5;
+        transition: width 0.2s;
+    }
+
+    /* Кнопка закрытия (видна только в развёрнутом виде) */
+    #floorplan-close {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        width: 32px;
+        height: 32px;
+        background: rgba(0,0,0,0.7);
+        color: #fff;
+        border-radius: 50%;
+        font-size: 22px;
+        line-height: 32px;
+        text-align: center;
+        cursor: pointer;
+        display: none;
+        z-index: 2001;
+        font-family: Arial, sans-serif;
+        user-select: none;
+        -webkit-user-select: none;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Тёмный фон за развёрнутой картой */
+    #floorplan-backdrop {
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(0,0,0,0.75);
+        z-index: 1999;
+        display: none;
+    }
+    #floorplan-backdrop.visible {
+        display: block;
+    }
+
+    /* 🖥 Развёрнутое состояние карты (только на телефоне) */
+    #floorplan-container.expanded {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 90vmin;
+        height: 90vmin;
+        min-width: auto;
+        min-height: auto;
+        max-width: 600px;
+        max-height: 600px;
+        right: auto;
+        bottom: auto;
+        z-index: 2000;
+        cursor: default;
+        border-radius: 14px;
+        border-width: 2px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+    }
+    #floorplan-container.expanded #floorplan-close {
+        display: block;
+    }
+    #floorplan-container.expanded .map-marker {
+        width: 20px;
+        height: 20px;
+        border-width: 2px;
+    }
+    #floorplan-container.expanded #map-logo {
+        width: 80px;
+        bottom: 10px;
+        left: 10px;
+    }
+
+    /* 📱 Адаптация для телефонов */
+    @media (max-width: 768px) {
+        #floorplan-container:not(.expanded) {
+            width: 110px;
+            height: 110px;
+            min-width: auto;
+            min-height: auto;
+            max-width: 110px;
+            max-height: 110px;
+            bottom: 70px;
+            right: 10px;
+            border-width: 1px;
+            border-radius: 8px;
+        }
+        #floorplan-container:not(.expanded) .map-marker {
+            width: 10px;
+            height: 10px;
+            border-width: 1px;
+        }
+        #floorplan-container:not(.expanded) #map-logo {
+            width: 35px;
+            bottom: 4px;
+            left: 4px;
+        }
+    }
+</style>
 </head>
 <body class="multiple-scenes ">
 
@@ -14,171 +189,129 @@
 
 <div id="sceneList">
   <ul class="scenes">
-    
       <a href="javascript:void(0)" class="scene" data-id="0-">
         <li class="text">Старт</li>
       </a>
-    
       <a href="javascript:void(0)" class="scene" data-id="1-1">
         <li class="text">1</li>
       </a>
-    
       <a href="javascript:void(0)" class="scene" data-id="2-2---">
         <li class="text">2 заезд в бокс</li>
       </a>
-    
       <a href="javascript:void(0)" class="scene" data-id="3-3">
         <li class="text">3</li>
       </a>
-    
       <a href="javascript:void(0)" class="scene" data-id="4-4">
         <li class="text">4</li>
       </a>
-    
       <a href="javascript:void(0)" class="scene" data-id="5-5">
         <li class="text">5</li>
       </a>
-    
       <a href="javascript:void(0)" class="scene" data-id="6-6">
         <li class="text">6</li>
       </a>
-    
       <a href="javascript:void(0)" class="scene" data-id="7-7">
         <li class="text">7</li>
       </a>
-    
       <a href="javascript:void(0)" class="scene" data-id="8-8">
         <li class="text">8</li>
       </a>
-    
       <a href="javascript:void(0)" class="scene" data-id="9-9">
         <li class="text">9</li>
       </a>
-    
       <a href="javascript:void(0)" class="scene" data-id="10-10">
         <li class="text">10</li>
       </a>
-    
       <a href="javascript:void(0)" class="scene" data-id="11-11">
         <li class="text">11</li>
       </a>
-    
       <a href="javascript:void(0)" class="scene" data-id="12-12">
         <li class="text">12</li>
       </a>
-    
       <a href="javascript:void(0)" class="scene" data-id="13-13">
         <li class="text">13</li>
       </a>
-    
       <a href="javascript:void(0)" class="scene" data-id="14-14">
         <li class="text">14</li>
       </a>
-    
       <a href="javascript:void(0)" class="scene" data-id="15-15">
         <li class="text">15</li>
       </a>
-    
       <a href="javascript:void(0)" class="scene" data-id="16-16">
         <li class="text">16</li>
       </a>
-    
       <a href="javascript:void(0)" class="scene" data-id="17-17">
         <li class="text">17</li>
       </a>
-    
       <a href="javascript:void(0)" class="scene" data-id="18-18">
         <li class="text">18</li>
       </a>
-    
       <a href="javascript:void(0)" class="scene" data-id="19-19">
         <li class="text">19</li>
       </a>
-    
       <a href="javascript:void(0)" class="scene" data-id="20-20">
         <li class="text">20</li>
       </a>
-    
       <a href="javascript:void(0)" class="scene" data-id="21-21">
         <li class="text">21</li>
       </a>
-    
       <a href="javascript:void(0)" class="scene" data-id="22-22">
         <li class="text">22</li>
       </a>
-    
       <a href="javascript:void(0)" class="scene" data-id="23-23">
         <li class="text">23</li>
       </a>
-    
       <a href="javascript:void(0)" class="scene" data-id="24-24">
         <li class="text">24</li>
       </a>
-    
       <a href="javascript:void(0)" class="scene" data-id="25-25">
         <li class="text">25</li>
       </a>
-    
       <a href="javascript:void(0)" class="scene" data-id="26-26">
         <li class="text">26</li>
       </a>
-    
       <a href="javascript:void(0)" class="scene" data-id="27-27">
         <li class="text">27</li>
       </a>
-    
       <a href="javascript:void(0)" class="scene" data-id="28-28">
         <li class="text">28</li>
       </a>
-    
       <a href="javascript:void(0)" class="scene" data-id="29-29">
         <li class="text">29</li>
       </a>
-    
       <a href="javascript:void(0)" class="scene" data-id="30-30--">
         <li class="text">30 Стартовая решётка</li>
       </a>
-    
       <a href="javascript:void(0)" class="scene" data-id="31-31-">
         <li class="text">31 бокс</li>
       </a>
-    
       <a href="javascript:void(0)" class="scene" data-id="32-32-">
         <li class="text">32 Телеметрия</li>
       </a>
-    
       <a href="javascript:void(0)" class="scene" data-id="33-33-">
         <li class="text">33 Парковка</li>
       </a>
-    
       <a href="javascript:void(0)" class="scene" data-id="34-34">
         <li class="text">34</li>
       </a>
-    
       <a href="javascript:void(0)" class="scene" data-id="35-35">
         <li class="text">35</li>
       </a>
-    
       <a href="javascript:void(0)" class="scene" data-id="36-36">
         <li class="text">36</li>
       </a>
-    
       <a href="javascript:void(0)" class="scene" data-id="37-37---">
         <li class="text">37 поворот с дороги</li>
       </a>
-    
       <a href="javascript:void(0)" class="scene" data-id="38-37">
         <li class="text">37</li>
       </a>
-    
       <a href="javascript:void(0)" class="scene" data-id="39-38">
         <li class="text">38</li>
       </a>
-    
       <a href="javascript:void(0)" class="scene" data-id="40-39---">
         <li class="text">39 Пункт выдачи экипировки</li>
       </a>
-    
   </ul>
 </div>
 
@@ -220,12 +353,176 @@
   <img class="icon" src="img/minus.png">
 </a>
 
+<!-- Тёмный фон + карта -->
+<div id="floorplan-backdrop"></div>
+<div id="floorplan-container">
+    <img src="plan.png" alt="План трассы" id="floorplan-image">
+    <div id="markers-layer"></div>
+    <!-- ЛОГОТИП -->
+    <img src="img/logo.png" id="map-logo" alt="ProTour" onerror="this.style.display='none'">
+    
+    <div id="floorplan-close">×</div>
+</div>
+
 <script src="vendor/screenfull.min.js" ></script>
 <script src="vendor/bowser.min.js" ></script>
 <script src="vendor/marzipano.js" ></script>
 
 <script src="data.js"></script>
 <script src="index.js"></script>
+
+<!-- Скрипт для карты -->
+<script>
+    // ⚠️ Координаты маркеров (в процентах от размера картинки).
+    // Я расставил их примерно по форме трассы (контур). 
+    // ОБЯЗАТЕЛЬНО подкорректируйте их с помощью лайфхака ниже!
+    const mapMarkers = [
+        { id: '0-',        x: 75, y: 80 }, // Старт (на прямой)
+        { id: '1-1',       x: 70, y: 85 }, // 1
+        { id: '2-2---',    x: 60, y: 90 }, // 2 заезд в бокс
+        { id: '3-3',       x: 50, y: 80 }, // 3
+        { id: '4-4',       x: 45, y: 70 }, // 4
+        { id: '5-5',       x: 40, y: 60 }, // 5
+        { id: '6-6',       x: 30, y: 50 }, // 6
+        { id: '7-7',       x: 25, y: 40 }, // 7
+        { id: '8-8',       x: 20, y: 30 }, // 8
+        { id: '9-9',       x: 15, y: 25 }, // 9
+        { id: '10-10',     x: 20, y: 15 }, // 10
+        { id: '11-11',     x: 30, y: 10 }, // 11
+        { id: '12-12',     x: 40, y: 15 }, // 12
+        { id: '13-13',     x: 35, y: 25 }, // 13
+        { id: '14-14',     x: 25, y: 35 }, // 14
+        { id: '15-15',     x: 30, y: 45 }, // 15
+        { id: '16-16',     x: 40, y: 40 }, // 16
+        { id: '17-17',     x: 45, y: 30 }, // 17
+        { id: '18-18',     x: 50, y: 20 }, // 18
+        { id: '19-19',     x: 60, y: 25 }, // 19
+        { id: '20-20',     x: 65, y: 35 }, // 20
+        { id: '21-21',     x: 55, y: 45 }, // 21
+        { id: '22-22',     x: 50, y: 55 }, // 22
+        { id: '23-23',     x: 60, y: 65 }, // 23
+        { id: '24-24',     x: 70, y: 60 }, // 24
+        { id: '25-25',     x: 80, y: 55 }, // 25
+        { id: '26-26',     x: 85, y: 65 }, // 26
+        { id: '27-27',     x: 80, y: 75 }, // 27
+        { id: '28-28',     x: 85, y: 85 }, // 28
+        { id: '29-29',     x: 90, y: 75 }, // 29
+        { id: '30-30--',   x: 85, y: 50 }, // 30 Стартовая решётка
+        { id: '31-31-',    x: 75, y: 50 }, // 31 бокс
+        { id: '32-32-',    x: 65, y: 55 }, // 32 Телеметрия
+        { id: '33-33-',    x: 80, y: 90 }, // 33 Парковка
+        { id: '34-34',     x: 90, y: 60 }, // 34
+        { id: '35-35',     x: 95, y: 50 }, // 35
+        { id: '36-36',     x: 85, y: 40 }, // 36
+        { id: '37-37---',  x: 75, y: 30 }, // 37 поворот с дороги
+        { id: '38-37',     x: 65, y: 20 }, // 37
+        { id: '39-38',     x: 55, y: 10 }, // 38
+        { id: '40-39---',  x: 90, y: 85 }  // 39 Пункт выдачи (у парковки)
+    ];
+
+    var isMobileView = window.matchMedia('(max-width: 768px)').matches;
+
+    var floorplanContainer = document.getElementById('floorplan-container');
+    var floorplanBackdrop  = document.getElementById('floorplan-backdrop');
+    var floorplanClose     = document.getElementById('floorplan-close');
+
+    function expandMap() {
+        if (!isMobileView) return;
+        floorplanContainer.classList.add('expanded');
+        floorplanBackdrop.classList.add('visible');
+    }
+
+    function collapseMap() {
+        floorplanContainer.classList.remove('expanded');
+        floorplanBackdrop.classList.remove('visible');
+    }
+
+    function updateActiveMarker(sceneId) {
+        document.querySelectorAll('.map-marker').forEach(el => {
+            el.classList.remove('active');
+        });
+        const activeMarker = document.querySelector('.map-marker[data-scene-id="' + sceneId + '"]');
+        if (activeMarker) {
+            activeMarker.classList.add('active');
+        }
+    }
+
+    function initMap() {
+        // === ЛАЙФХАК: Получение точных координат ===
+        // Кликните по карте — координаты появятся в консоли браузера.
+        // На Mac консоль открывается через ⌘ + Option + J.
+        // На Windows/Linux — F12 → вкладка Console.
+        document.getElementById('floorplan-image').addEventListener('click', function(e) {
+            const rect = this.getBoundingClientRect();
+            const x = ((e.clientX - rect.left) / rect.width) * 100;
+            const y = ((e.clientY - rect.top) / rect.height) * 100;
+            console.log('Координаты для маркера:', 'x: ' + x.toFixed(1) + ', y: ' + y.toFixed(1));
+        });
+
+        const markersLayer = document.getElementById('markers-layer');
+        if (!markersLayer) return;
+
+        mapMarkers.forEach(marker => {
+            const el = document.createElement('div');
+            el.className = 'map-marker';
+            el.style.left = marker.x + '%';
+            el.style.top = marker.y + '%';
+            el.setAttribute('data-scene-id', marker.id);
+            el.title = marker.id;
+
+            el.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const sceneLink = document.querySelector('.scene[data-id="' + marker.id + '"]');
+                if (sceneLink) {
+                    sceneLink.click();
+                } else {
+                    console.warn('Сцена не найдена:', marker.id);
+                }
+                if (isMobileView) {
+                    setTimeout(collapseMap, 150);
+                }
+            });
+
+            markersLayer.appendChild(el);
+        });
+
+        floorplanContainer.addEventListener('click', function(e) {
+            if (!isMobileView) return;
+            if (floorplanContainer.classList.contains('expanded')) return;
+            if (e.target.classList && e.target.classList.contains('map-marker')) return;
+            if (e.target.id === 'floorplan-close') return;
+            expandMap();
+        });
+
+        if (floorplanClose) {
+            floorplanClose.addEventListener('click', function(e) {
+                e.stopPropagation();
+                collapseMap();
+            });
+        }
+        if (floorplanBackdrop) {
+            floorplanBackdrop.addEventListener('click', collapseMap);
+        }
+
+        var sceneLinks = document.querySelectorAll('.scene');
+
+        function syncActiveMarker() {
+            var currentLink = document.querySelector('.scene.current');
+            if (currentLink) {
+                updateActiveMarker(currentLink.getAttribute('data-id'));
+            }
+        }
+
+        var listObserver = new MutationObserver(syncActiveMarker);
+        sceneLinks.forEach(function(link) {
+            listObserver.observe(link, { attributes: true, attributeFilter: ['class'] });
+        });
+
+        setTimeout(syncActiveMarker, 300);
+    }
+
+    window.addEventListener('load', initMap);
+</script>
 
 </body>
 </html>
