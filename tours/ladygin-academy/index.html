@@ -14,7 +14,7 @@
         position: absolute;
         bottom: 80px;
         right: 20px;
-        /* УВЕЛИЧЕНО НА 20% */
+        /* УВЕЛИЧЕНО НА 20% ДЛЯ КОМПЬЮТЕРА */
         width: 30vmin;
         height: 30vmin;
         min-width: 180px;
@@ -46,7 +46,7 @@
     }
     .map-marker {
         position: absolute;
-        /* УМЕНЬШЕНО С 14px ДО 12px */
+        /* УМЕНЬШЕНО С 14px ДО 12px ДЛЯ КОМПЬЮТЕРА */
         width: 12px;
         height: 12px;
         background-color: #ff4757;
@@ -77,12 +77,14 @@
         100% { box-shadow: 0 0 10px #2ed573, 0 0 0 0 rgba(46, 213, 115, 0); }
     }
 
-   /* 🟢 Зеленый сектор направления взгляда */
+    /* 🟢 ЗЕЛЕНЫЙ СЕКТОР НАПРАВЛЕНИЯ ВЗГЛЯДА */
     #direction-cone {
         position: absolute;
+        /* Уменьшено, чтобы соответствовать размеру маркеров */
         width: 45px;
         height: 45px;
         border-radius: 50%;
+        /* ЗЕЛЕНЫЙ ЦВЕТ */
         background: conic-gradient(from -30deg, rgba(46, 213, 115, 0.7) 0deg, transparent 60deg);
         transform-origin: 50% 50%;
         transform: translate(-50%, -50%) rotate(0deg);
@@ -157,7 +159,7 @@
         display: block;
     }
     #floorplan-container.expanded .map-marker {
-        width: 18px; /* Чуть уменьшили и для развернутого режима */
+        width: 18px;
         height: 18px;
         border-width: 2px;
     }
@@ -171,7 +173,7 @@
         left: 10px;
     }
 
-    /* 📱 Адаптация для телефонов (здесь размеры остаются прежними) */
+    /* 📱 Адаптация для телефонов (здесь размеры остаются маленькими) */
     @media (max-width: 768px) {
         #floorplan-container:not(.expanded) {
             width: 110px;
@@ -270,6 +272,7 @@
 <div id="floorplan-container">
     <img src="plan.png" alt="План трассы" id="floorplan-image">
     <div id="markers-layer">
+        <!-- 🟢 ЗЕЛЕНЫЙ СЕКТОР НАПРАВЛЕНИЯ ВЗГЛЯДА -->
         <div id="direction-cone"></div>
     </div>
     <img src="img/logo.png" id="map-logo" alt="ProTour" onerror="this.style.display='none'">
@@ -284,40 +287,42 @@
 <script src="index.js"></script>
 
 <script>
+    // ВАШИ ТОЧНЫЕ КООРДИНАТЫ СОХРАНЕНЫ ЗДЕСЬ
+    // Параметр offset отвечает за поворот радара для конкретной точки
     const mapMarkers = [
-        { id: '0-',        x: 70, y: 58.3 }, 
-        { id: '1-1',       x: 79.4, y: 63.0 },
-        { id: '2-2---',    x: 85.5, y: 69.5 },
-        { id: '3-3',       x: 85.0, y: 75.6 },
-        { id: '4-4',       x: 78.0, y: 80 },
-        { id: '5-5',       x: 62, y: 75.6 },
-        { id: '6-6',       x: 52.2, y: 71.4 },
-        { id: '7-7',       x: 48.4, y: 68.6 },
-        { id: '8-8',       x: 54, y: 63.4 },
-        { id: '9-9',       x: 61.5, y: 67.6 },
-        { id: '10-10',     x: 70.5, y: 72.8 },
-        { id: '11-11',     x: 76.1, y: 74.2 },
-        { id: '12-12',     x: 79.8, y: 70.5 },
-        { id: '13-13',     x: 75.6, y: 66.7 },
-        { id: '14-14',     x: 65.3, y: 62.5 },
-        { id: '15-15',     x: 53.1, y: 56.4 },
-        { id: '16-16',     x: 42.8, y: 63.4 },
-        { id: '17-17',     x: 35.3, y: 57.3 },
-        { id: '18-18',     x: 42.8, y: 46.1 },
-        { id: '19-19',     x: 39.0, y: 42.3 },
-        { id: '20-20',     x: 27.8, y: 53.1 },
-        { id: '21-21',     x: 18.4, y: 52.2 },
-        { id: '22-22',     x: 5.7, y: 32.9 },
-        { id: '23-23',     x: 9.5, y: 20.8 },
-        { id: '24-24',     x: 18.9, y: 13.7 },
-        { id: '25-25',     x: 38.6, y: 20.3 },
-        { id: '26-26',     x: 46.5, y: 17.0 },
-        { id: '27-27',     x: 47.0, y: 27.8 },
-        { id: '28-28',     x: 47.9, y: 42.8 },
-        { id: '29-29',     x: 53.1, y: 51.2 },
-        { id: '30-30--',   x: 60.1, y: 54.5 },
-        { id: '31-31-',    x: 93.0, y: 75.6 },
-        { id: '32-32-',    x: 87.3, y: 88.7 }
+        { id: '0-',        x: 70, y: 58.3, offset: 0 }, 
+        { id: '1-1',       x: 79.4, y: 63.0, offset: 0 },
+        { id: '2-2---',    x: 85.5, y: 69.5, offset: 0 },
+        { id: '3-3',       x: 85.0, y: 75.6, offset: 0 },
+        { id: '4-4',       x: 78.0, y: 80, offset: 0 },
+        { id: '5-5',       x: 62, y: 75.6, offset: 0 },
+        { id: '6-6',       x: 52.2, y: 71.4, offset: 0 },
+        { id: '7-7',       x: 48.4, y: 68.6, offset: 0 },
+        { id: '8-8',       x: 54, y: 63.4, offset: 0 },
+        { id: '9-9',       x: 61.5, y: 67.6, offset: 0 },
+        { id: '10-10',     x: 70.5, y: 72.8, offset: 0 },
+        { id: '11-11',     x: 76.1, y: 74.2, offset: 0 },
+        { id: '12-12',     x: 79.8, y: 70.5, offset: 0 },
+        { id: '13-13',     x: 75.6, y: 66.7, offset: 0 },
+        { id: '14-14',     x: 65.3, y: 62.5, offset: 0 },
+        { id: '15-15',     x: 53.1, y: 56.4, offset: 0 },
+        { id: '16-16',     x: 42.8, y: 63.4, offset: 0 },
+        { id: '17-17',     x: 35.3, y: 57.3, offset: 0 },
+        { id: '18-18',     x: 42.8, y: 46.1, offset: 0 },
+        { id: '19-19',     x: 39.0, y: 42.3, offset: 0 },
+        { id: '20-20',     x: 27.8, y: 53.1, offset: 0 },
+        { id: '21-21',     x: 18.4, y: 52.2, offset: 0 },
+        { id: '22-22',     x: 5.7, y: 32.9, offset: 0 },
+        { id: '23-23',     x: 9.5, y: 20.8, offset: 0 },
+        { id: '24-24',     x: 18.9, y: 13.7, offset: 0 },
+        { id: '25-25',     x: 38.6, y: 20.3, offset: 0 },
+        { id: '26-26',     x: 46.5, y: 17.0, offset: 0 },
+        { id: '27-27',     x: 47.0, y: 27.8, offset: 0 },
+        { id: '28-28',     x: 47.9, y: 42.8, offset: 0 },
+        { id: '29-29',     x: 53.1, y: 51.2, offset: 0 },
+        { id: '30-30--',   x: 60.1, y: 54.5, offset: 0 },
+        { id: '31-31-',    x: 93.0, y: 75.6, offset: 0 },
+        { id: '32-32-',    x: 87.3, y: 88.7, offset: 0 }
     ];
 
     var isMobileView = window.matchMedia('(max-width: 768px)').matches;
@@ -326,7 +331,7 @@
     var floorplanClose     = document.getElementById('floorplan-close');
     var directionCone      = document.getElementById('direction-cone');
     
-    var YAW_OFFSET = 20; 
+    var currentSceneId = null;
 
     function expandMap() {
         if (!isMobileView) return;
@@ -340,6 +345,7 @@
     }
 
     function updateActiveMarker(sceneId) {
+        currentSceneId = sceneId;
         document.querySelectorAll('.map-marker').forEach(el => {
             el.classList.remove('active');
         });
@@ -361,7 +367,15 @@
                 directionCone.style.top = activeMarker.style.top;
 
                 var yaw = currentView.yaw();
-                var deg = (yaw * 180 / Math.PI) + YAW_OFFSET;
+                
+                // Берем индивидуальное смещение для текущей сцены
+                var offset = 0;
+                var sceneData = mapMarkers.find(m => m.id === currentSceneId);
+                if (sceneData && sceneData.offset !== undefined) {
+                    offset = sceneData.offset;
+                }
+
+                var deg = (yaw * 180 / Math.PI) + offset;
                 
                 directionCone.style.transform = `translate(-50%, -50%) rotate(${deg}deg)`;
             } else {
