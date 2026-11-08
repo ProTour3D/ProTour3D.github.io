@@ -133,14 +133,16 @@
     showSceneList();
   }
 
-  scenes.forEach(function(scene) {
+scenes.forEach(function(scene) {
     var el = document.querySelector('#sceneList .scene[data-id="' + scene.data.id + '"]');
-    el.addEventListener('click', function() {
-      switchScene(scene, false);
-      if (document.body.classList.contains('mobile')) {
-        hideSceneList();
-      }
-    });
+    if (el) { // <-- ЗАЩИТА ОТ ОШИБКИ
+      el.addEventListener('click', function() {
+        switchScene(scene, false);
+        if (document.body.classList.contains('mobile')) {
+          hideSceneList();
+        }
+      });
+    }
   });
 
   var viewUpElement = document.querySelector('#viewUp');
