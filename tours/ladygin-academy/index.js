@@ -70,6 +70,9 @@
   };
 
   var viewer = new Marzipano.Viewer(panoElement, viewerOpts);
+  
+  // 🔴 ВАЖНО: ДЕЛАЕМ КАМЕРУ ДОСТУПНОЙ ДЛЯ КАРТЫ (для красного сектора)
+  window.marzipanoViewer = viewer; 
 
   // 📱 Определяем мобильное устройство
   var isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)
@@ -189,8 +192,6 @@
   }
 
   // 🧠 Сохраняем текущий вид активной сцены.
-  // НО: если пользователь смотрит на какую-то дверь — не сохраняем,
-  // чтобы не «застрять» на виде двери при возврате.
   function saveCurrentView() {
     if (!currentSceneRef) return;
     var view = currentSceneRef.view;
@@ -201,13 +202,12 @@
 
     if (isNaN(yaw) || isNaN(pitch) || isNaN(fov)) return;
 
-    // Проверяем: смотрит ли пользователь на одну из дверей (link hotspot)
     var linkHotspots = currentSceneRef.data.linkHotspots || [];
     for (var i = 0; i < linkHotspots.length; i++) {
       var doorYaw = linkHotspots[i].yaw;
       var diff = Math.abs(normalizeAngle(yaw - doorYaw));
-      if (diff < Math.PI / 4) {  // в пределах 45° от двери
-        return;  // не сохраняем — чтобы не «залипнуть» на двери
+      if (diff < Math.PI / 4) {
+        return;
       }
     }
 
@@ -215,9 +215,6 @@
   }
 
   // 🧠 Вычисляем «вид в комнату» для сцены, в которую мы входим
-  // через дверь из sourceSceneId.
-  // Ищем в сцене hotspot, ведущий обратно в sourceSceneId,
-  // и смотрим в противоположную от него сторону.
   function computeArrivalView(sceneData, sourceSceneId) {
     if (!sourceSceneId) return null;
 
@@ -234,32 +231,26 @@
     if (!backLink) return null;
 
     return {
-      yaw: backLink.yaw + Math.PI,     // 180° от двери — смотрим В КОМНАТУ
+      yaw: backLink.yaw + Math.PI,
       pitch: sceneData.initialViewParameters.pitch,
       fov: sceneData.initialViewParameters.fov
     };
   }
 
-  // 🧠 Определяем, какие параметры вида применить при входе в сцену.
   function getViewParameters(sceneData, sourceSceneId, fromHotspot) {
-    // 1. Если зашли через дверь — всегда смотрим В КОМНАТУ (не на дверь)
     if (fromHotspot && sourceSceneId) {
       var arrival = computeArrivalView(sceneData, sourceSceneId);
       if (arrival) return arrival;
     }
 
-    // 2. Если есть сохранённый вид (навигация через меню) — используем его
     var saved = savedViews[sceneData.id];
     if (saved) return saved;
 
-    // 3. Иначе — начальный вид из data.js
     return sceneData.initialViewParameters;
   }
 
-  // 🎬 Флаг: первая сцена при загрузке уже отрисована?
   var isFirstSwitchDone = false;
 
-  // 🎬 Переключение сцены
   function switchScene(scene, fromHotspot) {
     if (!isFirstSwitchDone) {
       isFirstSwitchDone = true;
@@ -268,10 +259,8 @@
       return;
     }
 
-    // 🧠 Запоминаем, откуда идём (для вычисления arrival view)
     var sourceSceneId = (fromHotspot && currentSceneRef) ? currentSceneRef.data.id : null;
 
-    // 🧠 Сохраняем текущий вид (если он «осмысленный»)
     saveCurrentView();
 
     stopAutorotate();
@@ -281,12 +270,9 @@
     startAutorotate();
   }
 
-  // 🎬 Применение сцены
   function applySceneSwitch(scene, sourceSceneId, fromHotspot) {
     var viewParams = getViewParameters(scene.data, sourceSceneId, fromHotspot);
 
-    // Подменяем initialViewParameters — чтобы Marzipano, если он снова
-    // применит их при switchTo, применил именно наш вид.
     scene.data.initialViewParameters = viewParams;
 
     scene.view.setParameters(viewParams);
@@ -368,7 +354,6 @@
     }
 
     wrapper.addEventListener('click', function() {
-      // 🧠 true = переход через дверь (hotspot)
       switchScene(findSceneById(hotspot.target), true);
     });
 
