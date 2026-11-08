@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="vendor/reset.min.css">
 <link rel="stylesheet" href="style.css">
 
+<!-- Стили для карты -->
 <style>
     #floorplan-container {
         position: absolute;
@@ -60,6 +61,8 @@
         background-color: #ff6b81;
         z-index: 10;
     }
+
+    /* 🟢 Активный маркер */
     .map-marker.active {
         background-color: #2ed573;
         box-shadow: 0 0 10px #2ed573, 0 0 0 0 rgba(46, 213, 115, 0.7);
@@ -71,6 +74,8 @@
         70%  { box-shadow: 0 0 10px #2ed573, 0 0 0 10px rgba(46, 213, 115, 0); }
         100% { box-shadow: 0 0 10px #2ed573, 0 0 0 0 rgba(46, 213, 115, 0); }
     }
+
+    /* 🔴 Красный сектор направления взгляда */
     #direction-cone {
         position: absolute;
         width: 50px;
@@ -83,6 +88,8 @@
         z-index: 15; 
         display: none;
     }
+
+    /* 🏷️ Логотип на карте */
     #map-logo {
         position: absolute;
         bottom: 6px;
@@ -94,6 +101,7 @@
         z-index: 5;
         transition: width 0.2s;
     }
+
     #floorplan-close {
         position: absolute;
         top: 8px;
@@ -112,6 +120,7 @@
         font-family: Arial, sans-serif;
         user-select: none;
     }
+
     #floorplan-backdrop {
         position: fixed;
         top: 0; left: 0; right: 0; bottom: 0;
@@ -122,6 +131,7 @@
     #floorplan-backdrop.visible {
         display: block;
     }
+
     #floorplan-container.expanded {
         position: fixed;
         top: 50%;
@@ -158,6 +168,7 @@
         bottom: 10px;
         left: 10px;
     }
+
     @media (max-width: 768px) {
         #floorplan-container:not(.expanded) {
             width: 110px;
@@ -194,6 +205,7 @@
 
 <div id="sceneList">
   <ul class="scenes">
+      <!-- ВОССТАНОВЛЕНЫ ВСЕ 41 СЦЕНА -->
       <a href="javascript:void(0)" class="scene" data-id="0-"><li class="text">Старт</li></a>
       <a href="javascript:void(0)" class="scene" data-id="1-1"><li class="text">1</li></a>
       <a href="javascript:void(0)" class="scene" data-id="2-2---"><li class="text">2 заезд в бокс</li></a>
@@ -227,6 +239,14 @@
       <a href="javascript:void(0)" class="scene" data-id="30-30--"><li class="text">30 Стартовая решётка</li></a>
       <a href="javascript:void(0)" class="scene" data-id="31-31-"><li class="text">31 бокс</li></a>
       <a href="javascript:void(0)" class="scene" data-id="32-32-"><li class="text">32 Телеметрия</li></a>
+      <a href="javascript:void(0)" class="scene" data-id="33-33-"><li class="text">33 Парковка</li></a>
+      <a href="javascript:void(0)" class="scene" data-id="34-34"><li class="text">34</li></a>
+      <a href="javascript:void(0)" class="scene" data-id="35-35"><li class="text">35</li></a>
+      <a href="javascript:void(0)" class="scene" data-id="36-36"><li class="text">36</li></a>
+      <a href="javascript:void(0)" class="scene" data-id="37-37---"><li class="text">37 поворот с дороги</li></a>
+      <a href="javascript:void(0)" class="scene" data-id="38-37"><li class="text">37</li></a>
+      <a href="javascript:void(0)" class="scene" data-id="39-38"><li class="text">38</li></a>
+      <a href="javascript:void(0)" class="scene" data-id="40-39---"><li class="text">39 Пункт выдачи экипировки</li></a>
   </ul>
 </div>
 
@@ -243,10 +263,12 @@
 <a href="javascript:void(0)" id="viewIn" class="viewControlButton viewControlButton-5"><img class="icon" src="img/plus.png"></a>
 <a href="javascript:void(0)" id="viewOut" class="viewControlButton viewControlButton-6"><img class="icon" src="img/minus.png"></a>
 
+<!-- Тёмный фон + карта -->
 <div id="floorplan-backdrop"></div>
 <div id="floorplan-container">
     <img src="plan.png" alt="План трассы" id="floorplan-image">
     <div id="markers-layer">
+        <!-- 🔴 Сектор направления взгляда -->
         <div id="direction-cone"></div>
     </div>
     <img src="img/logo.png" id="map-logo" alt="ProTour" onerror="this.style.display='none'">
@@ -294,7 +316,15 @@
         { id: '29-29',     x: 53.1, y: 51.2 },
         { id: '30-30--',   x: 60.1, y: 54.5 },
         { id: '31-31-',    x: 93.0, y: 75.6 },
-        { id: '32-32-',    x: 87.3, y: 88.7 }
+        { id: '32-32-',    x: 87.3, y: 88.7 },
+        { id: '33-33-',    x: 80, y: 90 }, 
+        { id: '34-34',     x: 90, y: 60 },
+        { id: '35-35',     x: 95, y: 50 },
+        { id: '36-36',     x: 85, y: 40 },
+        { id: '37-37---',  x: 75, y: 30 },
+        { id: '38-37',     x: 65, y: 20 },
+        { id: '39-38',     x: 55, y: 10 },
+        { id: '40-39---',  x: 90, y: 85 }
     ];
 
     var isMobileView = window.matchMedia('(max-width: 768px)').matches;
@@ -326,12 +356,10 @@
         }
     }
 
-    // 🔄 Безопасная анимация сектора
     function animateDirection() {
         var activeMarker = document.querySelector('.map-marker.active');
         
         if (activeMarker && window.marzipanoViewer) {
-            // Проверяем, готова ли камера (чтобы не было черного экрана)
             var currentView = window.marzipanoViewer.view();
             
             if (currentView && typeof currentView.yaw === 'function') {
