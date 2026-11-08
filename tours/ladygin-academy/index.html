@@ -8,7 +8,6 @@
 <link rel="stylesheet" href="vendor/reset.min.css">
 <link rel="stylesheet" href="style.css">
 
-<!-- Стили для карты -->
 <style>
     #floorplan-container {
         position: absolute;
@@ -61,8 +60,6 @@
         background-color: #ff6b81;
         z-index: 10;
     }
-
-    /* 🟢 Активный маркер */
     .map-marker.active {
         background-color: #2ed573;
         box-shadow: 0 0 10px #2ed573, 0 0 0 0 rgba(46, 213, 115, 0.7);
@@ -74,23 +71,18 @@
         70%  { box-shadow: 0 0 10px #2ed573, 0 0 0 10px rgba(46, 213, 115, 0); }
         100% { box-shadow: 0 0 10px #2ed573, 0 0 0 0 rgba(46, 213, 115, 0); }
     }
-
-    /* 🔴 Красный сектор направления взгляда */
     #direction-cone {
         position: absolute;
         width: 50px;
         height: 50px;
         border-radius: 50%;
-        /* Создаем полупрозрачный красный сектор (60 градусов) */
         background: conic-gradient(from -30deg, rgba(255, 71, 87, 0.7) 0deg, transparent 60deg);
         transform-origin: 50% 50%;
         transform: translate(-50%, -50%) rotate(0deg);
         pointer-events: none;
-        z-index: 15; /* Под активным маркером, но над остальными */
+        z-index: 15; 
         display: none;
     }
-
-    /* 🏷️ Логотип на карте */
     #map-logo {
         position: absolute;
         bottom: 6px;
@@ -102,8 +94,6 @@
         z-index: 5;
         transition: width 0.2s;
     }
-
-    /* Кнопка закрытия */
     #floorplan-close {
         position: absolute;
         top: 8px;
@@ -122,8 +112,6 @@
         font-family: Arial, sans-serif;
         user-select: none;
     }
-
-    /* Тёмный фон */
     #floorplan-backdrop {
         position: fixed;
         top: 0; left: 0; right: 0; bottom: 0;
@@ -134,8 +122,6 @@
     #floorplan-backdrop.visible {
         display: block;
     }
-
-    /* 🖥 Развернутая карта */
     #floorplan-container.expanded {
         position: fixed;
         top: 50%;
@@ -164,7 +150,7 @@
         border-width: 2px;
     }
     #floorplan-container.expanded #direction-cone {
-        width: 70px; /* Увеличиваем сектор при развороте */
+        width: 70px;
         height: 70px;
     }
     #floorplan-container.expanded #map-logo {
@@ -172,8 +158,6 @@
         bottom: 10px;
         left: 10px;
     }
-
-    /* 📱 Адаптация для телефонов */
     @media (max-width: 768px) {
         #floorplan-container:not(.expanded) {
             width: 110px;
@@ -246,9 +230,7 @@
   </ul>
 </div>
 
-<div id="titleBar">
-  <h1 class="sceneName"></h1>
-</div>
+<div id="titleBar"><h1 class="sceneName"></h1></div>
 
 <a href="javascript:void(0)" id="autorotateToggle"><img class="icon off" src="img/play.png"><img class="icon on" src="img/pause.png"></a>
 <a href="javascript:void(0)" id="fullscreenToggle"><img class="icon off" src="img/fullscreen.png"><img class="icon on" src="img/windowed.png"></a>
@@ -261,16 +243,12 @@
 <a href="javascript:void(0)" id="viewIn" class="viewControlButton viewControlButton-5"><img class="icon" src="img/plus.png"></a>
 <a href="javascript:void(0)" id="viewOut" class="viewControlButton viewControlButton-6"><img class="icon" src="img/minus.png"></a>
 
-<!-- Тёмный фон + карта -->
 <div id="floorplan-backdrop"></div>
 <div id="floorplan-container">
     <img src="plan.png" alt="План трассы" id="floorplan-image">
-    
     <div id="markers-layer">
-        <!-- 🔴 Сектор направления взгляда -->
         <div id="direction-cone"></div>
     </div>
-
     <img src="img/logo.png" id="map-logo" alt="ProTour" onerror="this.style.display='none'">
     <div id="floorplan-close">×</div>
 </div>
@@ -282,7 +260,6 @@
 <script src="data.js"></script>
 <script src="index.js"></script>
 
-<!-- Скрипт для карты -->
 <script>
     const mapMarkers = [
         { id: '0-',        x: 70, y: 58.3 }, 
@@ -326,8 +303,6 @@
     var floorplanClose     = document.getElementById('floorplan-close');
     var directionCone      = document.getElementById('direction-cone');
     
-    // 🎯 СМЕЩЕНИЕ УГЛА: Если конус смотрит не туда, меняйте это значение (в градусах)
-    // Например, если он смотрит вправо, когда вы смотрите вверх, поставьте -90 или 90.
     var YAW_OFFSET = 0; 
 
     function expandMap() {
@@ -351,27 +326,26 @@
         }
     }
 
-    // 🔄 Анимация сектора взгляда
+    // 🔄 Безопасная анимация сектора
     function animateDirection() {
         var activeMarker = document.querySelector('.map-marker.active');
         
-        // Если есть активный маркер и камера инициализирована
         if (activeMarker && window.marzipanoViewer) {
-            directionCone.style.display = 'block';
+            // Проверяем, готова ли камера (чтобы не было черного экрана)
+            var currentView = window.marzipanoViewer.view();
             
-            // Перемещаем конус на координаты активного маркера
-            directionCone.style.left = activeMarker.style.left;
-            directionCone.style.top = activeMarker.style.top;
+            if (currentView && typeof currentView.yaw === 'function') {
+                directionCone.style.display = 'block';
+                directionCone.style.left = activeMarker.style.left;
+                directionCone.style.top = activeMarker.style.top;
 
-            // Получаем текущий угол взгляда из Marzipano
-            var yaw = window.marzipanoViewer.view().yaw();
-            
-            // Переводим радианы в градусы (Marzipano считает по часовой стрелке)
-            // И применяем смещение
-            var deg = (yaw * 180 / Math.PI) + YAW_OFFSET;
-            
-            // Вращаем конус
-            directionCone.style.transform = `translate(-50%, -50%) rotate(${deg}deg)`;
+                var yaw = currentView.yaw();
+                var deg = (yaw * 180 / Math.PI) + YAW_OFFSET;
+                
+                directionCone.style.transform = `translate(-50%, -50%) rotate(${deg}deg)`;
+            } else {
+                directionCone.style.display = 'none';
+            }
         } else {
             directionCone.style.display = 'none';
         }
@@ -379,7 +353,6 @@
     }
 
     function initMap() {
-        // Лайфхак для координат
         document.getElementById('floorplan-image').addEventListener('click', function(e) {
             const rect = this.getBoundingClientRect();
             const x = ((e.clientX - rect.left) / rect.width) * 100;
@@ -446,7 +419,6 @@
 
         setTimeout(syncActiveMarker, 300);
         
-        // Запускаем цикл анимации направления
         animateDirection();
     }
 
