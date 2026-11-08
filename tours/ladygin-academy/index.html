@@ -62,7 +62,7 @@
         z-index: 10;
     }
 
-    /* 🟢 Активный маркер — пульсирующий зелёный */
+    /* 🟢 Активный маркер */
     .map-marker.active {
         background-color: #2ed573;
         box-shadow: 0 0 10px #2ed573, 0 0 0 0 rgba(46, 213, 115, 0.7);
@@ -73,6 +73,21 @@
         0%   { box-shadow: 0 0 10px #2ed573, 0 0 0 0 rgba(46, 213, 115, 0.7); }
         70%  { box-shadow: 0 0 10px #2ed573, 0 0 0 10px rgba(46, 213, 115, 0); }
         100% { box-shadow: 0 0 10px #2ed573, 0 0 0 0 rgba(46, 213, 115, 0); }
+    }
+
+    /* 🔴 Красный сектор направления взгляда */
+    #direction-cone {
+        position: absolute;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        /* Создаем полупрозрачный красный сектор (60 градусов) */
+        background: conic-gradient(from -30deg, rgba(255, 71, 87, 0.7) 0deg, transparent 60deg);
+        transform-origin: 50% 50%;
+        transform: translate(-50%, -50%) rotate(0deg);
+        pointer-events: none;
+        z-index: 15; /* Под активным маркером, но над остальными */
+        display: none;
     }
 
     /* 🏷️ Логотип на карте */
@@ -88,7 +103,7 @@
         transition: width 0.2s;
     }
 
-    /* Кнопка закрытия (видна только в развёрнутом виде) */
+    /* Кнопка закрытия */
     #floorplan-close {
         position: absolute;
         top: 8px;
@@ -106,11 +121,9 @@
         z-index: 2001;
         font-family: Arial, sans-serif;
         user-select: none;
-        -webkit-user-select: none;
-        -webkit-tap-highlight-color: transparent;
     }
 
-    /* Тёмный фон за развёрнутой картой */
+    /* Тёмный фон */
     #floorplan-backdrop {
         position: fixed;
         top: 0; left: 0; right: 0; bottom: 0;
@@ -122,7 +135,7 @@
         display: block;
     }
 
-    /* 🖥 Развёрнутое состояние карты (только на телефоне) */
+    /* 🖥 Развернутая карта */
     #floorplan-container.expanded {
         position: fixed;
         top: 50%;
@@ -150,6 +163,10 @@
         height: 20px;
         border-width: 2px;
     }
+    #floorplan-container.expanded #direction-cone {
+        width: 70px; /* Увеличиваем сектор при развороте */
+        height: 70px;
+    }
     #floorplan-container.expanded #map-logo {
         width: 80px;
         bottom: 10px;
@@ -175,6 +192,10 @@
             height: 10px;
             border-width: 1px;
         }
+        #floorplan-container:not(.expanded) #direction-cone {
+            width: 35px;
+            height: 35px;
+        }
         #floorplan-container:not(.expanded) #map-logo {
             width: 35px;
             bottom: 4px;
@@ -189,129 +210,39 @@
 
 <div id="sceneList">
   <ul class="scenes">
-      <a href="javascript:void(0)" class="scene" data-id="0-">
-        <li class="text">Старт</li>
-      </a>
-      <a href="javascript:void(0)" class="scene" data-id="1-1">
-        <li class="text">1</li>
-      </a>
-      <a href="javascript:void(0)" class="scene" data-id="2-2---">
-        <li class="text">2 заезд в бокс</li>
-      </a>
-      <a href="javascript:void(0)" class="scene" data-id="3-3">
-        <li class="text">3</li>
-      </a>
-      <a href="javascript:void(0)" class="scene" data-id="4-4">
-        <li class="text">4</li>
-      </a>
-      <a href="javascript:void(0)" class="scene" data-id="5-5">
-        <li class="text">5</li>
-      </a>
-      <a href="javascript:void(0)" class="scene" data-id="6-6">
-        <li class="text">6</li>
-      </a>
-      <a href="javascript:void(0)" class="scene" data-id="7-7">
-        <li class="text">7</li>
-      </a>
-      <a href="javascript:void(0)" class="scene" data-id="8-8">
-        <li class="text">8</li>
-      </a>
-      <a href="javascript:void(0)" class="scene" data-id="9-9">
-        <li class="text">9</li>
-      </a>
-      <a href="javascript:void(0)" class="scene" data-id="10-10">
-        <li class="text">10</li>
-      </a>
-      <a href="javascript:void(0)" class="scene" data-id="11-11">
-        <li class="text">11</li>
-      </a>
-      <a href="javascript:void(0)" class="scene" data-id="12-12">
-        <li class="text">12</li>
-      </a>
-      <a href="javascript:void(0)" class="scene" data-id="13-13">
-        <li class="text">13</li>
-      </a>
-      <a href="javascript:void(0)" class="scene" data-id="14-14">
-        <li class="text">14</li>
-      </a>
-      <a href="javascript:void(0)" class="scene" data-id="15-15">
-        <li class="text">15</li>
-      </a>
-      <a href="javascript:void(0)" class="scene" data-id="16-16">
-        <li class="text">16</li>
-      </a>
-      <a href="javascript:void(0)" class="scene" data-id="17-17">
-        <li class="text">17</li>
-      </a>
-      <a href="javascript:void(0)" class="scene" data-id="18-18">
-        <li class="text">18</li>
-      </a>
-      <a href="javascript:void(0)" class="scene" data-id="19-19">
-        <li class="text">19</li>
-      </a>
-      <a href="javascript:void(0)" class="scene" data-id="20-20">
-        <li class="text">20</li>
-      </a>
-      <a href="javascript:void(0)" class="scene" data-id="21-21">
-        <li class="text">21</li>
-      </a>
-      <a href="javascript:void(0)" class="scene" data-id="22-22">
-        <li class="text">22</li>
-      </a>
-      <a href="javascript:void(0)" class="scene" data-id="23-23">
-        <li class="text">23</li>
-      </a>
-      <a href="javascript:void(0)" class="scene" data-id="24-24">
-        <li class="text">24</li>
-      </a>
-      <a href="javascript:void(0)" class="scene" data-id="25-25">
-        <li class="text">25</li>
-      </a>
-      <a href="javascript:void(0)" class="scene" data-id="26-26">
-        <li class="text">26</li>
-      </a>
-      <a href="javascript:void(0)" class="scene" data-id="27-27">
-        <li class="text">27</li>
-      </a>
-      <a href="javascript:void(0)" class="scene" data-id="28-28">
-        <li class="text">28</li>
-      </a>
-      <a href="javascript:void(0)" class="scene" data-id="29-29">
-        <li class="text">29</li>
-      </a>
-      <a href="javascript:void(0)" class="scene" data-id="30-30--">
-        <li class="text">30 Стартовая решётка</li>
-      </a>
-      <a href="javascript:void(0)" class="scene" data-id="31-31-">
-        <li class="text">31 бокс</li>
-      </a>
-      <a href="javascript:void(0)" class="scene" data-id="32-32-">
-        <li class="text">32 Телеметрия</li>
-      </a>
-      <a href="javascript:void(0)" class="scene" data-id="33-33-">
-        <li class="text">33 Парковка</li>
-      </a>
-      <a href="javascript:void(0)" class="scene" data-id="34-34">
-        <li class="text">34</li>
-      </a>
-      <a href="javascript:void(0)" class="scene" data-id="35-35">
-        <li class="text">35</li>
-      </a>
-      <a href="javascript:void(0)" class="scene" data-id="36-36">
-        <li class="text">36</li>
-      </a>
-      <a href="javascript:void(0)" class="scene" data-id="37-37---">
-        <li class="text">37 поворот с дороги</li>
-      </a>
-      <a href="javascript:void(0)" class="scene" data-id="38-37">
-        <li class="text">37</li>
-      </a>
-      <a href="javascript:void(0)" class="scene" data-id="39-38">
-        <li class="text">38</li>
-      </a>
-      <a href="javascript:void(0)" class="scene" data-id="40-39---">
-        <li class="text">39 Пункт выдачи экипировки</li>
-      </a>
+      <a href="javascript:void(0)" class="scene" data-id="0-"><li class="text">Старт</li></a>
+      <a href="javascript:void(0)" class="scene" data-id="1-1"><li class="text">1</li></a>
+      <a href="javascript:void(0)" class="scene" data-id="2-2---"><li class="text">2 заезд в бокс</li></a>
+      <a href="javascript:void(0)" class="scene" data-id="3-3"><li class="text">3</li></a>
+      <a href="javascript:void(0)" class="scene" data-id="4-4"><li class="text">4</li></a>
+      <a href="javascript:void(0)" class="scene" data-id="5-5"><li class="text">5</li></a>
+      <a href="javascript:void(0)" class="scene" data-id="6-6"><li class="text">6</li></a>
+      <a href="javascript:void(0)" class="scene" data-id="7-7"><li class="text">7</li></a>
+      <a href="javascript:void(0)" class="scene" data-id="8-8"><li class="text">8</li></a>
+      <a href="javascript:void(0)" class="scene" data-id="9-9"><li class="text">9</li></a>
+      <a href="javascript:void(0)" class="scene" data-id="10-10"><li class="text">10</li></a>
+      <a href="javascript:void(0)" class="scene" data-id="11-11"><li class="text">11</li></a>
+      <a href="javascript:void(0)" class="scene" data-id="12-12"><li class="text">12</li></a>
+      <a href="javascript:void(0)" class="scene" data-id="13-13"><li class="text">13</li></a>
+      <a href="javascript:void(0)" class="scene" data-id="14-14"><li class="text">14</li></a>
+      <a href="javascript:void(0)" class="scene" data-id="15-15"><li class="text">15</li></a>
+      <a href="javascript:void(0)" class="scene" data-id="16-16"><li class="text">16</li></a>
+      <a href="javascript:void(0)" class="scene" data-id="17-17"><li class="text">17</li></a>
+      <a href="javascript:void(0)" class="scene" data-id="18-18"><li class="text">18</li></a>
+      <a href="javascript:void(0)" class="scene" data-id="19-19"><li class="text">19</li></a>
+      <a href="javascript:void(0)" class="scene" data-id="20-20"><li class="text">20</li></a>
+      <a href="javascript:void(0)" class="scene" data-id="21-21"><li class="text">21</li></a>
+      <a href="javascript:void(0)" class="scene" data-id="22-22"><li class="text">22</li></a>
+      <a href="javascript:void(0)" class="scene" data-id="23-23"><li class="text">23</li></a>
+      <a href="javascript:void(0)" class="scene" data-id="24-24"><li class="text">24</li></a>
+      <a href="javascript:void(0)" class="scene" data-id="25-25"><li class="text">25</li></a>
+      <a href="javascript:void(0)" class="scene" data-id="26-26"><li class="text">26</li></a>
+      <a href="javascript:void(0)" class="scene" data-id="27-27"><li class="text">27</li></a>
+      <a href="javascript:void(0)" class="scene" data-id="28-28"><li class="text">28</li></a>
+      <a href="javascript:void(0)" class="scene" data-id="29-29"><li class="text">29</li></a>
+      <a href="javascript:void(0)" class="scene" data-id="30-30--"><li class="text">30 Стартовая решётка</li></a>
+      <a href="javascript:void(0)" class="scene" data-id="31-31-"><li class="text">31 бокс</li></a>
+      <a href="javascript:void(0)" class="scene" data-id="32-32-"><li class="text">32 Телеметрия</li></a>
   </ul>
 </div>
 
@@ -319,48 +250,28 @@
   <h1 class="sceneName"></h1>
 </div>
 
-<a href="javascript:void(0)" id="autorotateToggle">
-  <img class="icon off" src="img/play.png">
-  <img class="icon on" src="img/pause.png">
-</a>
+<a href="javascript:void(0)" id="autorotateToggle"><img class="icon off" src="img/play.png"><img class="icon on" src="img/pause.png"></a>
+<a href="javascript:void(0)" id="fullscreenToggle"><img class="icon off" src="img/fullscreen.png"><img class="icon on" src="img/windowed.png"></a>
+<a href="javascript:void(0)" id="sceneListToggle"><img class="icon off" src="img/expand.png"><img class="icon on" src="img/collapse.png"></a>
 
-<a href="javascript:void(0)" id="fullscreenToggle">
-  <img class="icon off" src="img/fullscreen.png">
-  <img class="icon on" src="img/windowed.png">
-</a>
-
-<a href="javascript:void(0)" id="sceneListToggle">
-  <img class="icon off" src="img/expand.png">
-  <img class="icon on" src="img/collapse.png">
-</a>
-
-<a href="javascript:void(0)" id="viewUp" class="viewControlButton viewControlButton-1">
-  <img class="icon" src="img/up.png">
-</a>
-<a href="javascript:void(0)" id="viewDown" class="viewControlButton viewControlButton-2">
-  <img class="icon" src="img/down.png">
-</a>
-<a href="javascript:void(0)" id="viewLeft" class="viewControlButton viewControlButton-3">
-  <img class="icon" src="img/left.png">
-</a>
-<a href="javascript:void(0)" id="viewRight" class="viewControlButton viewControlButton-4">
-  <img class="icon" src="img/right.png">
-</a>
-<a href="javascript:void(0)" id="viewIn" class="viewControlButton viewControlButton-5">
-  <img class="icon" src="img/plus.png">
-</a>
-<a href="javascript:void(0)" id="viewOut" class="viewControlButton viewControlButton-6">
-  <img class="icon" src="img/minus.png">
-</a>
+<a href="javascript:void(0)" id="viewUp" class="viewControlButton viewControlButton-1"><img class="icon" src="img/up.png"></a>
+<a href="javascript:void(0)" id="viewDown" class="viewControlButton viewControlButton-2"><img class="icon" src="img/down.png"></a>
+<a href="javascript:void(0)" id="viewLeft" class="viewControlButton viewControlButton-3"><img class="icon" src="img/left.png"></a>
+<a href="javascript:void(0)" id="viewRight" class="viewControlButton viewControlButton-4"><img class="icon" src="img/right.png"></a>
+<a href="javascript:void(0)" id="viewIn" class="viewControlButton viewControlButton-5"><img class="icon" src="img/plus.png"></a>
+<a href="javascript:void(0)" id="viewOut" class="viewControlButton viewControlButton-6"><img class="icon" src="img/minus.png"></a>
 
 <!-- Тёмный фон + карта -->
 <div id="floorplan-backdrop"></div>
 <div id="floorplan-container">
     <img src="plan.png" alt="План трассы" id="floorplan-image">
-    <div id="markers-layer"></div>
-    <!-- ЛОГОТИП -->
-    <img src="img/logo.png" id="map-logo" alt="ProTour" onerror="this.style.display='none'">
     
+    <div id="markers-layer">
+        <!-- 🔴 Сектор направления взгляда -->
+        <div id="direction-cone"></div>
+    </div>
+
+    <img src="img/logo.png" id="map-logo" alt="ProTour" onerror="this.style.display='none'">
     <div id="floorplan-close">×</div>
 </div>
 
@@ -373,50 +284,51 @@
 
 <!-- Скрипт для карты -->
 <script>
-    // ⚠️ Координаты маркеров (в процентах от размера картинки).
-    // Я расставил их примерно по форме трассы (контур). 
-    // ОБЯЗАТЕЛЬНО подкорректируйте их с помощью лайфхака ниже!
     const mapMarkers = [
-        { id: '0-',        x: 70, y: 58.3 }, // Старт (на прямой)
-        { id: '1-1',       x: 79.4, y: 63.0 }, // 1
-        { id: '2-2---',    x: 85.5, y: 69.5 }, // 2 заезд в бокс
-        { id: '3-3',       x: 85.0, y: 75.6 }, // 3
-        { id: '4-4',       x: 78.0, y: 80 }, // 4
-        { id: '5-5',       x: 62, y: 75.6 }, // 5
-        { id: '6-6',       x: 52.2, y: 71.4 }, // 6
-        { id: '7-7',       x: 48.4, y: 68.6 }, // 7
-        { id: '8-8',       x: 54, y: 63.4 }, // 8
-        { id: '9-9',       x: 61.5, y: 67.6 }, // 9
-        { id: '10-10',     x: 70.5, y: 72.8 }, // 10
-        { id: '11-11',     x: 76.1, y: 74.2 }, // 11
-        { id: '12-12',     x: 79.8, y: 70.5 }, // 12
-        { id: '13-13',     x: 75.6, y: 66.7 }, // 13
-        { id: '14-14',     x: 65.3, y: 62.5 }, // 14
-        { id: '15-15',     x: 53.1, y: 56.4 }, // 15
-        { id: '16-16',     x: 42.8, y: 63.4 }, // 16
-        { id: '17-17',     x: 35.3, y: 57.3 }, // 17
-        { id: '18-18',     x: 42.8, y: 46.1 }, // 18
-        { id: '19-19',     x: 39.0, y: 42.3 }, // 19
-        { id: '20-20',     x: 27.8, y: 53.1 }, // 20
-        { id: '21-21',     x: 18.4, y: 52.2 }, // 21
-        { id: '22-22',     x: 5.7, y: 32.9 }, // 22
-        { id: '23-23',     x: 9.5, y: 20.8 }, // 23
-        { id: '24-24',     x: 18.9, y: 13.7 }, // 24
-        { id: '25-25',     x: 38.6, y: 20.3 }, // 25
-        { id: '26-26',     x: 46.5, y: 17.0 }, // 26
-        { id: '27-27',     x: 47.0, y: 27.8 }, // 27
-        { id: '28-28',     x: 47.9, y: 42.8 }, // 28
-        { id: '29-29',     x: 53.1, y: 51.2 }, // 29
-        { id: '30-30--',   x: 60.1, y: 54.5 }, // 30 Стартовая решётка
-        { id: '31-31-',    x: 93.0, y: 75.6 }, // 31 бокс
-        { id: '32-32-',    x: 87.3, y: 88.7 }, // 32 Телеметрия
+        { id: '0-',        x: 70, y: 58.3 }, 
+        { id: '1-1',       x: 79.4, y: 63.0 },
+        { id: '2-2---',    x: 85.5, y: 69.5 },
+        { id: '3-3',       x: 85.0, y: 75.6 },
+        { id: '4-4',       x: 78.0, y: 80 },
+        { id: '5-5',       x: 62, y: 75.6 },
+        { id: '6-6',       x: 52.2, y: 71.4 },
+        { id: '7-7',       x: 48.4, y: 68.6 },
+        { id: '8-8',       x: 54, y: 63.4 },
+        { id: '9-9',       x: 61.5, y: 67.6 },
+        { id: '10-10',     x: 70.5, y: 72.8 },
+        { id: '11-11',     x: 76.1, y: 74.2 },
+        { id: '12-12',     x: 79.8, y: 70.5 },
+        { id: '13-13',     x: 75.6, y: 66.7 },
+        { id: '14-14',     x: 65.3, y: 62.5 },
+        { id: '15-15',     x: 53.1, y: 56.4 },
+        { id: '16-16',     x: 42.8, y: 63.4 },
+        { id: '17-17',     x: 35.3, y: 57.3 },
+        { id: '18-18',     x: 42.8, y: 46.1 },
+        { id: '19-19',     x: 39.0, y: 42.3 },
+        { id: '20-20',     x: 27.8, y: 53.1 },
+        { id: '21-21',     x: 18.4, y: 52.2 },
+        { id: '22-22',     x: 5.7, y: 32.9 },
+        { id: '23-23',     x: 9.5, y: 20.8 },
+        { id: '24-24',     x: 18.9, y: 13.7 },
+        { id: '25-25',     x: 38.6, y: 20.3 },
+        { id: '26-26',     x: 46.5, y: 17.0 },
+        { id: '27-27',     x: 47.0, y: 27.8 },
+        { id: '28-28',     x: 47.9, y: 42.8 },
+        { id: '29-29',     x: 53.1, y: 51.2 },
+        { id: '30-30--',   x: 60.1, y: 54.5 },
+        { id: '31-31-',    x: 93.0, y: 75.6 },
+        { id: '32-32-',    x: 87.3, y: 88.7 }
     ];
 
     var isMobileView = window.matchMedia('(max-width: 768px)').matches;
-
     var floorplanContainer = document.getElementById('floorplan-container');
     var floorplanBackdrop  = document.getElementById('floorplan-backdrop');
     var floorplanClose     = document.getElementById('floorplan-close');
+    var directionCone      = document.getElementById('direction-cone');
+    
+    // 🎯 СМЕЩЕНИЕ УГЛА: Если конус смотрит не туда, меняйте это значение (в градусах)
+    // Например, если он смотрит вправо, когда вы смотрите вверх, поставьте -90 или 90.
+    var YAW_OFFSET = 0; 
 
     function expandMap() {
         if (!isMobileView) return;
@@ -439,11 +351,35 @@
         }
     }
 
+    // 🔄 Анимация сектора взгляда
+    function animateDirection() {
+        var activeMarker = document.querySelector('.map-marker.active');
+        
+        // Если есть активный маркер и камера инициализирована
+        if (activeMarker && window.marzipanoViewer) {
+            directionCone.style.display = 'block';
+            
+            // Перемещаем конус на координаты активного маркера
+            directionCone.style.left = activeMarker.style.left;
+            directionCone.style.top = activeMarker.style.top;
+
+            // Получаем текущий угол взгляда из Marzipano
+            var yaw = window.marzipanoViewer.view().yaw();
+            
+            // Переводим радианы в градусы (Marzipano считает по часовой стрелке)
+            // И применяем смещение
+            var deg = (yaw * 180 / Math.PI) + YAW_OFFSET;
+            
+            // Вращаем конус
+            directionCone.style.transform = `translate(-50%, -50%) rotate(${deg}deg)`;
+        } else {
+            directionCone.style.display = 'none';
+        }
+        requestAnimationFrame(animateDirection);
+    }
+
     function initMap() {
-        // === ЛАЙФХАК: Получение точных координат ===
-        // Кликните по карте — координаты появятся в консоли браузера.
-        // На Mac консоль открывается через ⌘ + Option + J.
-        // На Windows/Linux — F12 → вкладка Console.
+        // Лайфхак для координат
         document.getElementById('floorplan-image').addEventListener('click', function(e) {
             const rect = this.getBoundingClientRect();
             const x = ((e.clientX - rect.left) / rect.width) * 100;
@@ -467,8 +403,6 @@
                 const sceneLink = document.querySelector('.scene[data-id="' + marker.id + '"]');
                 if (sceneLink) {
                     sceneLink.click();
-                } else {
-                    console.warn('Сцена не найдена:', marker.id);
                 }
                 if (isMobileView) {
                     setTimeout(collapseMap, 150);
@@ -511,6 +445,9 @@
         });
 
         setTimeout(syncActiveMarker, 300);
+        
+        // Запускаем цикл анимации направления
+        animateDirection();
     }
 
     window.addEventListener('load', initMap);
