@@ -77,14 +77,13 @@
         100% { box-shadow: 0 0 10px #2ed573, 0 0 0 0 rgba(46, 213, 115, 0); }
     }
 
-    /* 🔴 Красный сектор направления взгляда */
+   /* 🟢 Зеленый сектор направления взгляда */
     #direction-cone {
         position: absolute;
-        /* Немного уменьшено, чтобы соответствовать новому размеру маркеров */
         width: 45px;
         height: 45px;
         border-radius: 50%;
-        background: conic-gradient(from -30deg, rgba(255, 71, 87, 0.7) 0deg, transparent 60deg);
+        background: conic-gradient(from -30deg, rgba(46, 213, 115, 0.7) 0deg, transparent 60deg);
         transform-origin: 50% 50%;
         transform: translate(-50%, -50%) rotate(0deg);
         pointer-events: none;
