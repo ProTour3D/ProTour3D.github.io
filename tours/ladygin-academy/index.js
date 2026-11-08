@@ -1,17 +1,6 @@
 /*
  * Copyright 2016 Google Inc. All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * ... (лицензия)
  */
 'use strict';
 
@@ -29,13 +18,9 @@
   var autorotateToggleElement = document.querySelector('#autorotateToggle');
   var fullscreenToggleElement = document.querySelector('#fullscreenToggle');
 
-  // 🧠 Хранилище запомненных видов (для навигации через меню сцен)
   var savedViews = {};
-
-  // 🧠 Ссылка на текущую активную сцену
   var currentSceneRef = null;
 
-  // Detect desktop or mobile mode.
   if (window.matchMedia) {
     var setMode = function() {
       if (mql.matches) {
@@ -71,16 +56,13 @@
 
   var viewer = new Marzipano.Viewer(panoElement, viewerOpts);
   
-  // 🔴 ВАЖНО: ДЕЛАЕМ КАМЕРУ ДОСТУПНОЙ ДЛЯ КАРТЫ (для красного сектора)
+  // Делаем камеру доступной для карты
   window.marzipanoViewer = viewer; 
 
-  // 📱 Определяем мобильное устройство
   var isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)
                  || window.innerWidth < 768;
 
-  // Create scenes.
   var scenes = data.scenes.map(function(data) {
-
     var levels = data.levels;
     if (isMobile && levels && levels.length > 3) {
       levels = levels.slice(0, 3);
@@ -154,7 +136,6 @@
   scenes.forEach(function(scene) {
     var el = document.querySelector('#sceneList .scene[data-id="' + scene.data.id + '"]');
     el.addEventListener('click', function() {
-      // 🧠 Клик по меню — не считается «переходом через дверь»
       switchScene(scene, false);
       if (document.body.classList.contains('mobile')) {
         hideSceneList();
@@ -184,14 +165,12 @@
     return s.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;');
   }
 
-  // 🧠 Нормализация угла в диапазон [-PI, PI]
   function normalizeAngle(a) {
     while (a > Math.PI) a -= 2 * Math.PI;
     while (a < -Math.PI) a += 2 * Math.PI;
     return a;
   }
 
-  // 🧠 Сохраняем текущий вид активной сцены.
   function saveCurrentView() {
     if (!currentSceneRef) return;
     var view = currentSceneRef.view;
@@ -214,7 +193,6 @@
     savedViews[id] = { yaw: yaw, pitch: pitch, fov: fov };
   }
 
-  // 🧠 Вычисляем «вид в комнату» для сцены, в которую мы входим
   function computeArrivalView(sceneData, sourceSceneId) {
     if (!sourceSceneId) return null;
 
@@ -262,24 +240,25 @@
     var sourceSceneId = (fromHotspot && currentSceneRef) ? currentSceneRef.data.id : null;
 
     saveCurrentView();
-
     stopAutorotate();
-
     applySceneSwitch(scene, sourceSceneId, fromHotspot);
-
     startAutorotate();
   }
 
   function applySceneSwitch(scene, sourceSceneId, fromHotspot) {
     var viewParams = getViewParameters(scene.data, sourceSceneId, fromHotspot);
 
-    scene.data.initialViewParameters = viewParams;
+    // Защита: если параметры вида вдруг потерялись, ставим дефолтные
+    if (!viewParams) {
+        console.warn("Нет initialViewParameters для сцены:", scene.data.id);
+        viewParams = { yaw: 0, pitch: 0, fov: 1.5 };
+    }
 
+    scene.data.initialViewParameters = viewParams;
     scene.view.setParameters(viewParams);
     scene.scene.switchTo();
 
     currentSceneRef = scene;
-
     updateSceneName(scene);
     updateSceneList(scene);
   }
@@ -338,7 +317,6 @@
   }
 
   function createLinkHotspotElement(hotspot) {
-
     var wrapper = document.createElement('div');
     wrapper.classList.add('hotspot');
     wrapper.classList.add('link-hotspot');
@@ -371,7 +349,6 @@
   }
 
   function createInfoHotspotElement(hotspot) {
-
     var wrapper = document.createElement('div');
     wrapper.classList.add('hotspot');
     wrapper.classList.add('info-hotspot');
@@ -457,6 +434,9 @@
     return null;
   }
 
-  switchScene(scenes[0], false);
+  // Запускаем первую сцену
+  if (scenes && scenes.length > 0) {
+    switchScene(scenes[0], false);
+  }
 
 })();
